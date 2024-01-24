@@ -70,7 +70,7 @@ To run this project, you will need to add the following environment variables to
 Clone the project
 
 ```bash
-  git clone git@github.com:Shop-Tai-Che/STC-Backend.git
+  git clone https://github.com/Tuh11343/EBook.git
 ```
 
 Go to the project directory
