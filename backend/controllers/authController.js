@@ -20,16 +20,16 @@ exports.register = catchAsync(async (req, res, next) => {
       data: {
         name: data.name,
         address: data.address,
-        phoneNumber: data.phoneNumber
-      }
+        phoneNumber: data.phoneNumber,
+      },
     })
 
     account = await prisma.account.create({
       data: {
         email: data.email,
         password: hashPassword,
-        user_id: user.id
-      }
+        user_id: user.id,
+      },
     })
     res.status(200).json({ message: 'Register successfully!' })
   } catch (e) {
@@ -56,7 +56,7 @@ exports.login = catchAsync(async (req, res, next) => {
     }
     const accessToken = authUtils.signAccessToken()
     const refreshToken = authUtils.signRefreshToken()
-    res.status(200).json({ accessToken, refreshToken })
+    res.status(200).json({ accessToken: accessToken, refreshToken: refreshToken })
   } catch (e) {
     next(new AppError(e, 500))
   }
