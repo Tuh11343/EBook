@@ -1,36 +1,36 @@
-const catchAsync = require('../utils/catchAsync');
-const prisma = require('../prisma/prisma');
+const catchAsync = require('../utils/catchAsync')
+const prisma = require('../prisma/prisma')
 
 exports.getAllUsers = catchAsync(async (req, res) => {
-  const users = await prisma.user.findMany();
+  const users = await prisma.user.findMany()
   res.status(200).json({
     status: 'success',
     results: users.length,
     data: {
-      users,
-    },
-  });
-});
+      users
+    }
+  })
+})
 
 exports.createUser = catchAsync(async (req, res) => {
-  const data = req.body;
+  const data = req.body
 
   try {
     let account = await prisma.user.findFirst({
       where: {
-        email: data.email,
-      },
-    });
+        email: data.email
+      }
+    })
 
     if (account) {
-      res.status(400).json({ message: 'Account already exists' });
+      res.status(400).json({ message: 'Account already exists' })
     }
     const userPayload = {
       name: data.name,
       address: data.address,
-      phoneNumber: data.phoneNumber,
-    };
-    user = await prisma.user.create({ data: userPayload });
+      phoneNumber: data.phoneNumber
+    }
+    const user = await prisma.user.create({ data: userPayload })
 
     const accountPayload = {
       email: data.email,
@@ -38,15 +38,15 @@ exports.createUser = catchAsync(async (req, res) => {
       user_id: user.id,
       user: {
         connect: {
-          id: user.id,
-        },
-      },
-    };
+          id: user.id
+        }
+      }
+    }
     account = await prisma.account.create({
-      data: accountPayload,
-    });
-    res.status(200).json(user);
+      data: accountPayload
+    })
+    res.status(200).json(user)
   } catch (e) {
-    res.status(500).json(e);
+    res.status(500).json(e)
   }
-});
+})
