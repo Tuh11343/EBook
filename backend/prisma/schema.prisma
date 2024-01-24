@@ -13,23 +13,23 @@ datasource db {
 model User {
   id          Int       @id @default(autoincrement())
   name        String    @db.VarChar(255)
-  phoneNumber String
+  phoneNumber String?
   address     String?
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
+  createdAt   DateTime? @default(now())
+  updatedAt   DateTime? @updatedAt
   Account     Account[]
 
   @@map("users")
 }
 
 model Account {
-  id        Int      @id @default(autoincrement())
+  id        Int       @id @default(autoincrement())
   user_id   Int
-  email     String   @db.VarChar(255)
+  email     String    @db.VarChar(255)
   password  String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  User      User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  createdAt DateTime? @default(now())
+  updatedAt DateTime? @updatedAt
+  User      User      @relation(fields: [user_id], references: [id], onDelete: Cascade)
 
   @@map("accounts")
 }
