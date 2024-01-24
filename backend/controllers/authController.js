@@ -5,14 +5,16 @@ const AuthUtils = require('../utils/authUtils')
 
 exports.register = catchAsync(async (req, res, next) => {
   const data = req.body
+  const authUtils = new AuthUtils(data.email, data.password)
+
   try {
-    let account = await new AuthUtils().getUserByEmail(data.email)
+    let account = await authUtils.getUserByEmail()
     if (account) {
       res.status(400).json({ message: 'Account already exists' })
       return
     }
 
-    const hashPassword = await new AuthUtils().hashPassword(data.password)
+    const hashPassword = await authUtils.hashPassword()
 
     const user = await prisma.user.create({
       data: {
@@ -37,19 +39,23 @@ exports.register = catchAsync(async (req, res, next) => {
 
 exports.login = catchAsync(async (req, res, next) => {
   const data = req.body
+  const authUtils = new AuthUtils(data.email, data.password)
+
   try {
-    const account = await new AuthUtils().getUserByEmail(data.email)
+    const account = await authUtils.getUserByEmail()
     if (!account) {
       res.status(400).json({ message: 'Account not exists, please create one!' })
       return
     }
-    const isPasswordValid = await new AuthUtils().comparePassword(data.password, account.password)
+
+    const isPasswordValid = authUtils.comparePassword(account.password)
+
     if (!isPasswordValid) {
       res.status(400).json({ message: 'Password is not correct!' })
       return
     }
-    const accessToken = await new AuthUtils().signAccessToken(data.email)
-    const refreshToken = await new AuthUtils().signRefreshToken(data.email)
+    const accessToken = authUtils.signAccessToken()
+    const refreshToken = authUtils.signRefreshToken()
     res.status(200).json({ accessToken, refreshToken })
   } catch (e) {
     next(new AppError(e, 500))
