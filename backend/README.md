@@ -42,7 +42,6 @@ Mobile app for reading book online
 - [Features](#features)
 - [Environment Variables](#environment-variables)
 - [Run Locally](#run-)
-- [Development](#development)
 - [Acknowledgements](#acknowledgements)
 - [License](#license)
 
@@ -96,25 +95,6 @@ Start the server
 
 ```bash
   npm start
-```
-
-## Development
-
-To run program in product environment:
-
-- docker and docker-compose
-- git
-
-1. Clone the reposity:
-
-```bash
-    git clone git@github.com:Shop-Tai-Che/STC-Backend.git
-```
-
-2. From within the repository directory, run:
-
-```bash
-    docker-compose up --build -d
 ```
 
 ## Acknowledgements
