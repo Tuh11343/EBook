@@ -91,7 +91,13 @@ Install dependencies
 Migrate prisma
 
 ```bash
- prisma generate
+ npx prisma generate
+```
+
+When you make change and want to update to database and migrate history
+
+```bash
+  npx prisma migrate dev --name update-migrate-name
 ```
 
 Start the server
