@@ -2,6 +2,9 @@
 
 Mobile app for reading book online
 
+# ATTENTION
+MAKE SURE TO FOLLOW THE README RUN LOCALLY GUIDELINE TO AVOID CONFLICT
+
 ## Introduction
 
 Mobile app for reading book online
