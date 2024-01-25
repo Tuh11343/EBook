@@ -7,7 +7,7 @@ exports.getAllUsers = catchAsync(async (req, res) => {
     status: 'success',
     results: users.length,
     data: {
-      users,
-    },
+      users
+    }
   })
 })

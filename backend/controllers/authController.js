@@ -31,6 +31,9 @@ exports.register = catchAsync(async (req, res, next) => {
         user_id: user.id,
       },
     })
+
+    const sendRes = await authUtils.sendOtpSMS()
+    console.log(sendRes)
     res.status(200).json({ message: 'Register successfully!' })
   } catch (e) {
     next(new AppError(e, 500))
@@ -48,6 +51,11 @@ exports.login = catchAsync(async (req, res, next) => {
       return
     }
 
+    if (!account.is_verified) {
+      res.status(400).json({ message: 'Account is not veried!' })
+      return
+    }
+
     const isPasswordValid = authUtils.comparePassword(account.password)
 
     if (!isPasswordValid) {
@@ -56,7 +64,7 @@ exports.login = catchAsync(async (req, res, next) => {
     }
     const accessToken = authUtils.signAccessToken()
     const refreshToken = authUtils.signRefreshToken()
-    res.status(200).json({ accessToken: accessToken, refreshToken: refreshToken })
+    res.status(200).json({ accessToken, refreshToken })
   } catch (e) {
     next(new AppError(e, 500))
   }
