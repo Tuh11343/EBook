@@ -2,6 +2,7 @@ const catchAsync = require('../utils/catchAsync')
 const AppError = require('../utils/appError')
 const prisma = require('../prisma/prisma')
 const AuthUtils = require('../utils/authUtils')
+const firebaseAdmin = require('../configs/firebase')
 
 exports.register = catchAsync(async (req, res, next) => {
   const data = req.body
@@ -33,7 +34,12 @@ exports.register = catchAsync(async (req, res, next) => {
     })
 
     const sendRes = await authUtils.sendOtpSMS()
-    console.log(sendRes)
+    // firebaseAdmin
+    //   .auth()
+    //   .createUser({ uid: data.phoneNumber })
+    //   .then((user) => res.send(user))
+    //   .then((err) => res.status(422).send({ error: err }))
+
     res.status(200).json({ message: 'Register successfully!' })
   } catch (e) {
     next(new AppError(e, 500))
