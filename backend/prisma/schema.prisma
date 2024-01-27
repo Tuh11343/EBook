@@ -23,14 +23,16 @@ model User {
 }
 
 model Account {
-  id        Int       @id @default(autoincrement())
-  user_id   Int
-  email     String    @db.VarChar(255)
-  password  String
-  createdAt DateTime? @default(now())
-  updatedAt DateTime? @updatedAt
-  User      User      @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  id          Int       @id @default(autoincrement())
+  user_id     Int
+  email       String    @db.VarChar(255)
+  password    String
+  createdAt   DateTime? @default(now())
+  updatedAt   DateTime? @updatedAt
+  User        User      @relation(fields: [user_id], references: [id], onDelete: Cascade)
   is_verified Boolean   @default(false)
+  otpCode     String?
+  otpExpires  DateTime
 
   @@map("accounts")
 }
