@@ -1,30 +1,43 @@
 {
   "name": "backend",
   "version": "1.0.0",
-  "description": "",
+  "description": "Mobile app for reading book online",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon app.js"
+    "start": "nodemon app.js",
+    "lint": "eslint --fix ."
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "@prisma/client": "^5.8.1",
+    "aws-sdk": "^2.1545.0",
     "bcrypt": "^5.1.1",
     "dotenv": "^16.4.0",
     "express": "^4.18.2",
+    "firebase": "^10.7.2",
+    "firebase-admin": "^12.0.0",
     "hpp": "^0.2.3",
     "jsonwebtoken": "^9.0.2",
     "mysql": "^2.18.1",
     "mysql2": "^3.8.0",
+    "nexmo": "^2.9.1",
     "nodemon": "^3.0.3",
-    "swagger-jsdoc": "^6.2.8",
-    "swagger-ui-express": "^5.0.0",
+    "otp-generator": "^4.0.1",
+    "twilio": "^4.20.1",
+    "util": "^0.12.5",
     "xss-clean": "^0.1.4"
   },
   "devDependencies": {
     "eslint": "^8.56.0",
-    "prisma": "^5.8.1"
-  }
+    "eslint-config-standard": "^17.1.0",
+    "eslint-plugin-import": "^2.29.1",
+    "eslint-plugin-n": "^16.6.2",
+    "eslint-plugin-promise": "^6.1.1",
+    "prisma": "^5.8.1",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.0"
+  },
+  "keywords": []
 }
