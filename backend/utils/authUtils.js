@@ -1,6 +1,5 @@
 const prisma = require('../prisma/prisma')
 const bcrypt = require('bcrypt')
-const crypto = require('crypto')
 const jwt = require('jsonwebtoken')
 const otpGenerator = require('otp-generator')
 const AWS = require('aws-sdk')
@@ -8,7 +7,6 @@ const SALT_ROUNDS = 10
 const JWT_ACCESS_SECRET_KEY = process.env.JWT_ACCESS_SECRET_KEY
 const JWT_REFRESH_SECRET_KEY = process.env.JWT_REFRESH_SECRET_KEY
 const OTP_LENGTH = 6
-const OTP_SECRET_KEY = process.env.OTP_SECRET_KEY
 AWS.config.update({ region: process.env.AWS_REGION })
 
 class AuthUtils {
@@ -47,21 +45,6 @@ class AuthUtils {
       upperCaseAlphabets: false,
       specialChars: false
     })
-  }
-
-  isOTPIsExpired (hashOtp, phoneNumber, otpCode) {
-    const [hashValue, expiresIn] = hashOtp.split('')
-    const currentTime = Date.now()
-    if (currentTime > parseInt(expiresIn)) {
-      return false
-    }
-
-    const data = `${phoneNumber}.${otpCode}.${expiresIn}`
-    const newHashCode = crypto.createHmac('sha256', OTP_SECRET_KEY).update(data).digest('hex')
-    if (newHashCode === hashValue) {
-      return true
-    }
-    return false
   }
 
   async sendOtpSMS (params) {
