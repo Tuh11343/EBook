@@ -3,6 +3,7 @@
 Mobile app for reading book online
 
 # ATTENTION
+
 MAKE SURE TO FOLLOW THE README RUN LOCALLY GUIDELINE TO AVOID CONFLICT
 
 ## Introduction
@@ -91,7 +92,7 @@ Install dependencies
 Migrate prisma
 
 ```bash
- npx prisma generate
+ npx prisma migrate dev
 ```
 
 When you make change and want to update to database and migrate history
