@@ -7,6 +7,7 @@ const SALT_ROUNDS = 10
 const JWT_ACCESS_SECRET_KEY = process.env.JWT_ACCESS_SECRET_KEY
 const JWT_REFRESH_SECRET_KEY = process.env.JWT_REFRESH_SECRET_KEY
 const OTP_LENGTH = 6
+
 AWS.config.update({ region: process.env.AWS_REGION })
 
 class AuthUtils {

@@ -6,15 +6,16 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon app.js",
-    "lint": "eslint --fix ."
+    "lint": "eslint --fix .",
+    "generate": "npx prisma generate"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@prisma/client": "^5.8.1",
+    "@prisma/client": "^5.9.1",
     "aws-sdk": "^2.1545.0",
     "bcrypt": "^5.1.1",
-    "dotenv": "^16.4.0",
+    "dotenv": "^16.4.4",
     "express": "^4.18.2",
     "firebase": "^10.7.2",
     "firebase-admin": "^12.0.0",
@@ -35,7 +36,7 @@
     "eslint-plugin-import": "^2.29.1",
     "eslint-plugin-n": "^16.6.2",
     "eslint-plugin-promise": "^6.1.1",
-    "prisma": "^5.8.1",
+    "prisma": "^5.9.1",
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.0"
   },
