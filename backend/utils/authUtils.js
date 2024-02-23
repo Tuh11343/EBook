@@ -8,47 +8,49 @@ const JWT_ACCESS_SECRET_KEY = process.env.JWT_ACCESS_SECRET_KEY
 const JWT_REFRESH_SECRET_KEY = process.env.JWT_REFRESH_SECRET_KEY
 const OTP_LENGTH = 6
 
-AWS.config.update({ region: process.env.AWS_REGION })
+AWS.config.update({
+  region: process.env.AWS_REGION,
+})
 
 class AuthUtils {
-  constructor (email, password) {
+  constructor(email, password) {
     this.email = email
     this.password = password
   }
 
-  async getAccountByEmail () {
+  async getAccountByEmail() {
     return await prisma.account.findFirst({
       where: {
-        email: this.email
-      }
+        email: this.email,
+      },
     })
   }
 
-  hashPassword () {
+  hashPassword() {
     return bcrypt.hashSync(this.password, SALT_ROUNDS)
   }
 
-  comparePassword (hash) {
+  comparePassword(hash) {
     return bcrypt.compareSync(this.password, hash)
   }
 
-  signAccessToken () {
+  signAccessToken() {
     return jwt.sign({ email: this.email }, JWT_ACCESS_SECRET_KEY, { expiresIn: '24h' })
   }
 
-  signRefreshToken () {
+  signRefreshToken() {
     return jwt.sign({ email: this.email }, JWT_REFRESH_SECRET_KEY, { expiresIn: '7d' })
   }
 
-  generateOtp () {
+  generateOtp() {
     return otpGenerator.generate(OTP_LENGTH, {
       lowerCaseAlphabets: false,
       upperCaseAlphabets: false,
-      specialChars: false
+      specialChars: false,
     })
   }
 
-  async sendOtpSMS (params) {
+  async sendOtpSMS(params) {
     return await new AWS.SNS({ apiVersion: '2010-03-31' })
       .publish(params)
       .promise()
