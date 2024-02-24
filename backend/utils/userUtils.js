@@ -3,7 +3,7 @@ const prisma = require('../prisma/prisma')
 class UserUtils {
   constructor() {}
 
-  async getAccountById(id) {
+  async getUserById(id) {
     return await prisma.user.findFirst({
       where: {
         id: id,
