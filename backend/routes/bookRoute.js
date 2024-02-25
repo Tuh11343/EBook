@@ -2,6 +2,9 @@ const express=require('express')
 const router=express.Router()
 const bookController=require('../controller/bookController')
 
+const authMiddleware = require('../middlewares/authMiddleware')
+router.use(authMiddleware.protect)
+
 //Get
 router.get('/',bookController.findAll)
 router.get('/:id',bookController.findByID)
