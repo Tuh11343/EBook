@@ -2,6 +2,9 @@ const express = require('express')
 const router = express.Router()
 const genresController = require('../controller/genresController')
 
+const authMiddleware = require('../middlewares/authMiddleware')
+router.use(authMiddleware.protect)
+
 //Get
 router.get('/name/:name', genresController.findByName)
 router.get('/', genresController.findAll)
