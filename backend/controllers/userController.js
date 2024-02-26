@@ -17,15 +17,21 @@ exports.getAllUsers = catchAsync(async (req, res) => {
 
 exports.getUserById = catchAsync(async (req, res) => {
   const userId = parseInt(req.params.id)
+  if (!userId) {
+    res.status(400).json({ message: 'Please provide id to get user' })
+  }
   const user = await userUtils.getUserById(userId)
   if (!user) {
     res.status(400).json({ message: 'User not exists, please create one!' })
   }
-  res.status(200).json({ user })
+  res.status(200).json({ status: 'Get user successfully!', user })
 })
 
 exports.deleteUserById = catchAsync(async (req, res) => {
   const userId = parseInt(req.params.id)
+  if (!userId) {
+    res.status(400).json({ message: 'Please provide id to get user' })
+  }
   const user = await userUtils.getUserById(userId)
   if (!user) {
     res.status(400).json({ message: 'User not exists, please create one!' })
@@ -42,7 +48,13 @@ exports.deleteUserById = catchAsync(async (req, res) => {
 
 exports.updateUserById = catchAsync(async (req, res) => {
   const userId = parseInt(req.params.id)
+  if (!userId) {
+    res.status(400).json({ message: 'Please provide id to get user' })
+  }
   const data = req.body
+  if (!data) {
+    res.status(400).json({ message: 'Please provide content to update user' })
+  }
   const user = await userUtils.getUserById(userId)
   if (!user) {
     res.status(400).json({ message: 'User not exists, please create one!' })
@@ -64,6 +76,9 @@ exports.updateUserById = catchAsync(async (req, res) => {
 
 exports.findUserByName = catchAsync(async (req, res) => {
   const userName = req.params.name
+  if (!userName) {
+    res.status(400).json({ message: 'Please provide username to get user' })
+  }
   const user = await userUtils.getUserByName(userName)
   if (!user) {
     res.status(400).json({ message: 'User not exists, please create one!' })
