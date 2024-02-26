@@ -57,17 +57,17 @@ model Genre {
   name String
 
   bookGenres BookGenre[]
-  @@map("genres")
+  @@map("genre")
 }
 
 model BookGenre {
   id Int @id @default(autoincrement())
   book_id   Int
   book     Book   @relation(fields: [book_id], references: [id],onDelete: Cascade,onUpdate: Cascade)
-  genres_id Int
-  genres   Genre @relation(fields: [genres_id], references: [id],onDelete: Cascade,onUpdate: Cascade)
+  genre_id Int
+  genre   Genre @relation(fields: [genre_id], references: [id],onDelete: Cascade,onUpdate: Cascade)
 
-  @@map("book_genres")
+  @@map("book_genre")
 }
 
 model Author {
@@ -121,4 +121,3 @@ enum BookType {
   PREMIUM
   NORMAL
 }
-
