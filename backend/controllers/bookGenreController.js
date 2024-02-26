@@ -1,8 +1,7 @@
 const prisma = require('../prisma/prisma')
-const catchAsync = require('../utils/bookAuthorUtils')
-const BookAuthorUtil= require('../utils/bookAuthorUtils')
-
-const bookAuthorUtil=new BookAuthorUtil()
+const catchAsync = require('../utils/catchAsync')
+const BookGenreUtil= require('../utils/bookGenreUtils')
+const bookGenreUtil=new BookGenreUtil()
 
 exports.create = catchAsync(async (req, res) => {
     const data = req.body
@@ -12,19 +11,19 @@ exports.create = catchAsync(async (req, res) => {
         })
     }
 
-    const result = await prisma.bookAuthor.create({
+    const result = await prisma.bookGenre.create({
         data: {
             book_id: data.book_id,
-            author_id: data.author_id
+            genres_id: data.genres_id
         }
     })
     if (!result) {
         return res.status(400).json({
-            status: 'Create bookAuthor failed !!!'
+            status: 'Create bookGenres failed !!!'
         })
     } else {
         return res.status(200).json({
-            status: 'Create bookAuthor success !!!'
+            status: 'Create bookGenres successful !!!'
         })
     }
 })
@@ -37,141 +36,143 @@ exports.delete = catchAsync(async (req, res) => {
         })
     }
 
-    const bookAuthor=await bookAuthorUtil.findByID(parseInt(id))
-    if(!bookAuthor){
+    const bookGenres=await bookGenreUtil.findByID(parseInt(id))
+    if(!bookGenres){
         return res.status(400).json({
-            status: 'No bookAuthor found'
+            status: 'No bookGenres found'
         })
     }
 
-    const result = await prisma.bookAuthor.delete({
+    const result = await prisma.bookGenre.delete({
         where: {
             id: parseInt(id)
         }
     })
     if (!result) {
         return res.status(400).json({
-            status: 'Delete bookAuthor failed !!!'
+            status: 'Delete bookGenres failed !!!'
         })
     } else {
         return res.status(200).json({
-            status: 'Delete bookAuthor success !!!'
+            status: 'Delete bookGenres successful !!!'
         })
     }
 })
 
 exports.update = catchAsync(async (req, res) => {
-    const data = req.body
-    if (!data) {
+    const body = req.body
+    if (!body) {
         return res.status(400).json({
             status: 'No data provided'
         })
     }
-
-    const bookAuthor=await bookAuthorUtil.findByID(parseInt(data.id))
-    if(!bookAuthor){
+    const bookGenre=await bookGenreUtil.findByID(body.id)
+    if(!bookGenre){
         return res.status(400).json({
-            status: 'No bookAuthor found'
+            status: 'No bookGenre found'
         })
     }
 
-    const result = await prisma.bookAuthor.update({
+    const result = await prisma.bookGenre.update({
         where: {
-            id: parseInt(data.id)
+            id: parseInt(body.id)
         },
         data: {
-            book_id: data.book_id ?? bookAuthor.book_id,
-            author_id: data.author_id ?? bookAuthor.author_id
+            book_id: body.book_id ?? book_id,
+            genres_id: body.genres_id ?? genres_id
         }
     })
     if (!result) {
         return res.status(400).json({
-            status: 'Update bookAuthor failed !!!'
+            status: 'Update bookGenres failed !!!'
         })
     } else {
         return res.status(200).json({
-            status: 'Update bookAuthor success !!!'
+            status: 'Update bookGenres successful !!!'
         })
     }
 })
 
 exports.findAll = catchAsync(async (req, res) => {
-    const bookAuthors = await prisma.bookAuthor.findMany()
-    if (!bookAuthors) {
-        return res.status(200).json({
-            status: 'No bookAuthor found'
+    const bookGenres = await prisma.bookGenre.findMany()
+    if (!bookGenres) {
+        return res.status(400).json({
+            status: 'No bookGenres found'
         })
     } else {
         return res.status(200).json({
-            status: 'BookAuthor search successful',
-            bookAuthors
+            status: 'BookGenres search successful',
+            bookGenres
         })
     }
 })
 
 exports.findByID = catchAsync(async (req, res) => {
     const { id } = req.params
-    if(!id){
+    if (!id) {
         return res.status(400).json({
-            status: 'No id provided !!!'
+            status: 'No id provided'
         })
     }
 
-    const bookAuthor=bookAuthorUtil.findByID(parseInt(id))
-
-    if (!bookAuthor) {
+    const bookGenre = await prisma.bookGenre.findUnique({
+        where: {
+            id: parseInt(id)
+        }
+    })
+    if (!bookGenre) {
         return res.status(400).json({
-            status: 'No bookAuthor found'
+            status: 'No bookGenres found'
         })
     } else {
         return res.status(200).json({
-            status: 'BookAuthor search successful',
-            bookAuthor
+            status: 'BookGenres search successful',
+            bookGenre
         })
     }
 })
 
-exports.findByAuthorName = catchAsync(async (req, res) => {
+exports.findByGenreName = catchAsync(async (req, res) => {
     const { name } = req.params
-    if(!name){
+    if (!name) {
         return res.status(400).json({
             status: 'No name provided'
         })
     }
 
-    const bookAuthors = await prisma.bookAuthor.findMany({
+    const bookGenres = await prisma.bookGenre.findMany({
         where: {
-            author:{
+            genre:{
                 name:{
                     contains:name
                 }
             }
         },
         include:{
-            author:true
+            genre:true
         }
     })
-    if (!bookAuthors) {
+    if (!bookGenres) {
         return res.status(400).json({
-            status: 'No bookAuthors found'
+            status: 'No bookGenres found'
         })
     } else {
         return res.status(200).json({
-            status: 'BookAuthors search successful',
-            bookAuthors
+            status: 'BookGenres search successful',
+            bookGenres
         })
     }
 })
 
 exports.findByBookName = catchAsync(async (req, res) => {
     const { name } = req.params
-    if(!name){
+    if (!name) {
         return res.status(400).json({
             status: 'No name provided'
         })
     }
 
-    const bookAuthors = await prisma.bookAuthor.findMany({
+    const bookGenres = await prisma.bookGenres.findMany({
         where: {
             book:{
                 name:{
@@ -183,14 +184,14 @@ exports.findByBookName = catchAsync(async (req, res) => {
             book:true
         }
     })
-    if (!bookAuthors) {
+    if (!bookGenres) {
         return res.status(400).json({
-            status: 'No bookAuthors found'
+            status: 'No bookGenres found'
         })
     } else {
         return res.status(200).json({
-            status: 'BookAuthors search successful',
-            bookAuthors
+            status: 'BookGenres search successful',
+            bookGenres
         })
     }
 })

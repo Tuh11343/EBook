@@ -1,41 +1,34 @@
 const prisma = require('../prisma/prisma')
-const AuthorUtils = require('../utils/authorUtils')
 const catchAsync = require('../utils/catchAsync')
-const authorUtil=new AuthorUtils()
+const GenreUtil=require('../utils/genreUtils')
 
+const genreUtil=new GenreUtil()
 
 exports.create = catchAsync(async (req, res) => {
     const data = req.body
-
-    //Check if data exist
-    if(!data){
+    if (!data) {
         return res.status(400).json({
             status: 'No data provided'
         })
     }
 
-    //Create Author
-    const result = await prisma.author.create({
+    const result = await prisma.genre.create({
         data: {
             name: data.name,
-            description: data.description ?? null,
-            image: data.image ?? null,
         }
     })
     if (!result) {
         return res.status(400).json({
-            status: 'Create account failed!!!'
+            status: 'Create genres failed !!!'
         })
     } else {
         return res.status(200).json({
-            status: 'Create account success!!!'
+            status: 'Create genres successful !!!'
         })
     }
 })
 
 exports.delete=catchAsync(async (req,res)=>{
-
-    //Check if id exist
     const {id}=req.params
     if(!id){
         return res.status(400).json({
@@ -43,81 +36,73 @@ exports.delete=catchAsync(async (req,res)=>{
         })
     }
 
-    //Check if author exist
-    const author=await authorUtil.findByID(parseInt(id))
-    if(!author){
+    const genre=await genreUtil.findByID(parseInt(id))
+    if(!genre){
         return res.status(400).json({
-            status: 'No author found'
+            status: 'No genres found'
         })
     }
 
-    //Delete Author
-    const result=await prisma.author.delete({
+    const result=await prisma.genre.delete({
         where:{
             id:parseInt(id)
         }
     })
     if (!result) {
         return res.status(400).json({
-            status: 'Delete author failed!!!'
+            status: 'Delete genres failed !!!'
         })
     } else {
         return res.status(200).json({
-            status: 'Delete author success!!!'
+            status: 'Delete genres successful !!!'
         })
     }
 })
 
 exports.update=catchAsync(async (req,res)=>{
     const data=req.body
-
-    //Check if data exist
     if(!data){
         return res.status(400).json({
             status: 'No data provided'
         })
     }
 
-    //Check if author exist
-    const author=await authorUtil.findByID(parseInt(data.id))
-    if(!author){
+    const genre=await genreUtil.findByID(parseInt(data.id))
+    if(!genre){
         return res.status(400).json({
-            status: 'No author found'
+            status: 'No genres found'
         })
     }
 
-    //Update author
-    const result=await prisma.author.update({
+    const result=await prisma.genre.update({
         where:{
             id:parseInt(data.id)
         },
         data:{
             name:data.name,
-            description:data.description ?? author.description ?? null,
-            image:data.image ?? author.image ?? null,
         }
     })
     if (!result) {
         return res.status(400).json({
-            status: 'Update author failed!!!'
+            status: 'Update genres failed !!!'
         })
     } else {
         return res.status(200).json({
-            status: 'Update author success!!!'
+            status: 'Update genres successful !!!'
         })
     }
 })
 
 exports.findAll=catchAsync(async (req,res)=>{
-    const authors=await prisma.author.findMany()
-    if (!authors) {
+    const genres=await prisma.genre.findMany()
+    if (!genres) {
         return res.status(400).json({
-            status: 'No authors found !!!'
+            status: 'No genres found'
         })
     } else {
         return res.status(200).json({
-            status: 'Find all author success !!!',
-            authors
+            status: 'Genres search successful',
+            genres
         })
     }
 })
@@ -126,44 +111,50 @@ exports.findByID=catchAsync(async (req,res)=>{
     const {id}=req.params
     if(!id){
         return res.status(400).json({
-            status: 'No id provided !!!'
+            status: 'No id provided'
         })
     }
 
-    const author=await prisma.author.findUnique({
+    const genre=await prisma.genres.findUnique({
         where:{
             id:parseInt(id)
         }
     })
-    if (!author) {
+    if (!genre) {
         return res.status(400).json({
-            status: 'No author found !!!'
+            status: 'No genre found'
         })
     } else {
         return res.status(200).json({
-            status: 'Author search successful',
-            author
+            status: 'Genre search successful',
+            genre
         })
     }
 })
 
 exports.findByName=catchAsync(async (req,res)=>{
     const {name}=req.params
-    const authors=await prisma.author.findMany({
+    if(!name){
+        return res.status(400).json({
+            status: 'No name provided'
+        })
+    }
+
+    const genres=await prisma.genres.findUnique({
         where:{
             name:{
                 contains:name
             }
         }
     })
-    if (!authors) {
+    if (!genres) {
         return res.status(400).json({
-            status: 'No authors found'
+            status: 'No genres found'
         })
     } else {
         return res.status(200).json({
-            status: 'Authors search successful',
-            authors
+            status: 'Genres search successful',
+            genres
         })
     }
 })
