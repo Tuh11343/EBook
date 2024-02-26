@@ -61,3 +61,15 @@ exports.updateUserById = catchAsync(async (req, res) => {
     res.status(200).json({ updateUser })
   }
 })
+
+exports.findUserByName = catchAsync(async (req, res) => {
+  const userName = req.params.name
+  const user = await userUtils.getUserByName(userName)
+  if (!user) {
+    res.status(400).json({ message: 'User not exists, please create one!' })
+  }
+  res.status(200).json({
+    status: 'Get user successfully!',
+    user,
+  })
+})

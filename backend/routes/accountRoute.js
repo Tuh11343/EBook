@@ -9,5 +9,6 @@ router.get('/', accountController.getAllAccounts)
 router.get('/:id', accountController.getAccountById)
 router.delete('/:id', accountController.deleteAccountById)
 router.put('/:id', accountController.updateAccountById)
+router.get('/get-email/:email', accountController.findAccountByEmail)
 
 module.exports = router

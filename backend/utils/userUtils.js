@@ -10,6 +10,14 @@ class UserUtils {
       },
     })
   }
+
+  async getUserByName(name) {
+    return await prisma.user.findFirst({
+      where: {
+        name: name
+      },
+    })
+  }
 }
 
 module.exports = UserUtils
