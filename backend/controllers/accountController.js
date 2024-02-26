@@ -59,3 +59,15 @@ exports.updateAccountById = catchAsync(async (req, res) => {
     res.status(200).json({ updateAccount })
   }
 })
+
+exports.findAccountByEmail = catchAsync(async (req, res) => {
+  const accountEmail = req.params.email
+  const account = await accountUtils.getAccountByEmail(accountEmail)
+  if (!account) {
+    res.status(400).json({ message: 'Account not exists, please create one!' })
+  }
+  res.status(200).json({
+    status: 'Get account successfully!',
+    account,
+  })
+})
