@@ -65,8 +65,8 @@ exports.updateUserById = catchAsync(async (req, res) => {
     },
     data: {
       name: data.name,
-      phoneNumber: data.phoneNumber,
-      address: data.address,
+      phoneNumber: data.phoneNumber ?? null,
+      address: data.address ?? null,
     },
   })
   if (updateUser) {
