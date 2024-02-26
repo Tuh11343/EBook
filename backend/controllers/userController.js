@@ -68,5 +68,8 @@ exports.findUserByName = catchAsync(async (req, res) => {
   if (!user) {
     res.status(400).json({ message: 'User not exists, please create one!' })
   }
-  res.status(200).json({ user })
+  res.status(200).json({
+    status: 'Get user successfully!',
+    user,
+  })
 })
