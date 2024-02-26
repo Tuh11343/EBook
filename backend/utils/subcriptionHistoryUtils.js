@@ -1,6 +1,6 @@
 const prisma = require('../prisma/prisma')
 
-class SubcriptionUtils {
+class SubcriptionHistoryUtils {
   constructor() {}
 
   async findByID(id) {
@@ -12,4 +12,4 @@ class SubcriptionUtils {
   }
 }
 
-module.exports = SubcriptionUtils
+module.exports = SubcriptionHistoryUtils
