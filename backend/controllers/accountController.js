@@ -17,15 +17,21 @@ exports.getAllAccounts = catchAsync(async (req, res) => {
 
 exports.getAccountById = catchAsync(async (req, res) => {
   const accountId = parseInt(req.params.id)
+  if (!accountId) {
+    res.status(400).json({ message: 'Please provide id to get account' })
+  }
   const account = await accountUtils.getAccountById(accountId)
   if (!account) {
     res.status(400).json({ message: 'Account not exists, please create one!' })
   }
-  res.status(200).json({ account })
+  res.status(200).json({ status: 'Get account successfully!', account })
 })
 
 exports.deleteAccountById = catchAsync(async (req, res) => {
   const accountId = parseInt(req.params.id)
+  if (!accountId) {
+    res.status(400).json({ message: 'Please provide id to get account' })
+  }
   const account = await accountUtils.getAccountById(accountId)
   if (!account) {
     res.status(400).json({ message: 'Account not exists, please create one!' })
@@ -42,7 +48,13 @@ exports.deleteAccountById = catchAsync(async (req, res) => {
 
 exports.updateAccountById = catchAsync(async (req, res) => {
   const accountId = parseInt(req.params.id)
+  if (!accountId) {
+    res.status(400).json({ message: 'Please provide id to get account' })
+  }
   const data = req.body
+  if (!data) {
+    res.status(400).json({ message: 'Please provide content to update account' })
+  }
   const account = await accountUtils.getAccountById(accountId)
   if (!account) {
     res.status(400).json({ message: 'Account not exists, please create one!' })
@@ -52,16 +64,19 @@ exports.updateAccountById = catchAsync(async (req, res) => {
       id: accountId,
     },
     data: {
-      email: data.email,
+      email: data.email ?? account.email,
     },
   })
   if (updateAccount) {
-    res.status(200).json({ updateAccount })
+    res.status(200).json({ status: 'Update account successfully!', updateAccount })
   }
 })
 
 exports.findAccountByEmail = catchAsync(async (req, res) => {
   const accountEmail = req.params.email
+  if (!accountEmail) {
+    res.status(400).json({ message: 'Please provide email to find account' })
+  }
   const account = await accountUtils.getAccountByEmail(accountEmail)
   if (!account) {
     res.status(400).json({ message: 'Account not exists, please create one!' })
