@@ -1,6 +1,6 @@
 const prisma = require('../prisma/prisma')
-const BookUtils = require('../util/bookUtils')
-const catchAsync = require('../util/catchAsync')
+const BookUtils = require('../utils/bookUtils')
+const catchAsync = require('../utils/catchAsync')
 const bookUtil = new BookUtils()
 
 exports.findAll = catchAsync(async (req, res) => {
@@ -16,11 +16,8 @@ exports.findAll = catchAsync(async (req, res) => {
         })
     } else {
         return res.status(200).json({
-            length: books.length,
             status: 'Book search successful',
-            data: {
-                books
-            }
+            books
         })
     }
 })
@@ -48,9 +45,7 @@ exports.findByID = catchAsync(async (req, res) => {
     } else {
         return res.status(200).json({
             status: 'Book search successful',
-            data: {
-                book
-            }
+            book
         })
     }
 })
@@ -95,9 +90,7 @@ exports.findByName = catchAsync(async (req, res) => {
     } else {
         return res.status(200).json({
             status: 'Book search successful',
-            data: {
-                books
-            }
+            books
         })
     }
 
@@ -132,9 +125,7 @@ exports.findByGenresID = catchAsync(async (req, res) => {
     } else {
         return res.status(200).json({
             status: 'success',
-            data: {
-                books
-            }
+            books
         })
     }
 })
@@ -168,9 +159,7 @@ exports.findByAuthorID = catchAsync(async (req, res) => {
     } else {
         return res.status(200).json({
             status: 'Book search successful',
-            data: {
-                books
-            }
+            books
         })
     }
 })

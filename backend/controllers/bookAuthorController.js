@@ -1,6 +1,6 @@
 const prisma = require('../prisma/prisma')
-const catchAsync = require('../util/catchAsync')
-const BookAuthorUtil= require('../util/bookAuthorUtils')
+const catchAsync = require('../utils/bookAuthorUtils')
+const BookAuthorUtil= require('../utils/bookAuthorUtils')
 
 const bookAuthorUtil=new BookAuthorUtil()
 
@@ -96,23 +96,27 @@ exports.update = catchAsync(async (req, res) => {
 })
 
 exports.findAll = catchAsync(async (req, res) => {
-    const bookAuthor = await prisma.bookAuthor.findMany()
-    if (!bookAuthor) {
+    const bookAuthors = await prisma.bookAuthor.findMany()
+    if (!bookAuthors) {
         return res.status(200).json({
             status: 'No bookAuthor found'
         })
     } else {
         return res.status(200).json({
             status: 'BookAuthor search successful',
-            data: {
-                bookAuthor
-            }
+            bookAuthors
         })
     }
 })
 
 exports.findByID = catchAsync(async (req, res) => {
     const { id } = req.params
+    if(!id){
+        return res.status(400).json({
+            status: 'No id provided !!!'
+        })
+    }
+
     const bookAuthor=bookAuthorUtil.findByID(parseInt(id))
 
     if (!bookAuthor) {
@@ -122,9 +126,7 @@ exports.findByID = catchAsync(async (req, res) => {
     } else {
         return res.status(200).json({
             status: 'BookAuthor search successful',
-            data: {
-                bookAuthor
-            }
+            bookAuthor
         })
     }
 })
@@ -137,7 +139,7 @@ exports.findByAuthorName = catchAsync(async (req, res) => {
         })
     }
 
-    const bookAuthor = await prisma.bookAuthor.findMany({
+    const bookAuthors = await prisma.bookAuthor.findMany({
         where: {
             author:{
                 name:{
@@ -149,16 +151,14 @@ exports.findByAuthorName = catchAsync(async (req, res) => {
             author:true
         }
     })
-    if (!bookAuthor) {
+    if (!bookAuthors) {
         return res.status(400).json({
-            status: 'No bookAuthor found'
+            status: 'No bookAuthors found'
         })
     } else {
         return res.status(200).json({
-            status: 'BookAuthor search successful',
-            data: {
-                bookAuthor
-            }
+            status: 'BookAuthors search successful',
+            bookAuthors
         })
     }
 })
@@ -171,7 +171,7 @@ exports.findByBookName = catchAsync(async (req, res) => {
         })
     }
 
-    const bookAuthor = await prisma.bookAuthor.findMany({
+    const bookAuthors = await prisma.bookAuthor.findMany({
         where: {
             book:{
                 name:{
@@ -183,16 +183,14 @@ exports.findByBookName = catchAsync(async (req, res) => {
             book:true
         }
     })
-    if (!bookAuthor) {
+    if (!bookAuthors) {
         return res.status(400).json({
-            status: 'No bookAuthor found'
+            status: 'No bookAuthors found'
         })
     } else {
         return res.status(200).json({
-            status: 'BookAuthor search successful',
-            data: {
-                bookAuthor
-            }
+            status: 'BookAuthors search successful',
+            bookAuthors
         })
     }
 })

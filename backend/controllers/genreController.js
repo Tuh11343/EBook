@@ -1,8 +1,8 @@
 const prisma = require('../prisma/prisma')
-const catchAsync = require('../util/catchAsync')
-const GenresUtil=require('../util/genresUtils')
+const catchAsync = require('../utils/catchAsync')
+const GenreUtil=require('../utils/genreUtils')
 
-const genresUtil=new GenresUtil()
+const genreUtil=new GenreUtil()
 
 exports.create = catchAsync(async (req, res) => {
     const data = req.body
@@ -12,7 +12,7 @@ exports.create = catchAsync(async (req, res) => {
         })
     }
 
-    const result = await prisma.genres.create({
+    const result = await prisma.genre.create({
         data: {
             name: data.name,
         }
@@ -36,14 +36,14 @@ exports.delete=catchAsync(async (req,res)=>{
         })
     }
 
-    const genres=await genresUtil.findByID(parseInt(id))
-    if(!genres){
+    const genre=await genreUtil.findByID(parseInt(id))
+    if(!genre){
         return res.status(400).json({
             status: 'No genres found'
         })
     }
 
-    const result=await prisma.genres.delete({
+    const result=await prisma.genre.delete({
         where:{
             id:parseInt(id)
         }
@@ -67,14 +67,14 @@ exports.update=catchAsync(async (req,res)=>{
         })
     }
 
-    const genres=await genresUtil.findByID(parseInt(data.id))
-    if(!genres){
+    const genre=await genreUtil.findByID(parseInt(data.id))
+    if(!genre){
         return res.status(400).json({
             status: 'No genres found'
         })
     }
 
-    const result=await prisma.genres.update({
+    const result=await prisma.genre.update({
         where:{
             id:parseInt(data.id)
         },
@@ -94,7 +94,7 @@ exports.update=catchAsync(async (req,res)=>{
 })
 
 exports.findAll=catchAsync(async (req,res)=>{
-    const genres=await prisma.genres.findMany()
+    const genres=await prisma.genre.findMany()
     if (!genres) {
         return res.status(400).json({
             status: 'No genres found'
@@ -102,9 +102,7 @@ exports.findAll=catchAsync(async (req,res)=>{
     } else {
         return res.status(200).json({
             status: 'Genres search successful',
-            data:{
-                genres
-            }
+            genres
         })
     }
 })
@@ -117,21 +115,19 @@ exports.findByID=catchAsync(async (req,res)=>{
         })
     }
 
-    const genres=await prisma.genres.findUnique({
+    const genre=await prisma.genres.findUnique({
         where:{
             id:parseInt(id)
         }
     })
-    if (!genres) {
+    if (!genre) {
         return res.status(400).json({
-            status: 'No genres found'
+            status: 'No genre found'
         })
     } else {
         return res.status(200).json({
-            status: 'Genres search successful',
-            data:{
-                genres
-            }
+            status: 'Genre search successful',
+            genre
         })
     }
 })
@@ -158,9 +154,7 @@ exports.findByName=catchAsync(async (req,res)=>{
     } else {
         return res.status(200).json({
             status: 'Genres search successful',
-            data:{
-                genres
-            }
+            genres
         })
     }
 })

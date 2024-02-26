@@ -1,7 +1,7 @@
 const prisma = require('../prisma/prisma')
-const catchAsync = require('../util/catchAsync')
-const BookGenresUtil= require('../util/bookGenresUtils')
-const bookGenresUtil=new BookGenresUtil()
+const catchAsync = require('../utils/catchAsync')
+const BookGenreUtil= require('../utils/bookGenreUtils')
+const bookGenreUtil=new BookGenreUtil()
 
 exports.create = catchAsync(async (req, res) => {
     const data = req.body
@@ -11,7 +11,7 @@ exports.create = catchAsync(async (req, res) => {
         })
     }
 
-    const result = await prisma.bookGenres.create({
+    const result = await prisma.bookGenre.create({
         data: {
             book_id: data.book_id,
             genres_id: data.genres_id
@@ -36,14 +36,14 @@ exports.delete = catchAsync(async (req, res) => {
         })
     }
 
-    const bookGenres=await bookGenresUtil.findByID(parseInt(id))
+    const bookGenres=await bookGenreUtil.findByID(parseInt(id))
     if(!bookGenres){
         return res.status(400).json({
             status: 'No bookGenres found'
         })
     }
 
-    const result = await prisma.bookGenres.delete({
+    const result = await prisma.bookGenre.delete({
         where: {
             id: parseInt(id)
         }
@@ -66,7 +66,14 @@ exports.update = catchAsync(async (req, res) => {
             status: 'No data provided'
         })
     }
-    const result = await prisma.bookGenres.update({
+    const bookGenre=await bookGenreUtil.findByID(body.id)
+    if(!bookGenre){
+        return res.status(400).json({
+            status: 'No bookGenre found'
+        })
+    }
+
+    const result = await prisma.bookGenre.update({
         where: {
             id: parseInt(body.id)
         },
@@ -87,7 +94,7 @@ exports.update = catchAsync(async (req, res) => {
 })
 
 exports.findAll = catchAsync(async (req, res) => {
-    const bookGenres = await prisma.bookGenres.findMany()
+    const bookGenres = await prisma.bookGenre.findMany()
     if (!bookGenres) {
         return res.status(400).json({
             status: 'No bookGenres found'
@@ -95,9 +102,7 @@ exports.findAll = catchAsync(async (req, res) => {
     } else {
         return res.status(200).json({
             status: 'BookGenres search successful',
-            data: {
-                bookGenres
-            }
+            bookGenres
         })
     }
 })
@@ -110,26 +115,24 @@ exports.findByID = catchAsync(async (req, res) => {
         })
     }
 
-    const bookGenres = await prisma.bookGenres.findUnique({
+    const bookGenre = await prisma.bookGenre.findUnique({
         where: {
             id: parseInt(id)
         }
     })
-    if (!bookGenres) {
+    if (!bookGenre) {
         return res.status(400).json({
             status: 'No bookGenres found'
         })
     } else {
         return res.status(200).json({
             status: 'BookGenres search successful',
-            data: {
-                bookGenres
-            }
+            bookGenre
         })
     }
 })
 
-exports.findByGenresName = catchAsync(async (req, res) => {
+exports.findByGenreName = catchAsync(async (req, res) => {
     const { name } = req.params
     if (!name) {
         return res.status(400).json({
@@ -137,16 +140,16 @@ exports.findByGenresName = catchAsync(async (req, res) => {
         })
     }
 
-    const bookGenres = await prisma.bookGenres.findMany({
+    const bookGenres = await prisma.bookGenre.findMany({
         where: {
-            genres:{
+            genre:{
                 name:{
                     contains:name
                 }
             }
         },
         include:{
-            genres:true
+            genre:true
         }
     })
     if (!bookGenres) {
@@ -156,9 +159,7 @@ exports.findByGenresName = catchAsync(async (req, res) => {
     } else {
         return res.status(200).json({
             status: 'BookGenres search successful',
-            data: {
-                bookGenres
-            }
+            bookGenres
         })
     }
 })
@@ -190,9 +191,7 @@ exports.findByBookName = catchAsync(async (req, res) => {
     } else {
         return res.status(200).json({
             status: 'BookGenres search successful',
-            data: {
-                bookGenres
-            }
+            bookGenres
         })
     }
 })

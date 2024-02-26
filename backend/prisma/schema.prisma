@@ -48,26 +48,26 @@ model Book {
   language       String @default("Unknown")
   book_type      BookType @default(NORMAL)
 
-  bookGenres BookGenres[]
+  bookGenres BookGenre[]
   bookAuthor BookAuthor[]
 }
 
-model Genres {
+model Genre {
   id   Int    @id @default(autoincrement())
   name String
 
-  bookGenres BookGenres[]
-  @@map("genres")
+  bookGenres BookGenre[]
+  @@map("genre")
 }
 
-model BookGenres {
+model BookGenre {
   id Int @id @default(autoincrement())
   book_id   Int
   book     Book   @relation(fields: [book_id], references: [id],onDelete: Cascade,onUpdate: Cascade)
-  genres_id Int
-  genres   Genres @relation(fields: [genres_id], references: [id],onDelete: Cascade,onUpdate: Cascade)
+  genre_id Int
+  genre   Genre @relation(fields: [genre_id], references: [id],onDelete: Cascade,onUpdate: Cascade)
 
-  @@map("book_genres")
+  @@map("book_genre")
 }
 
 model Author {
@@ -90,6 +90,31 @@ model BookAuthor {
   author   Author @relation(fields: [author_id], references: [id],onDelete: Cascade,onUpdate: Cascade)
 
   @@map("book_author")
+}
+
+model SubcriptionHistory{
+  id Int @id @default(autoincrement())
+  name String
+  price Float
+  start DateTime?
+  end DateTime?
+
+  subcription Subcription[]
+
+  @@map("subcription_history")
+}
+
+model Subcription{
+  id Int @id @default(autoincrement())
+  duration Float
+  price_per_month Float
+  type String
+  limit_book_mark Int
+  book_type BookType? @default(NORMAL)
+
+  subcription_id Int
+  subcription_history SubcriptionHistory @relation(fields: [subcription_id],references: [id],onDelete: Cascade,onUpdate: Cascade)
+
 }
 
 enum BookType {

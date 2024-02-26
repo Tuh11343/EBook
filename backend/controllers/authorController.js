@@ -1,12 +1,12 @@
 const prisma = require('../prisma/prisma')
-const AuthorUtils = require('../util/authorUtils')
-const catchAsync = require('../util/catchAsync')
+const AuthorUtils = require('../utils/authorUtils')
+const catchAsync = require('../utils/catchAsync')
 const authorUtil=new AuthorUtils()
 
 
 exports.create = catchAsync(async (req, res) => {
     const data = req.body
-    
+
     //Check if data exist
     if(!data){
         return res.status(400).json({
@@ -117,15 +117,19 @@ exports.findAll=catchAsync(async (req,res)=>{
     } else {
         return res.status(200).json({
             status: 'Find all author success !!!',
-            data:{
-                authors
-            }
+            authors
         })
     }
 })
 
 exports.findByID=catchAsync(async (req,res)=>{
     const {id}=req.params
+    if(!id){
+        return res.status(400).json({
+            status: 'No id provided !!!'
+        })
+    }
+
     const author=await prisma.author.findUnique({
         where:{
             id:parseInt(id)
@@ -138,32 +142,28 @@ exports.findByID=catchAsync(async (req,res)=>{
     } else {
         return res.status(200).json({
             status: 'Author search successful',
-            data:{
-                author
-            }
+            author
         })
     }
 })
 
 exports.findByName=catchAsync(async (req,res)=>{
     const {name}=req.params
-    const author=await prisma.author.findUnique({
+    const authors=await prisma.author.findMany({
         where:{
             name:{
                 contains:name
             }
         }
     })
-    if (!author) {
+    if (!authors) {
         return res.status(400).json({
-            status: 'No author found'
+            status: 'No authors found'
         })
     } else {
         return res.status(200).json({
-            status: 'Author search successful',
-            data:{
-                author
-            }
+            status: 'Authors search successful',
+            authors
         })
     }
 })

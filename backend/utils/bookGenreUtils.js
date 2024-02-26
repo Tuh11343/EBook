@@ -1,10 +1,10 @@
 const prisma = require('../prisma/prisma')
 
-class GenresUtils {
+class BookGenreUtils {
   constructor() {}
 
   async findByID(id) {
-    return await prisma.genres.findFirst({
+    return await prisma.bookGenre.findFirst({
       where: {
         id:id
       },
@@ -12,4 +12,4 @@ class GenresUtils {
   }
 }
 
-module.exports = GenresUtils
+module.exports = BookGenreUtils
