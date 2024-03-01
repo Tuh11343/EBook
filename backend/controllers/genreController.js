@@ -30,7 +30,7 @@ exports.create = catchAsync(async (req, res) => {
 })
 
 exports.delete = catchAsync(async (req, res) => {
-    const { id } = req.params
+    const { id } = req.query.id
     if (!id) {
         return res.status(400).json({
             status: 'No id provided'
@@ -40,7 +40,7 @@ exports.delete = catchAsync(async (req, res) => {
     const genre = await genreUtil.findByID(parseInt(id))
     if (!genre) {
         return res.status(400).json({
-            status: 'No genres found'
+            status: 'No genre found'
         })
     }
 
@@ -51,11 +51,11 @@ exports.delete = catchAsync(async (req, res) => {
     })
     if (!result) {
         return res.status(400).json({
-            status: 'Delete genres failed !!!'
+            status: 'Delete genre failed !!!'
         })
     } else {
         return res.status(200).json({
-            status: 'Delete genres successful !!!'
+            status: 'Delete genre successful !!!'
         })
     }
 })
@@ -71,7 +71,7 @@ exports.update = catchAsync(async (req, res) => {
     const genre = await genreUtil.findByID(parseInt(data.id))
     if (!genre) {
         return res.status(400).json({
-            status: 'No genres found'
+            status: 'No genre found'
         })
     }
 
@@ -85,26 +85,30 @@ exports.update = catchAsync(async (req, res) => {
     })
     if (!result) {
         return res.status(400).json({
-            status: 'Update genres failed !!!'
+            status: 'Update genre failed !!!'
         })
     } else {
         return res.status(200).json({
-            status: 'Update genres successful !!!'
+            status: 'Update genre successful !!!'
         })
     }
 })
 
 exports.findAll = catchAsync(async (req, res) => {
-    const body = req.body
+    const query = req.query
     var genres
-    if (!body.limit || !body.offset) {
+
+    if (!query.limit || !query.offset) {
         genres = await prisma.genre.findMany({})
     } else {
-        genres=await prisma.genre.findMany({
-            take:parseInt(body.limit),
-            skip:parseInt(body.offset)
+        genres = await prisma.genre.findMany({
+            take: parseInt(query.limit),
+            skip: parseInt(query.offset)
         })
     }
+
+    const length = await genreUtil.count()
+
     if (!genres) {
         return res.status(400).json({
             status: 'No genres found'
@@ -112,20 +116,21 @@ exports.findAll = catchAsync(async (req, res) => {
     } else {
         return res.status(200).json({
             status: 'Genres search successful',
-            genres
+            genres,
+            length
         })
     }
 })
 
 exports.findByID = catchAsync(async (req, res) => {
-    const { id } = req.params
+    const { id } = req.query.id
     if (!id) {
         return res.status(400).json({
             status: 'No id provided'
         })
     }
 
-    const genre = await prisma.genres.findUnique({
+    const genre = await prisma.genre.findUnique({
         where: {
             id: parseInt(id)
         }
@@ -143,20 +148,38 @@ exports.findByID = catchAsync(async (req, res) => {
 })
 
 exports.findByName = catchAsync(async (req, res) => {
-    const { name } = req.params
-    if (!name) {
+    const query=req.query
+    
+    if (!query.name) {
         return res.status(400).json({
             status: 'No name provided'
         })
     }
 
-    const genres = await prisma.genres.findUnique({
-        where: {
-            name: {
-                contains: name
-            }
-        }
-    })
+    var genres
+    const length = await genreUtil.countWithName(query.name)
+
+    if(!query.limit||!query.offset){
+        genres=await prisma.genre.findMany({
+            where: {
+                name: {
+                    contains: query.name
+                }
+            },
+        })
+    }else{
+        genres = await prisma.genre.findMany({
+            where: {
+                name: {
+                    contains: query.name
+                }
+            },
+            take: parseInt(query.limit),
+            skip: parseInt(query.offset),
+        })
+    }
+
+
     if (!genres) {
         return res.status(400).json({
             status: 'No genres found'
@@ -164,7 +187,8 @@ exports.findByName = catchAsync(async (req, res) => {
     } else {
         return res.status(200).json({
             status: 'Genres search successful',
-            genres
+            genres,
+            length
         })
     }
 })

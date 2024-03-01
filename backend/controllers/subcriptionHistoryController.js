@@ -34,16 +34,13 @@ exports.create = catchAsync(async (req, res) => {
 })
 
 exports.delete = catchAsync(async (req, res) => {
-
-    //Check if id exist
-    const { id } = req.params
+    const id=req.query.id
     if (!id) {
         return res.status(400).json({
             status: 'No id provided'
         })
     }
 
-    //Check if subcriptionHistory exist
     const subcriptionHistory = await subcriptionHistoryUtil.findByID(parseInt(id))
     if (!subcriptionHistory) {
         return res.status(400).json({
@@ -51,7 +48,6 @@ exports.delete = catchAsync(async (req, res) => {
         })
     }
 
-    //Delete SubcriptionHistory
     const result = await prisma.subcriptionHistory.delete({
         where: {
             id: parseInt(id)
@@ -110,21 +106,34 @@ exports.update = catchAsync(async (req, res) => {
 })
 
 exports.findAll = catchAsync(async (req, res) => {
-    const subcriptionHistorys = await prisma.subcriptionHistory.findMany()
-    if (!subcriptionHistorys) {
+    const query=req.query
+    var subcriptionHistories
+    const length=await subcriptionHistoryUtil.count()
+
+    if(!query.limit||!query.offset){
+        subcriptionHistories = await prisma.subcriptionHistory.findMany()
+    }else{
+        subcriptionHistories = await prisma.subcriptionHistory.findMany({
+            take:parseInt(query.limit),
+            skip:parseInt(query.offset),
+        })
+    }
+
+    if (!subcriptionHistories) {
         return res.status(400).json({
-            status: 'No subcriptionHistorys found !!!'
+            status: 'No subcriptionHistories found !!!'
         })
     } else {
         return res.status(200).json({
-            status: 'Find all subcriptionHistory success !!!',
-            subcriptionHistorys
+            status: 'Find all subcriptionHistories success !!!',
+            subcriptionHistories,
+            length
         })
     }
 })
 
 exports.findByID = catchAsync(async (req, res) => {
-    const { id } = req.params
+    const id=req.query.id
     if (!id) {
         return res.status(400).json({
             status: 'No id provided !!!'

@@ -36,9 +36,7 @@ exports.create = catchAsync(async (req, res) => {
 })
 
 exports.delete=catchAsync(async (req,res)=>{
-
-    //Check if id exist
-    const {id}=req.params
+    const id=req.query.id
     if(!id){
         return res.status(400).json({
             status: 'No id provided'
@@ -114,7 +112,19 @@ exports.update=catchAsync(async (req,res)=>{
 })
 
 exports.findAll=catchAsync(async (req,res)=>{
-    const subcriptions=await prisma.subcription.findMany()
+    const query=req.query
+    const length=await subcriptionUtil.count()
+    var subcriptions
+
+    if(!query.limit||!query.offset){
+        subcriptions=await prisma.subcription.findMany()
+    }else{
+        subcriptions=await prisma.subcription.findMany({
+            take:parseInt(query.limit),
+            skip:parseInt(query.offset),
+        })
+    }
+
     if (!subcriptions) {
         return res.status(400).json({
             status: 'No subcriptions found !!!'
@@ -122,13 +132,14 @@ exports.findAll=catchAsync(async (req,res)=>{
     } else {
         return res.status(200).json({
             status: 'Find all subcription success !!!',
-            subcriptions
+            subcriptions,
+            length
         })
     }
 })
 
 exports.findByID=catchAsync(async (req,res)=>{
-    const {id}=req.params
+    const id=req.query.id
     if(!id){
         return res.status(400).json({
             status: 'No id provided !!!'
