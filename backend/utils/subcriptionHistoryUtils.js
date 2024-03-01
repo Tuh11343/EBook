@@ -10,6 +10,10 @@ class SubcriptionHistoryUtils {
       },
     })
   }
+
+  async count(){
+    return await prisma.subcriptionHistory.count({})
+  }
 }
 
 module.exports = SubcriptionHistoryUtils

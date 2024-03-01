@@ -10,6 +10,10 @@ class SubcriptionUtils {
       },
     })
   }
+
+  async count(){
+    return await prisma.subcription.count({})
+  }
 }
 
 module.exports = SubcriptionUtils
