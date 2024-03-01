@@ -7,7 +7,7 @@ router.use(authMiddleware.protect)
 
 //Get
 router.get('/', subcriptionController.findAll)
-router.get('/id/:id', subcriptionController.findByID)
+router.get('/id', subcriptionController.findByID)
 
 //Update
 router.put('/', subcriptionController.update)

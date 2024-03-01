@@ -30,7 +30,7 @@ exports.create = catchAsync(async (req, res) => {
 })
 
 exports.delete = catchAsync(async (req, res) => {
-    const { id } = req.params
+    const id=req.query.id
     if (!id) {
         return res.status(400).json({
             status: 'No id provided'
@@ -96,7 +96,17 @@ exports.update = catchAsync(async (req, res) => {
 })
 
 exports.findAll = catchAsync(async (req, res) => {
-    const bookAuthors = await prisma.bookAuthor.findMany()
+    const query=req.query
+    const length=await bookAuthorUtil.count()
+    var bookAuthors
+    if(!query.limit||!query.offset){
+        bookAuthors = await prisma.bookAuthor.findMany()   
+    }else{
+        bookAuthors = await prisma.bookAuthor.findMany({
+            take:parseInt(query.limit),
+            skip:parseInt(query.offset),
+        })
+    }
     if (!bookAuthors) {
         return res.status(200).json({
             status: 'No bookAuthor found'
@@ -104,13 +114,14 @@ exports.findAll = catchAsync(async (req, res) => {
     } else {
         return res.status(200).json({
             status: 'BookAuthor search successful',
-            bookAuthors
+            bookAuthors,
+            length
         })
     }
 })
 
 exports.findByID = catchAsync(async (req, res) => {
-    const { id } = req.params
+    const id=req.query.id
     if(!id){
         return res.status(400).json({
             status: 'No id provided !!!'
@@ -132,25 +143,46 @@ exports.findByID = catchAsync(async (req, res) => {
 })
 
 exports.findByAuthorName = catchAsync(async (req, res) => {
-    const { name } = req.params
+    const query=req.query
+    const name=query.name
     if(!name){
         return res.status(400).json({
             status: 'No name provided'
         })
     }
 
-    const bookAuthors = await prisma.bookAuthor.findMany({
-        where: {
-            author:{
-                name:{
-                    contains:name
+    const length=await bookAuthorUtil.countByAuthorName(name)
+    var bookAuthors
+    if(!query.limit||!query.offset){
+        bookAuthors = await prisma.bookAuthor.findMany({
+            where: {
+                author:{
+                    name:{
+                        contains:name
+                    }
                 }
+            },
+            include:{
+                author:true
             }
-        },
-        include:{
-            author:true
-        }
-    })
+        })
+    }else{
+        bookAuthors = await prisma.bookAuthor.findMany({
+            where: {
+                author:{
+                    name:{
+                        contains:name
+                    }
+                }
+            },
+            take:parseInt(query.limit),
+            skip:parseInt(query.offset),
+            include:{
+                author:true
+            }
+        })
+    }
+
     if (!bookAuthors) {
         return res.status(400).json({
             status: 'No bookAuthors found'
@@ -158,31 +190,52 @@ exports.findByAuthorName = catchAsync(async (req, res) => {
     } else {
         return res.status(200).json({
             status: 'BookAuthors search successful',
-            bookAuthors
+            bookAuthors,
+            length
         })
     }
 })
 
 exports.findByBookName = catchAsync(async (req, res) => {
-    const { name } = req.params
+    const query=req.query
+    const name=query.name
     if(!name){
         return res.status(400).json({
             status: 'No name provided'
         })
     }
 
-    const bookAuthors = await prisma.bookAuthor.findMany({
-        where: {
-            book:{
-                name:{
-                    contains:name
+    var bookAuthors
+    const length=await bookAuthorUtil.countByBookName(name)
+    if(!query.limit||!query.offset){
+        bookAuthors = await prisma.bookAuthor.findMany({
+            where: {
+                book:{
+                    name:{
+                        contains:name
+                    }
                 }
+            },
+            include:{
+                book:true
             }
-        },
-        include:{
-            book:true
-        }
-    })
+        })
+    }else{
+        bookAuthors = await prisma.bookAuthor.findMany({
+            where: {
+                book:{
+                    name:{
+                        contains:name
+                    }
+                }
+            },
+            take:parseInt(query.limit),
+            skip:parseInt(query.offset),
+            include:{
+                book:true
+            }
+        })
+    }
     if (!bookAuthors) {
         return res.status(400).json({
             status: 'No bookAuthors found'
@@ -190,7 +243,8 @@ exports.findByBookName = catchAsync(async (req, res) => {
     } else {
         return res.status(200).json({
             status: 'BookAuthors search successful',
-            bookAuthors
+            bookAuthors,
+            length
         })
     }
 })

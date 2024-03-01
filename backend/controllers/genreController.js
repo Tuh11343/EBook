@@ -1,8 +1,9 @@
+const e = require('express')
 const prisma = require('../prisma/prisma')
 const catchAsync = require('../utils/catchAsync')
-const GenreUtil=require('../utils/genreUtils')
+const GenreUtil = require('../utils/genreUtils')
 
-const genreUtil=new GenreUtil()
+const genreUtil = new GenreUtil()
 
 exports.create = catchAsync(async (req, res) => {
     const data = req.body
@@ -28,73 +29,86 @@ exports.create = catchAsync(async (req, res) => {
     }
 })
 
-exports.delete=catchAsync(async (req,res)=>{
-    const {id}=req.params
-    if(!id){
+exports.delete = catchAsync(async (req, res) => {
+    const { id } = req.query.id
+    if (!id) {
         return res.status(400).json({
             status: 'No id provided'
         })
     }
 
-    const genre=await genreUtil.findByID(parseInt(id))
-    if(!genre){
+    const genre = await genreUtil.findByID(parseInt(id))
+    if (!genre) {
         return res.status(400).json({
-            status: 'No genres found'
+            status: 'No genre found'
         })
     }
 
-    const result=await prisma.genre.delete({
-        where:{
-            id:parseInt(id)
+    const result = await prisma.genre.delete({
+        where: {
+            id: parseInt(id)
         }
     })
     if (!result) {
         return res.status(400).json({
-            status: 'Delete genres failed !!!'
+            status: 'Delete genre failed !!!'
         })
     } else {
         return res.status(200).json({
-            status: 'Delete genres successful !!!'
+            status: 'Delete genre successful !!!'
         })
     }
 })
 
-exports.update=catchAsync(async (req,res)=>{
-    const data=req.body
-    if(!data){
+exports.update = catchAsync(async (req, res) => {
+    const data = req.body
+    if (!data) {
         return res.status(400).json({
             status: 'No data provided'
         })
     }
 
-    const genre=await genreUtil.findByID(parseInt(data.id))
-    if(!genre){
+    const genre = await genreUtil.findByID(parseInt(data.id))
+    if (!genre) {
         return res.status(400).json({
-            status: 'No genres found'
+            status: 'No genre found'
         })
     }
 
-    const result=await prisma.genre.update({
-        where:{
-            id:parseInt(data.id)
+    const result = await prisma.genre.update({
+        where: {
+            id: parseInt(data.id)
         },
-        data:{
-            name:data.name,
+        data: {
+            name: data.name,
         }
     })
     if (!result) {
         return res.status(400).json({
-            status: 'Update genres failed !!!'
+            status: 'Update genre failed !!!'
         })
     } else {
         return res.status(200).json({
-            status: 'Update genres successful !!!'
+            status: 'Update genre successful !!!'
         })
     }
 })
 
-exports.findAll=catchAsync(async (req,res)=>{
-    const genres=await prisma.genre.findMany()
+exports.findAll = catchAsync(async (req, res) => {
+    const query = req.query
+    var genres
+
+    if (!query.limit || !query.offset) {
+        genres = await prisma.genre.findMany({})
+    } else {
+        genres = await prisma.genre.findMany({
+            take: parseInt(query.limit),
+            skip: parseInt(query.offset)
+        })
+    }
+
+    const length = await genreUtil.count()
+
     if (!genres) {
         return res.status(400).json({
             status: 'No genres found'
@@ -102,22 +116,23 @@ exports.findAll=catchAsync(async (req,res)=>{
     } else {
         return res.status(200).json({
             status: 'Genres search successful',
-            genres
+            genres,
+            length
         })
     }
 })
 
-exports.findByID=catchAsync(async (req,res)=>{
-    const {id}=req.params
-    if(!id){
+exports.findByID = catchAsync(async (req, res) => {
+    const { id } = req.query.id
+    if (!id) {
         return res.status(400).json({
             status: 'No id provided'
         })
     }
 
-    const genre=await prisma.genres.findUnique({
-        where:{
-            id:parseInt(id)
+    const genre = await prisma.genre.findUnique({
+        where: {
+            id: parseInt(id)
         }
     })
     if (!genre) {
@@ -132,21 +147,39 @@ exports.findByID=catchAsync(async (req,res)=>{
     }
 })
 
-exports.findByName=catchAsync(async (req,res)=>{
-    const {name}=req.params
-    if(!name){
+exports.findByName = catchAsync(async (req, res) => {
+    const query=req.query
+    
+    if (!query.name) {
         return res.status(400).json({
             status: 'No name provided'
         })
     }
 
-    const genres=await prisma.genres.findUnique({
-        where:{
-            name:{
-                contains:name
-            }
-        }
-    })
+    var genres
+    const length = await genreUtil.countWithName(query.name)
+
+    if(!query.limit||!query.offset){
+        genres=await prisma.genre.findMany({
+            where: {
+                name: {
+                    contains: query.name
+                }
+            },
+        })
+    }else{
+        genres = await prisma.genre.findMany({
+            where: {
+                name: {
+                    contains: query.name
+                }
+            },
+            take: parseInt(query.limit),
+            skip: parseInt(query.offset),
+        })
+    }
+
+
     if (!genres) {
         return res.status(400).json({
             status: 'No genres found'
@@ -154,7 +187,8 @@ exports.findByName=catchAsync(async (req,res)=>{
     } else {
         return res.status(200).json({
             status: 'Genres search successful',
-            genres
+            genres,
+            length
         })
     }
 })

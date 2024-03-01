@@ -6,10 +6,10 @@ const authMiddleware = require('../middlewares/authMiddleware')
 router.use(authMiddleware.protect)
 
 //Get
-router.get('/genresName/:name', bookGenresController.findByGenresName)
-router.get('/id/:id', bookGenresController.findByID)
+router.get('/genresName', bookGenresController.findByGenresName)
+router.get('/id', bookGenresController.findByID)
 router.get('/', bookGenresController.findAll)
-router.get('/bookName/:name', bookGenresController.findByBookName)
+router.get('/bookName', bookGenresController.findByBookName)
 
 //Update
 router.put('/', bookGenresController.update)

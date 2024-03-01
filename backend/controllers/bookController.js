@@ -4,26 +4,47 @@ const catchAsync = require('../utils/catchAsync')
 const bookUtil = new BookUtils()
 
 exports.findAll = catchAsync(async (req, res) => {
-    const orderBy = req.body.orderBy ?? 'id'
-    const books = await prisma.book.findMany({
-        orderBy: {
-            [orderBy]: 'asc'
-        }
-    })
+    const orderBy = req.query.orderBy ?? 'id'
+    const query = req.query
+
+    if (!query) {
+        return res.status(400).json({
+            status: 'No query found',
+        })
+    }
+
+    var books
+    var length = await bookUtil.count()
+    if (!query.limit || !query.offset) {
+        books = await prisma.book.findMany({
+            orderBy: {
+                [orderBy]: 'asc'
+            }
+        })
+    } else {
+        books = await prisma.book.findMany({
+            take: parseInt(query.limit),
+            skip: parseInt(query.offset),
+            orderBy: {
+                [orderBy]: 'asc'
+            }
+        })
+    }
     if (!books) {
         return res.status(400).json({
-            status: 'No book found',
+            status: 'No books found',
         })
     } else {
         return res.status(200).json({
-            status: 'Book search successful',
-            books
+            status: 'Books search successful',
+            books,
+            length
         })
     }
 })
 
 exports.findByID = catchAsync(async (req, res) => {
-    const { id } = req.params
+    const id = req.query.id
 
     //Get ID param
     if (!id) {
@@ -51,72 +72,230 @@ exports.findByID = catchAsync(async (req, res) => {
 })
 
 exports.findByName = catchAsync(async (req, res) => {
-    const { name } = req.params
+    const query = req.query
 
-    if (!name) {
+    if (!query.name) {
         return res.status(400).json({
             status: 'No name provided'
         })
     }
 
-    const books = await prisma.book.findMany({
-        where: {
-            OR: [{
-                name: {
-                    contains: name
-                }
-            }, {
-                bookAuthor: {
-                    some: {
-                        author: {
-                            name: {
-                                contains: name
+    const orderBy = query.orderBy ?? 'id'
+    const length = await bookUtil.countByname(query.name)
+    var books
+    if (!query.offset || !query.limit) {
+        books = await prisma.book.findMany({
+            where: {
+                OR: [{
+                    name: {
+                        contains: query.name
+                    }
+                }, {
+                    bookAuthor: {
+                        some: {
+                            author: {
+                                name: {
+                                    contains: query.name
+                                }
                             }
                         }
                     }
                 }
+                ]
+            },
+            orderBy: {
+                [orderBy]: 'asc'
+            },
+            include: {
+                bookAuthor: true,
             }
-            ]
-        },
-        include: {
-            bookAuthor: true,
-        }
-    })
+        })
+    } else {
+        books = await prisma.book.findMany({
+            where: {
+                OR: [{
+                    name: {
+                        contains: query.name
+                    }
+                }, {
+                    bookAuthor: {
+                        some: {
+                            author: {
+                                name: {
+                                    contains: query.name
+                                }
+                            }
+                        }
+                    }
+                }
+                ]
+            },
+            take: parseInt(query.limit),
+            skip: parseInt(query.offset),
+            orderBy: {
+                [orderBy]: 'asc'
+            },
+            include: {
+                bookAuthor: true,
+            }
+        })
+    }
 
     if (!books) {
         return res.status(400).json({
-            status: 'No book found'
+            status: 'No books found'
         })
     } else {
         return res.status(200).json({
-            status: 'Book search successful',
-            books
+            status: 'Books search successful',
+            books,
+            length
         })
     }
 
 })
 
-exports.findByGenresID = catchAsync(async (req, res) => {
-    const { genresID } = req.params
+exports.findByGenreList = catchAsync(async (req, res) => {
+    const query = req.query
+    // const list = query.genreList.split(",")
+    // if (!list) {
+    //     return res.status(400).json({
+    //         status: 'No genreList provided'
+    //     })
+    // }
+    // var genreList = list.map(str => parseInt(str, 10));
 
-    if (!genresID) {
+    // const orderBy = query.orderBy ?? 'id'
+    // const length = await bookUtil.countByGenreList(genreList)
+    // var books
+    // if (!query.limit || !query.offset) {
+    //     books = await prisma.book.findMany({
+    //         where: {
+    //             bookGenres: {
+    //                 every: {
+    //                     genre: {
+    //                         id: {
+    //                             in: genreList
+    //                         }
+    //                     }
+    //                 },
+    //             }
+    //         },
+    //         orderBy: {
+    //             [orderBy]: 'asc'
+    //         },
+    //         include: {
+    //             bookGenres: true
+    //         }
+    //     })
+    // } else {
+    //     books = await prisma.book.findMany({
+    //         where: {
+    //             bookGenres: {
+    //                 every: {
+    //                     genre: {
+    //                         id: {
+    //                             in: genreList
+    //                         }
+    //                     }
+    //                 }
+    //             }
+    //         },
+    //         take: parseInt(query.limit),
+    //         skip: parseInt(query.offset),
+    //         orderBy: {
+    //             [orderBy]: 'asc'
+    //         },
+    //         include: {
+    //             bookGenres: true
+    //         }
+    //     })
+    // }
+
+    // if (!books) {
+    //     return res.status(400).json({
+    //         status: 'No book found',
+    //     })
+    // } else {
+    //     return res.status(200).json({
+    //         status: 'Books search successful',
+    //         books,
+    //         length
+
+    //     })
+    // }
+    // SELECT DISTINCT b.*
+    // FROM Book b
+    // JOIN book_genre bg ON b.id = bg.book_id
+    // JOIN Genre g ON bg.genre_id = g.id
+    // WHERE g.id IN (3,7)
+    // GROUP BY b.id
+    // HAVING COUNT(DISTINCT g.id) = 2;
+
+    const books = await prisma.$queryRaw`
+    SELECT DISTINCT b.*
+    FROM Book b
+    JOIN book_genre bg ON b.id = bg.book_id
+    JOIN Genre g ON bg.genre_id = g.id
+    WHERE g.id IN (${query.genreList})
+    GROUP BY b.id
+    HAVING COUNT(DISTINCT g.id) = ${2}`
+
+
+    return res.status(200).json({
+        books
+    })
+
+})
+
+exports.findByGenreID = catchAsync(async (req, res) => {
+
+    const query = req.query
+    if (!query.id) {
         return res.status(400).json({
             status: 'No id provided'
         })
     }
 
-    const books = await prisma.book.findMany({
-        where: {
-            bookGenres: {
-                some: {
-                    genres_id: parseInt(genresID)
+    const orderBy = query.orderBy ?? 'id'
+    const length = await bookUtil.countByGenre(query.id)
+    var books
+    if (!query.limit || !query.offset) {
+        books = await prisma.book.findMany({
+            where: {
+                bookGenres: {
+                    some: {
+                        genre_id: parseInt(query.id)
+                    }
                 }
+            },
+            orderBy: {
+                [orderBy]: 'asc'
+            },
+            include: {
+                bookGenres: true
             }
-        },
-        include: {
-            bookGenres: true
-        }
-    })
+        })
+    } else {
+        books = await prisma.book.findMany({
+            where: {
+                bookGenres: {
+                    some: {
+                        genre_id: parseInt(query.id)
+                    }
+                }
+            },
+            take: parseInt(query.limit),
+            skip: parseInt(query.offset),
+            orderBy: {
+                [orderBy]: 'asc'
+            },
+            include: {
+                bookGenres: true
+            }
+        })
+    }
+
 
     if (!books) {
         return res.status(400).json({
@@ -125,32 +304,60 @@ exports.findByGenresID = catchAsync(async (req, res) => {
     } else {
         return res.status(200).json({
             status: 'success',
-            books
+            books,
+            length
         })
     }
 })
 
 exports.findByAuthorID = catchAsync(async (req, res) => {
-    const { authorID } = req.params
+    const query = req.query
 
-    if (!authorID) {
+    if (!query.id) {
         return res.status(400).json({
             status: 'No id provided'
         })
     }
 
-    const books = await prisma.book.findMany({
-        where: {
-            bookAuthor: {
-                some: {
-                    author_id: parseInt(authorID)
+    const orderBy = query.orderBy ?? 'id'
+    const length = await bookUtil.countByAuthor(query.id)
+    var books
+    if (!query.limit || !query.offset) {
+        books = await prisma.book.findMany({
+            where: {
+                bookAuthor: {
+                    some: {
+                        author_id: parseInt(query.id)
+                    }
                 }
+            },
+            orderBy: {
+                [orderBy]: 'asc'
+            },
+            include: {
+                bookAuthor: true
             }
-        },
-        include: {
-            bookAuthor: true
-        }
-    })
+        })
+    } else {
+        books = await prisma.book.findMany({
+            where: {
+                bookAuthor: {
+                    some: {
+                        author_id: parseInt(query.id)
+                    }
+                }
+            },
+            take: parseInt(query.limit),
+            skip: parseInt(query.offset),
+            orderBy: {
+                [orderBy]: 'asc'
+            },
+            include: {
+                bookAuthor: true
+            }
+        })
+    }
+
 
     if (!books) {
         return res.status(400).json({
@@ -159,20 +366,21 @@ exports.findByAuthorID = catchAsync(async (req, res) => {
     } else {
         return res.status(200).json({
             status: 'Book search successful',
-            books
+            books,
+            length
         })
     }
 })
 
 exports.deleteByID = catchAsync(async (req, res) => {
-    const { id } = req.params
-    if (!id) {
+    const query = req.query
+    if (!query.id) {
         return res.status(400).json({
             status: 'No id provided'
         })
     }
 
-    const book = await bookUtil.findByID(parseInt(id))
+    const book = await bookUtil.findByID(parseInt(query.id))
     if (!book) {
         return res.status(400).json({
             status: 'No book found'
@@ -181,7 +389,7 @@ exports.deleteByID = catchAsync(async (req, res) => {
 
     const result = await prisma.book.delete({
         where: {
-            id: parseInt(id)
+            id: parseInt(query.id)
         }
     })
     if (result) {
@@ -204,8 +412,8 @@ exports.updateByID = catchAsync(async (req, res) => {
         })
     }
 
-    const book=await bookUtil.findByID(parseInt(data.id))
-    if(!book){
+    const book = await bookUtil.findByID(parseInt(data.id))
+    if (!book) {
         return res.status(400).json({
             status: 'No book found'
         })

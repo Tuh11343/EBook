@@ -1,22 +1,23 @@
 const express=require('express')
 const router=express.Router()
-const bookController=require('../controller/bookController')
+const bookController=require('../controllers/bookController')
 
 const authMiddleware = require('../middlewares/authMiddleware')
-router.use(authMiddleware.protect)
+// router.use(authMiddleware.protect)
 
 //Get
 router.get('/',bookController.findAll)
-router.get('/:id',bookController.findByID)
-router.get('/name/:name',bookController.findByName)
-router.get('/genres/:genresID',bookController.findByGenresID)
-router.get('/author/:authorID',bookController.findByAuthorID)
+router.get('/id',bookController.findByID)
+router.get('/name',bookController.findByName)
+router.get('/genre',bookController.findByGenreID)
+router.get('/author',bookController.findByAuthorID)
+router.get('/genreList',bookController.findByGenreList)
 
 //Delete
-router.delete('/:id',bookController.deleteByID)
+router.delete('/',bookController.deleteByID)
 
 //Update
-router.put('/:id',bookController.updateByID)
+router.put('/',bookController.updateByID)
 
 //Create
 router.post('/',bookController.create)
