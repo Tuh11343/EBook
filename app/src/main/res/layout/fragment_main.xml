@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:id="@+id/songPlayerView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/rounded_corner"
+        android:layout_alignParentBottom="true"
+        >
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/songImage"
+            android:layout_width="200px"
+            android:layout_height="200px"
+            android:src="@drawable/ic_launcher_foreground"
+            android:layout_centerVertical="true"
+            />
+
+        <ImageButton
+            android:id="@+id/btnRewind"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="Quay lai 10s"
+            android:src="@android:drawable/ic_media_rew"
+            android:layout_marginStart="130dp"
+            />
+
+        <ImageButton
+            android:id="@+id/btnPause"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="Bo dieu khien bai hat"
+            android:src="@android:drawable/ic_media_pause"
+            android:layout_toRightOf="@+id/btnRewind"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            />
+
+        <ImageButton
+            android:id="@+id/btnFF"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="Tien toi 10s"
+            android:src="@android:drawable/ic_media_ff"
+            android:layout_toRightOf="@+id/btnPause"
+            />
+
+        <ImageButton
+            android:id="@+id/btnCloseSPView"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:contentDescription="Dong thanh phat nhac"
+            android:src="@android:drawable/ic_menu_close_clear_cancel"
+            android:layout_alignParentEnd="true"
+            />
+
+        <TextView
+            android:id="@+id/currentTimeTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="00:00"
+            android:textSize="16dp"
+            android:textColor="@color/white"
+            android:layout_toRightOf="@id/songImage"
+            android:layout_below="@+id/progressBar"
+            android:layout_marginBottom="5dp"
+            />
+
+        <TextView
+            android:id="@+id/totalTimeTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="00:00"
+            android:textSize="16dp"
+            android:textColor="@color/white"
+            android:layout_alignParentEnd="true"
+            android:layout_below="@+id/progressBar"
+            android:layout_marginBottom="5dp"
+            android:layout_marginRight="10dp"
+            />
+
+        <SeekBar
+            android:id="@+id/progressBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/btnPause"
+            android:layout_marginTop="10dp"
+            android:layout_toRightOf="@id/songImage" />
+
+    </RelativeLayout>
+
+</LinearLayout>
