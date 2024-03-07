@@ -1,0 +1,469 @@
+1<?xml version="1.0" encoding="utf-8"?>
+2<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+3    package="com.example.ebook"
+4    android:versionCode="1"
+5    android:versionName="1.0" >
+6
+7    <uses-sdk
+8        android:minSdkVersion="28"
+9        android:targetSdkVersion="34" />
+10
+11    <uses-permission android:name="android.permission.INTERNET" />
+11-->C:\Users\Tuan PC\Documents\Android\EBook\app\src\main\AndroidManifest.xml:5:5-67
+11-->C:\Users\Tuan PC\Documents\Android\EBook\app\src\main\AndroidManifest.xml:5:22-64
+12
+13    <!-- See https://developer.android.com/training/package-visibility/declaring for more details. -->
+14    <queries>
+14-->[com.stripe:payments-core:20.37.4] C:\Users\Tuan PC\.gradle\caches\transforms-3\20f811a934a701279c9a06d9b66b023e\transformed\payments-core-20.37.4\AndroidManifest.xml:8:5-12:15
+15
+16        <!-- Added to check if Chrome is installed for browser-based payment authentication (e.g. 3DS1). -->
+17        <package android:name="com.android.chrome" />
+17-->[com.stripe:payments-core:20.37.4] C:\Users\Tuan PC\.gradle\caches\transforms-3\20f811a934a701279c9a06d9b66b023e\transformed\payments-core-20.37.4\AndroidManifest.xml:11:9-54
+17-->[com.stripe:payments-core:20.37.4] C:\Users\Tuan PC\.gradle\caches\transforms-3\20f811a934a701279c9a06d9b66b023e\transformed\payments-core-20.37.4\AndroidManifest.xml:11:18-51
+18        <!-- Needs to be explicitly declared on Android R+ -->
+19        <package android:name="com.google.android.apps.maps" />
+19-->[com.google.android.gms:play-services-maps:18.0.2] C:\Users\Tuan PC\.gradle\caches\transforms-3\17aed05a69bbfe8b1d743db9c25eb568\transformed\play-services-maps-18.0.2\AndroidManifest.xml:33:9-64
+19-->[com.google.android.gms:play-services-maps:18.0.2] C:\Users\Tuan PC\.gradle\caches\transforms-3\17aed05a69bbfe8b1d743db9c25eb568\transformed\play-services-maps-18.0.2\AndroidManifest.xml:33:18-61
+20    </queries> <!-- Include required permissions for Google Maps API to run. -->
+21    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+21-->[com.google.android.gms:play-services-maps:18.0.2] C:\Users\Tuan PC\.gradle\caches\transforms-3\17aed05a69bbfe8b1d743db9c25eb568\transformed\play-services-maps-18.0.2\AndroidManifest.xml:23:5-79
+21-->[com.google.android.gms:play-services-maps:18.0.2] C:\Users\Tuan PC\.gradle\caches\transforms-3\17aed05a69bbfe8b1d743db9c25eb568\transformed\play-services-maps-18.0.2\AndroidManifest.xml:23:22-76
+22
+23    <uses-feature
+23-->[com.google.android.gms:play-services-maps:18.0.2] C:\Users\Tuan PC\.gradle\caches\transforms-3\17aed05a69bbfe8b1d743db9c25eb568\transformed\play-services-maps-18.0.2\AndroidManifest.xml:26:5-28:35
+24        android:glEsVersion="0x00020000"
+24-->[com.google.android.gms:play-services-maps:18.0.2] C:\Users\Tuan PC\.gradle\caches\transforms-3\17aed05a69bbfe8b1d743db9c25eb568\transformed\play-services-maps-18.0.2\AndroidManifest.xml:27:9-41
+25        android:required="true" />
+25-->[com.google.android.gms:play-services-maps:18.0.2] C:\Users\Tuan PC\.gradle\caches\transforms-3\17aed05a69bbfe8b1d743db9c25eb568\transformed\play-services-maps-18.0.2\AndroidManifest.xml:28:9-32
+26
+27    <permission
+27-->[androidx.core:core:1.12.0] C:\Users\Tuan PC\.gradle\caches\transforms-3\821f26a012569af4e4f97906124bf29d\transformed\core-1.12.0\AndroidManifest.xml:22:5-24:47
+28        android:name="com.example.ebook.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION"
+28-->[androidx.core:core:1.12.0] C:\Users\Tuan PC\.gradle\caches\transforms-3\821f26a012569af4e4f97906124bf29d\transformed\core-1.12.0\AndroidManifest.xml:23:9-81
+29        android:protectionLevel="signature" />
+29-->[androidx.core:core:1.12.0] C:\Users\Tuan PC\.gradle\caches\transforms-3\821f26a012569af4e4f97906124bf29d\transformed\core-1.12.0\AndroidManifest.xml:24:9-44
+30
+31    <uses-permission android:name="com.example.ebook.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION" />
+31-->[androidx.core:core:1.12.0] C:\Users\Tuan PC\.gradle\caches\transforms-3\821f26a012569af4e4f97906124bf29d\transformed\core-1.12.0\AndroidManifest.xml:26:5-97
+31-->[androidx.core:core:1.12.0] C:\Users\Tuan PC\.gradle\caches\transforms-3\821f26a012569af4e4f97906124bf29d\transformed\core-1.12.0\AndroidManifest.xml:26:22-94
+32
+33    <application
+33-->C:\Users\Tuan PC\Documents\Android\EBook\app\src\main\AndroidManifest.xml:7:5-34:19
+34        android:allowBackup="true"
+34-->C:\Users\Tuan PC\Documents\Android\EBook\app\src\main\AndroidManifest.xml:8:9-35
+35        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
+35-->[androidx.core:core:1.12.0] C:\Users\Tuan PC\.gradle\caches\transforms-3\821f26a012569af4e4f97906124bf29d\transformed\core-1.12.0\AndroidManifest.xml:28:18-86
+36        android:dataExtractionRules="@xml/data_extraction_rules"
+36-->C:\Users\Tuan PC\Documents\Android\EBook\app\src\main\AndroidManifest.xml:9:9-65
+37        android:debuggable="true"
+38        android:extractNativeLibs="false"
+39        android:fullBackupContent="@xml/backup_rules"
+39-->C:\Users\Tuan PC\Documents\Android\EBook\app\src\main\AndroidManifest.xml:10:9-54
+40        android:icon="@mipmap/ic_launcher"
+40-->C:\Users\Tuan PC\Documents\Android\EBook\app\src\main\AndroidManifest.xml:11:9-43
+41        android:label="@string/app_name"
+41-->C:\Users\Tuan PC\Documents\Android\EBook\app\src\main\AndroidManifest.xml:12:9-41
+42        android:roundIcon="@mipmap/ic_launcher_round"
+42-->C:\Users\Tuan PC\Documents\Android\EBook\app\src\main\AndroidManifest.xml:13:9-54
+43        android:supportsRtl="true"
+43-->C:\Users\Tuan PC\Documents\Android\EBook\app\src\main\AndroidManifest.xml:14:9-35
+44        android:theme="@style/Theme.EBook"
+44-->C:\Users\Tuan PC\Documents\Android\EBook\app\src\main\AndroidManifest.xml:15:9-43
+45        android:usesCleartextTraffic="true" >
+45-->C:\Users\Tuan PC\Documents\Android\EBook\app\src\main\AndroidManifest.xml:16:9-44
+46        <activity
+46-->C:\Users\Tuan PC\Documents\Android\EBook\app\src\main\AndroidManifest.xml:18:9-22:50
+47            android:name="com.example.ebook.MainActivity"
+47-->C:\Users\Tuan PC\Documents\Android\EBook\app\src\main\AndroidManifest.xml:19:13-41
+48            android:exported="false"
+48-->C:\Users\Tuan PC\Documents\Android\EBook\app\src\main\AndroidManifest.xml:20:13-37
+49            android:label="@string/title_activity_main"
+49-->C:\Users\Tuan PC\Documents\Android\EBook\app\src\main\AndroidManifest.xml:21:13-56
+50            android:theme="@style/Theme.EBook" />
+50-->C:\Users\Tuan PC\Documents\Android\EBook\app\src\main\AndroidManifest.xml:22:13-47
+51        <activity
+51-->C:\Users\Tuan PC\Documents\Android\EBook\app\src\main\AndroidManifest.xml:23:9-33:20
+52            android:name="com.example.ebook.views.MainActivity"
+52-->C:\Users\Tuan PC\Documents\Android\EBook\app\src\main\AndroidManifest.xml:24:13-47
+53            android:exported="true"
+53-->C:\Users\Tuan PC\Documents\Android\EBook\app\src\main\AndroidManifest.xml:25:13-36
+54            android:label="@string/app_name"
+54-->C:\Users\Tuan PC\Documents\Android\EBook\app\src\main\AndroidManifest.xml:26:13-45
+55            android:theme="@style/Theme.EBook" >
+55-->C:\Users\Tuan PC\Documents\Android\EBook\app\src\main\AndroidManifest.xml:27:13-47
+56            <intent-filter>
+56-->C:\Users\Tuan PC\Documents\Android\EBook\app\src\main\AndroidManifest.xml:28:13-32:29
+57                <action android:name="android.intent.action.MAIN" />
+57-->C:\Users\Tuan PC\Documents\Android\EBook\app\src\main\AndroidManifest.xml:29:17-69
+57-->C:\Users\Tuan PC\Documents\Android\EBook\app\src\main\AndroidManifest.xml:29:25-66
+58
+59                <category android:name="android.intent.category.LAUNCHER" />
+59-->C:\Users\Tuan PC\Documents\Android\EBook\app\src\main\AndroidManifest.xml:31:17-77
+59-->C:\Users\Tuan PC\Documents\Android\EBook\app\src\main\AndroidManifest.xml:31:27-74
+60            </intent-filter>
+61        </activity>
+62        <activity
+62-->[com.stripe:paymentsheet:20.37.4] C:\Users\Tuan PC\.gradle\caches\transforms-3\b2da065aed2360e952f2549cfec037f2\transformed\paymentsheet-20.37.4\AndroidManifest.xml:8:9-12:58
+63            android:name="com.stripe.android.paymentsheet.PaymentSheetActivity"
+63-->[com.stripe:paymentsheet:20.37.4] C:\Users\Tuan PC\.gradle\caches\transforms-3\b2da065aed2360e952f2549cfec037f2\transformed\paymentsheet-20.37.4\AndroidManifest.xml:9:13-80
+64            android:exported="false"
+64-->[com.stripe:paymentsheet:20.37.4] C:\Users\Tuan PC\.gradle\caches\transforms-3\b2da065aed2360e952f2549cfec037f2\transformed\paymentsheet-20.37.4\AndroidManifest.xml:10:13-37
+65            android:theme="@style/StripePaymentSheetDefaultTheme"
+65-->[com.stripe:paymentsheet:20.37.4] C:\Users\Tuan PC\.gradle\caches\transforms-3\b2da065aed2360e952f2549cfec037f2\transformed\paymentsheet-20.37.4\AndroidManifest.xml:11:13-66
+66            android:windowSoftInputMode="adjustResize" />
+66-->[com.stripe:paymentsheet:20.37.4] C:\Users\Tuan PC\.gradle\caches\transforms-3\b2da065aed2360e952f2549cfec037f2\transformed\paymentsheet-20.37.4\AndroidManifest.xml:12:13-55
+67        <activity
+67-->[com.stripe:paymentsheet:20.37.4] C:\Users\Tuan PC\.gradle\caches\transforms-3\b2da065aed2360e952f2549cfec037f2\transformed\paymentsheet-20.37.4\AndroidManifest.xml:13:9-17:58
+68            android:name="com.stripe.android.paymentsheet.PaymentOptionsActivity"
+68-->[com.stripe:paymentsheet:20.37.4] C:\Users\Tuan PC\.gradle\caches\transforms-3\b2da065aed2360e952f2549cfec037f2\transformed\paymentsheet-20.37.4\AndroidManifest.xml:14:13-82
+69            android:exported="false"
+69-->[com.stripe:paymentsheet:20.37.4] C:\Users\Tuan PC\.gradle\caches\transforms-3\b2da065aed2360e952f2549cfec037f2\transformed\paymentsheet-20.37.4\AndroidManifest.xml:15:13-37
+70            android:theme="@style/StripePaymentSheetDefaultTheme"
+70-->[com.stripe:paymentsheet:20.37.4] C:\Users\Tuan PC\.gradle\caches\transforms-3\b2da065aed2360e952f2549cfec037f2\transformed\paymentsheet-20.37.4\AndroidManifest.xml:16:13-66
+71            android:windowSoftInputMode="adjustResize" />
+71-->[com.stripe:paymentsheet:20.37.4] C:\Users\Tuan PC\.gradle\caches\transforms-3\b2da065aed2360e952f2549cfec037f2\transformed\paymentsheet-20.37.4\AndroidManifest.xml:17:13-55
+72        <activity
+72-->[com.stripe:paymentsheet:20.37.4] C:\Users\Tuan PC\.gradle\caches\transforms-3\b2da065aed2360e952f2549cfec037f2\transformed\paymentsheet-20.37.4\AndroidManifest.xml:18:9-22:58
+73            android:name="com.stripe.android.customersheet.CustomerSheetActivity"
+73-->[com.stripe:paymentsheet:20.37.4] C:\Users\Tuan PC\.gradle\caches\transforms-3\b2da065aed2360e952f2549cfec037f2\transformed\paymentsheet-20.37.4\AndroidManifest.xml:19:13-82
+74            android:exported="false"
+74-->[com.stripe:paymentsheet:20.37.4] C:\Users\Tuan PC\.gradle\caches\transforms-3\b2da065aed2360e952f2549cfec037f2\transformed\paymentsheet-20.37.4\AndroidManifest.xml:20:13-37
+75            android:theme="@style/StripePaymentSheetDefaultTheme"
+75-->[com.stripe:paymentsheet:20.37.4] C:\Users\Tuan PC\.gradle\caches\transforms-3\b2da065aed2360e952f2549cfec037f2\transformed\paymentsheet-20.37.4\AndroidManifest.xml:21:13-66
+76            android:windowSoftInputMode="adjustResize" />
+76-->[com.stripe:paymentsheet:20.37.4] C:\Users\Tuan PC\.gradle\caches\transforms-3\b2da065aed2360e952f2549cfec037f2\transformed\paymentsheet-20.37.4\AndroidManifest.xml:22:13-55
+77        <activity
+77-->[com.stripe:paymentsheet:20.37.4] C:\Users\Tuan PC\.gradle\caches\transforms-3\b2da065aed2360e952f2549cfec037f2\transformed\paymentsheet-20.37.4\AndroidManifest.xml:23:9-26:69
+78            android:name="com.stripe.android.paymentsheet.addresselement.AddressElementActivity"
+78-->[com.stripe:paymentsheet:20.37.4] C:\Users\Tuan PC\.gradle\caches\transforms-3\b2da065aed2360e952f2549cfec037f2\transformed\paymentsheet-20.37.4\AndroidManifest.xml:24:13-97
+79            android:exported="false"
+79-->[com.stripe:paymentsheet:20.37.4] C:\Users\Tuan PC\.gradle\caches\transforms-3\b2da065aed2360e952f2549cfec037f2\transformed\paymentsheet-20.37.4\AndroidManifest.xml:25:13-37
+80            android:theme="@style/StripePaymentSheetDefaultTheme" />
+80-->[com.stripe:paymentsheet:20.37.4] C:\Users\Tuan PC\.gradle\caches\transforms-3\b2da065aed2360e952f2549cfec037f2\transformed\paymentsheet-20.37.4\AndroidManifest.xml:26:13-66
+81        <activity
+81-->[com.stripe:paymentsheet:20.37.4] C:\Users\Tuan PC\.gradle\caches\transforms-3\b2da065aed2360e952f2549cfec037f2\transformed\paymentsheet-20.37.4\AndroidManifest.xml:27:9-30:69
+82            android:name="com.stripe.android.paymentsheet.paymentdatacollection.bacs.BacsMandateConfirmationActivity"
+82-->[com.stripe:paymentsheet:20.37.4] C:\Users\Tuan PC\.gradle\caches\transforms-3\b2da065aed2360e952f2549cfec037f2\transformed\paymentsheet-20.37.4\AndroidManifest.xml:28:13-118
+83            android:exported="false"
+83-->[com.stripe:paymentsheet:20.37.4] C:\Users\Tuan PC\.gradle\caches\transforms-3\b2da065aed2360e952f2549cfec037f2\transformed\paymentsheet-20.37.4\AndroidManifest.xml:29:13-37
+84            android:theme="@style/StripePaymentSheetDefaultTheme" />
+84-->[com.stripe:paymentsheet:20.37.4] C:\Users\Tuan PC\.gradle\caches\transforms-3\b2da065aed2360e952f2549cfec037f2\transformed\paymentsheet-20.37.4\AndroidManifest.xml:30:13-66
+85        <activity
+85-->[com.stripe:paymentsheet:20.37.4] C:\Users\Tuan PC\.gradle\caches\transforms-3\b2da065aed2360e952f2549cfec037f2\transformed\paymentsheet-20.37.4\AndroidManifest.xml:31:9-34:69
+86            android:name="com.stripe.android.paymentsheet.paymentdatacollection.polling.PollingActivity"
+86-->[com.stripe:paymentsheet:20.37.4] C:\Users\Tuan PC\.gradle\caches\transforms-3\b2da065aed2360e952f2549cfec037f2\transformed\paymentsheet-20.37.4\AndroidManifest.xml:32:13-105
+87            android:exported="false"
+87-->[com.stripe:paymentsheet:20.37.4] C:\Users\Tuan PC\.gradle\caches\transforms-3\b2da065aed2360e952f2549cfec037f2\transformed\paymentsheet-20.37.4\AndroidManifest.xml:33:13-37
+88            android:theme="@style/StripePaymentSheetDefaultTheme" />
+88-->[com.stripe:paymentsheet:20.37.4] C:\Users\Tuan PC\.gradle\caches\transforms-3\b2da065aed2360e952f2549cfec037f2\transformed\paymentsheet-20.37.4\AndroidManifest.xml:34:13-66
+89        <activity
+89-->[com.stripe:paymentsheet:20.37.4] C:\Users\Tuan PC\.gradle\caches\transforms-3\b2da065aed2360e952f2549cfec037f2\transformed\paymentsheet-20.37.4\AndroidManifest.xml:35:9-38:69
+90            android:name="com.stripe.android.paymentsheet.ui.SepaMandateActivity"
+90-->[com.stripe:paymentsheet:20.37.4] C:\Users\Tuan PC\.gradle\caches\transforms-3\b2da065aed2360e952f2549cfec037f2\transformed\paymentsheet-20.37.4\AndroidManifest.xml:36:13-82
+91            android:exported="false"
+91-->[com.stripe:paymentsheet:20.37.4] C:\Users\Tuan PC\.gradle\caches\transforms-3\b2da065aed2360e952f2549cfec037f2\transformed\paymentsheet-20.37.4\AndroidManifest.xml:37:13-37
+92            android:theme="@style/StripePaymentSheetDefaultTheme" />
+92-->[com.stripe:paymentsheet:20.37.4] C:\Users\Tuan PC\.gradle\caches\transforms-3\b2da065aed2360e952f2549cfec037f2\transformed\paymentsheet-20.37.4\AndroidManifest.xml:38:13-66
+93        <activity
+93-->[com.stripe:link:20.37.4] C:\Users\Tuan PC\.gradle\caches\transforms-3\d85a2fefe43cb049c1d2175dbf5fa86d\transformed\link-20.37.4\AndroidManifest.xml:8:9-13:61
+94            android:name="com.stripe.android.link.LinkForegroundActivity"
+94-->[com.stripe:link:20.37.4] C:\Users\Tuan PC\.gradle\caches\transforms-3\d85a2fefe43cb049c1d2175dbf5fa86d\transformed\link-20.37.4\AndroidManifest.xml:9:13-74
+95            android:autoRemoveFromRecents="true"
+95-->[com.stripe:link:20.37.4] C:\Users\Tuan PC\.gradle\caches\transforms-3\d85a2fefe43cb049c1d2175dbf5fa86d\transformed\link-20.37.4\AndroidManifest.xml:10:13-49
+96            android:configChanges="orientation|keyboard|keyboardHidden|screenLayout|screenSize|smallestScreenSize"
+96-->[com.stripe:link:20.37.4] C:\Users\Tuan PC\.gradle\caches\transforms-3\d85a2fefe43cb049c1d2175dbf5fa86d\transformed\link-20.37.4\AndroidManifest.xml:11:13-115
+97            android:launchMode="singleTop"
+97-->[com.stripe:link:20.37.4] C:\Users\Tuan PC\.gradle\caches\transforms-3\d85a2fefe43cb049c1d2175dbf5fa86d\transformed\link-20.37.4\AndroidManifest.xml:12:13-43
+98            android:theme="@style/StripeTransparentTheme" />
+98-->[com.stripe:link:20.37.4] C:\Users\Tuan PC\.gradle\caches\transforms-3\d85a2fefe43cb049c1d2175dbf5fa86d\transformed\link-20.37.4\AndroidManifest.xml:13:13-58
+99        <activity
+99-->[com.stripe:link:20.37.4] C:\Users\Tuan PC\.gradle\caches\transforms-3\d85a2fefe43cb049c1d2175dbf5fa86d\transformed\link-20.37.4\AndroidManifest.xml:14:9-31:20
+100            android:name="com.stripe.android.link.LinkRedirectHandlerActivity"
+100-->[com.stripe:link:20.37.4] C:\Users\Tuan PC\.gradle\caches\transforms-3\d85a2fefe43cb049c1d2175dbf5fa86d\transformed\link-20.37.4\AndroidManifest.xml:15:13-79
+101            android:autoRemoveFromRecents="true"
+101-->[com.stripe:link:20.37.4] C:\Users\Tuan PC\.gradle\caches\transforms-3\d85a2fefe43cb049c1d2175dbf5fa86d\transformed\link-20.37.4\AndroidManifest.xml:16:13-49
+102            android:exported="true"
+102-->[com.stripe:link:20.37.4] C:\Users\Tuan PC\.gradle\caches\transforms-3\d85a2fefe43cb049c1d2175dbf5fa86d\transformed\link-20.37.4\AndroidManifest.xml:17:13-36
+103            android:launchMode="singleInstance"
+103-->[com.stripe:link:20.37.4] C:\Users\Tuan PC\.gradle\caches\transforms-3\d85a2fefe43cb049c1d2175dbf5fa86d\transformed\link-20.37.4\AndroidManifest.xml:18:13-48
+104            android:theme="@style/StripeTransparentTheme" >
+104-->[com.stripe:link:20.37.4] C:\Users\Tuan PC\.gradle\caches\transforms-3\d85a2fefe43cb049c1d2175dbf5fa86d\transformed\link-20.37.4\AndroidManifest.xml:19:13-58
+105            <intent-filter>
+105-->[com.stripe:link:20.37.4] C:\Users\Tuan PC\.gradle\caches\transforms-3\d85a2fefe43cb049c1d2175dbf5fa86d\transformed\link-20.37.4\AndroidManifest.xml:20:13-30:29
+106                <action android:name="android.intent.action.VIEW" />
+106-->[com.stripe:link:20.37.4] C:\Users\Tuan PC\.gradle\caches\transforms-3\d85a2fefe43cb049c1d2175dbf5fa86d\transformed\link-20.37.4\AndroidManifest.xml:21:17-69
+106-->[com.stripe:link:20.37.4] C:\Users\Tuan PC\.gradle\caches\transforms-3\d85a2fefe43cb049c1d2175dbf5fa86d\transformed\link-20.37.4\AndroidManifest.xml:21:25-66
+107
+108                <category android:name="android.intent.category.DEFAULT" />
+108-->[com.stripe:link:20.37.4] C:\Users\Tuan PC\.gradle\caches\transforms-3\d85a2fefe43cb049c1d2175dbf5fa86d\transformed\link-20.37.4\AndroidManifest.xml:23:17-76
+108-->[com.stripe:link:20.37.4] C:\Users\Tuan PC\.gradle\caches\transforms-3\d85a2fefe43cb049c1d2175dbf5fa86d\transformed\link-20.37.4\AndroidManifest.xml:23:27-73
+109                <category android:name="android.intent.category.BROWSABLE" />
+109-->[com.stripe:link:20.37.4] C:\Users\Tuan PC\.gradle\caches\transforms-3\d85a2fefe43cb049c1d2175dbf5fa86d\transformed\link-20.37.4\AndroidManifest.xml:24:17-78
+109-->[com.stripe:link:20.37.4] C:\Users\Tuan PC\.gradle\caches\transforms-3\d85a2fefe43cb049c1d2175dbf5fa86d\transformed\link-20.37.4\AndroidManifest.xml:24:27-75
+110
+111                <data
+111-->[com.stripe:link:20.37.4] C:\Users\Tuan PC\.gradle\caches\transforms-3\d85a2fefe43cb049c1d2175dbf5fa86d\transformed\link-20.37.4\AndroidManifest.xml:26:17-29:51
+112                    android:host="complete"
+112-->[com.stripe:link:20.37.4] C:\Users\Tuan PC\.gradle\caches\transforms-3\d85a2fefe43cb049c1d2175dbf5fa86d\transformed\link-20.37.4\AndroidManifest.xml:27:21-44
+113                    android:path="/com.example.ebook"
+113-->[com.stripe:link:20.37.4] C:\Users\Tuan PC\.gradle\caches\transforms-3\d85a2fefe43cb049c1d2175dbf5fa86d\transformed\link-20.37.4\AndroidManifest.xml:28:21-53
+114                    android:scheme="link-popup" />
+114-->[com.stripe:link:20.37.4] C:\Users\Tuan PC\.gradle\caches\transforms-3\d85a2fefe43cb049c1d2175dbf5fa86d\transformed\link-20.37.4\AndroidManifest.xml:29:21-48
+115            </intent-filter>
+116        </activity>
+117        <activity
+117-->[com.stripe:payments-ui-core:20.37.4] C:\Users\Tuan PC\.gradle\caches\transforms-3\00d603e816072ab07a889727fda60c2b\transformed\payments-ui-core-20.37.4\AndroidManifest.xml:8:9-11:69
+118            android:name="com.stripe.android.ui.core.cardscan.CardScanActivity"
+118-->[com.stripe:payments-ui-core:20.37.4] C:\Users\Tuan PC\.gradle\caches\transforms-3\00d603e816072ab07a889727fda60c2b\transformed\payments-ui-core-20.37.4\AndroidManifest.xml:9:13-80
+119            android:exported="false"
+119-->[com.stripe:payments-ui-core:20.37.4] C:\Users\Tuan PC\.gradle\caches\transforms-3\00d603e816072ab07a889727fda60c2b\transformed\payments-ui-core-20.37.4\AndroidManifest.xml:10:13-37
+120            android:theme="@style/StripePaymentSheetDefaultTheme" />
+120-->[com.stripe:payments-ui-core:20.37.4] C:\Users\Tuan PC\.gradle\caches\transforms-3\00d603e816072ab07a889727fda60c2b\transformed\payments-ui-core-20.37.4\AndroidManifest.xml:11:13-66
+121        <activity
+121-->[com.stripe:payments-core:20.37.4] C:\Users\Tuan PC\.gradle\caches\transforms-3\20f811a934a701279c9a06d9b66b023e\transformed\payments-core-20.37.4\AndroidManifest.xml:15:9-18:57
+122            android:name="com.stripe.android.view.AddPaymentMethodActivity"
+122-->[com.stripe:payments-core:20.37.4] C:\Users\Tuan PC\.gradle\caches\transforms-3\20f811a934a701279c9a06d9b66b023e\transformed\payments-core-20.37.4\AndroidManifest.xml:16:13-76
+123            android:exported="false"
+123-->[com.stripe:payments-core:20.37.4] C:\Users\Tuan PC\.gradle\caches\transforms-3\20f811a934a701279c9a06d9b66b023e\transformed\payments-core-20.37.4\AndroidManifest.xml:17:13-37
+124            android:theme="@style/StripeDefaultTheme" />
+124-->[com.stripe:payments-core:20.37.4] C:\Users\Tuan PC\.gradle\caches\transforms-3\20f811a934a701279c9a06d9b66b023e\transformed\payments-core-20.37.4\AndroidManifest.xml:18:13-54
+125        <activity
+125-->[com.stripe:payments-core:20.37.4] C:\Users\Tuan PC\.gradle\caches\transforms-3\20f811a934a701279c9a06d9b66b023e\transformed\payments-core-20.37.4\AndroidManifest.xml:19:9-22:57
+126            android:name="com.stripe.android.view.PaymentMethodsActivity"
+126-->[com.stripe:payments-core:20.37.4] C:\Users\Tuan PC\.gradle\caches\transforms-3\20f811a934a701279c9a06d9b66b023e\transformed\payments-core-20.37.4\AndroidManifest.xml:20:13-74
+127            android:exported="false"
+127-->[com.stripe:payments-core:20.37.4] C:\Users\Tuan PC\.gradle\caches\transforms-3\20f811a934a701279c9a06d9b66b023e\transformed\payments-core-20.37.4\AndroidManifest.xml:21:13-37
+128            android:theme="@style/StripeDefaultTheme" />
+128-->[com.stripe:payments-core:20.37.4] C:\Users\Tuan PC\.gradle\caches\transforms-3\20f811a934a701279c9a06d9b66b023e\transformed\payments-core-20.37.4\AndroidManifest.xml:22:13-54
+129        <activity
+129-->[com.stripe:payments-core:20.37.4] C:\Users\Tuan PC\.gradle\caches\transforms-3\20f811a934a701279c9a06d9b66b023e\transformed\payments-core-20.37.4\AndroidManifest.xml:23:9-26:57
+130            android:name="com.stripe.android.view.PaymentFlowActivity"
+130-->[com.stripe:payments-core:20.37.4] C:\Users\Tuan PC\.gradle\caches\transforms-3\20f811a934a701279c9a06d9b66b023e\transformed\payments-core-20.37.4\AndroidManifest.xml:24:13-71
+131            android:exported="false"
+131-->[com.stripe:payments-core:20.37.4] C:\Users\Tuan PC\.gradle\caches\transforms-3\20f811a934a701279c9a06d9b66b023e\transformed\payments-core-20.37.4\AndroidManifest.xml:25:13-37
+132            android:theme="@style/StripeDefaultTheme" />
+132-->[com.stripe:payments-core:20.37.4] C:\Users\Tuan PC\.gradle\caches\transforms-3\20f811a934a701279c9a06d9b66b023e\transformed\payments-core-20.37.4\AndroidManifest.xml:26:13-54
+133        <activity
+133-->[com.stripe:payments-core:20.37.4] C:\Users\Tuan PC\.gradle\caches\transforms-3\20f811a934a701279c9a06d9b66b023e\transformed\payments-core-20.37.4\AndroidManifest.xml:27:9-31:58
+134            android:name="com.stripe.android.view.PaymentAuthWebViewActivity"
+134-->[com.stripe:payments-core:20.37.4] C:\Users\Tuan PC\.gradle\caches\transforms-3\20f811a934a701279c9a06d9b66b023e\transformed\payments-core-20.37.4\AndroidManifest.xml:28:13-78
+135            android:exported="false"
+135-->[com.stripe:payments-core:20.37.4] C:\Users\Tuan PC\.gradle\caches\transforms-3\20f811a934a701279c9a06d9b66b023e\transformed\payments-core-20.37.4\AndroidManifest.xml:29:13-37
+136            android:theme="@style/StripeDefaultTheme"
+136-->[com.stripe:payments-core:20.37.4] C:\Users\Tuan PC\.gradle\caches\transforms-3\20f811a934a701279c9a06d9b66b023e\transformed\payments-core-20.37.4\AndroidManifest.xml:30:13-54
+137            android:windowSoftInputMode="adjustResize" />
+137-->[com.stripe:payments-core:20.37.4] C:\Users\Tuan PC\.gradle\caches\transforms-3\20f811a934a701279c9a06d9b66b023e\transformed\payments-core-20.37.4\AndroidManifest.xml:31:13-55
+138        <activity
+138-->[com.stripe:payments-core:20.37.4] C:\Users\Tuan PC\.gradle\caches\transforms-3\20f811a934a701279c9a06d9b66b023e\transformed\payments-core-20.37.4\AndroidManifest.xml:32:9-35:61
+139            android:name="com.stripe.android.view.PaymentRelayActivity"
+139-->[com.stripe:payments-core:20.37.4] C:\Users\Tuan PC\.gradle\caches\transforms-3\20f811a934a701279c9a06d9b66b023e\transformed\payments-core-20.37.4\AndroidManifest.xml:33:13-72
+140            android:exported="false"
+140-->[com.stripe:payments-core:20.37.4] C:\Users\Tuan PC\.gradle\caches\transforms-3\20f811a934a701279c9a06d9b66b023e\transformed\payments-core-20.37.4\AndroidManifest.xml:34:13-37
+141            android:theme="@style/StripeTransparentTheme" />
+141-->[com.stripe:payments-core:20.37.4] C:\Users\Tuan PC\.gradle\caches\transforms-3\20f811a934a701279c9a06d9b66b023e\transformed\payments-core-20.37.4\AndroidManifest.xml:35:13-58
+142        <!--
+143        Set android:launchMode="singleTop" so that the StripeBrowserLauncherActivity instance that
+144        launched the browser Activity will also handle the return URL deep link.
+145        -->
+146        <activity
+146-->[com.stripe:payments-core:20.37.4] C:\Users\Tuan PC\.gradle\caches\transforms-3\20f811a934a701279c9a06d9b66b023e\transformed\payments-core-20.37.4\AndroidManifest.xml:41:9-45:61
+147            android:name="com.stripe.android.payments.StripeBrowserLauncherActivity"
+147-->[com.stripe:payments-core:20.37.4] C:\Users\Tuan PC\.gradle\caches\transforms-3\20f811a934a701279c9a06d9b66b023e\transformed\payments-core-20.37.4\AndroidManifest.xml:42:13-85
+148            android:exported="false"
+148-->[com.stripe:payments-core:20.37.4] C:\Users\Tuan PC\.gradle\caches\transforms-3\20f811a934a701279c9a06d9b66b023e\transformed\payments-core-20.37.4\AndroidManifest.xml:43:13-37
+149            android:launchMode="singleTask"
+149-->[com.stripe:payments-core:20.37.4] C:\Users\Tuan PC\.gradle\caches\transforms-3\20f811a934a701279c9a06d9b66b023e\transformed\payments-core-20.37.4\AndroidManifest.xml:44:13-44
+150            android:theme="@style/StripeTransparentTheme" />
+150-->[com.stripe:payments-core:20.37.4] C:\Users\Tuan PC\.gradle\caches\transforms-3\20f811a934a701279c9a06d9b66b023e\transformed\payments-core-20.37.4\AndroidManifest.xml:45:13-58
+151        <activity
+151-->[com.stripe:payments-core:20.37.4] C:\Users\Tuan PC\.gradle\caches\transforms-3\20f811a934a701279c9a06d9b66b023e\transformed\payments-core-20.37.4\AndroidManifest.xml:46:9-63:20
+152            android:name="com.stripe.android.payments.StripeBrowserProxyReturnActivity"
+152-->[com.stripe:payments-core:20.37.4] C:\Users\Tuan PC\.gradle\caches\transforms-3\20f811a934a701279c9a06d9b66b023e\transformed\payments-core-20.37.4\AndroidManifest.xml:47:13-88
+153            android:exported="true"
+153-->[com.stripe:payments-core:20.37.4] C:\Users\Tuan PC\.gradle\caches\transforms-3\20f811a934a701279c9a06d9b66b023e\transformed\payments-core-20.37.4\AndroidManifest.xml:48:13-36
+154            android:launchMode="singleTask"
+154-->[com.stripe:payments-core:20.37.4] C:\Users\Tuan PC\.gradle\caches\transforms-3\20f811a934a701279c9a06d9b66b023e\transformed\payments-core-20.37.4\AndroidManifest.xml:49:13-44
+155            android:theme="@style/StripeTransparentTheme" >
+155-->[com.stripe:payments-core:20.37.4] C:\Users\Tuan PC\.gradle\caches\transforms-3\20f811a934a701279c9a06d9b66b023e\transformed\payments-core-20.37.4\AndroidManifest.xml:50:13-58
+156            <intent-filter>
+156-->[com.stripe:payments-core:20.37.4] C:\Users\Tuan PC\.gradle\caches\transforms-3\20f811a934a701279c9a06d9b66b023e\transformed\payments-core-20.37.4\AndroidManifest.xml:51:13-62:29
+157                <action android:name="android.intent.action.VIEW" />
+157-->[com.stripe:link:20.37.4] C:\Users\Tuan PC\.gradle\caches\transforms-3\d85a2fefe43cb049c1d2175dbf5fa86d\transformed\link-20.37.4\AndroidManifest.xml:21:17-69
+157-->[com.stripe:link:20.37.4] C:\Users\Tuan PC\.gradle\caches\transforms-3\d85a2fefe43cb049c1d2175dbf5fa86d\transformed\link-20.37.4\AndroidManifest.xml:21:25-66
+158
+159                <category android:name="android.intent.category.DEFAULT" />
+159-->[com.stripe:link:20.37.4] C:\Users\Tuan PC\.gradle\caches\transforms-3\d85a2fefe43cb049c1d2175dbf5fa86d\transformed\link-20.37.4\AndroidManifest.xml:23:17-76
+159-->[com.stripe:link:20.37.4] C:\Users\Tuan PC\.gradle\caches\transforms-3\d85a2fefe43cb049c1d2175dbf5fa86d\transformed\link-20.37.4\AndroidManifest.xml:23:27-73
+160                <category android:name="android.intent.category.BROWSABLE" />
+160-->[com.stripe:link:20.37.4] C:\Users\Tuan PC\.gradle\caches\transforms-3\d85a2fefe43cb049c1d2175dbf5fa86d\transformed\link-20.37.4\AndroidManifest.xml:24:17-78
+160-->[com.stripe:link:20.37.4] C:\Users\Tuan PC\.gradle\caches\transforms-3\d85a2fefe43cb049c1d2175dbf5fa86d\transformed\link-20.37.4\AndroidManifest.xml:24:27-75
+161
+162                <!-- Must match `DefaultReturnUrl#value`. -->
+163                <data
+163-->[com.stripe:link:20.37.4] C:\Users\Tuan PC\.gradle\caches\transforms-3\d85a2fefe43cb049c1d2175dbf5fa86d\transformed\link-20.37.4\AndroidManifest.xml:26:17-29:51
+164                    android:host="payment_return_url"
+164-->[com.stripe:link:20.37.4] C:\Users\Tuan PC\.gradle\caches\transforms-3\d85a2fefe43cb049c1d2175dbf5fa86d\transformed\link-20.37.4\AndroidManifest.xml:27:21-44
+165                    android:path="/com.example.ebook"
+165-->[com.stripe:link:20.37.4] C:\Users\Tuan PC\.gradle\caches\transforms-3\d85a2fefe43cb049c1d2175dbf5fa86d\transformed\link-20.37.4\AndroidManifest.xml:28:21-53
+166                    android:scheme="stripesdk" />
+166-->[com.stripe:link:20.37.4] C:\Users\Tuan PC\.gradle\caches\transforms-3\d85a2fefe43cb049c1d2175dbf5fa86d\transformed\link-20.37.4\AndroidManifest.xml:29:21-48
+167            </intent-filter>
+168        </activity>
+169        <activity
+169-->[com.stripe:payments-core:20.37.4] C:\Users\Tuan PC\.gradle\caches\transforms-3\20f811a934a701279c9a06d9b66b023e\transformed\payments-core-20.37.4\AndroidManifest.xml:64:9-67:57
+170            android:name="com.stripe.android.payments.core.authentication.threeds2.Stripe3ds2TransactionActivity"
+170-->[com.stripe:payments-core:20.37.4] C:\Users\Tuan PC\.gradle\caches\transforms-3\20f811a934a701279c9a06d9b66b023e\transformed\payments-core-20.37.4\AndroidManifest.xml:65:13-114
+171            android:exported="false"
+171-->[com.stripe:payments-core:20.37.4] C:\Users\Tuan PC\.gradle\caches\transforms-3\20f811a934a701279c9a06d9b66b023e\transformed\payments-core-20.37.4\AndroidManifest.xml:66:13-37
+172            android:theme="@style/StripeDefaultTheme" />
+172-->[com.stripe:payments-core:20.37.4] C:\Users\Tuan PC\.gradle\caches\transforms-3\20f811a934a701279c9a06d9b66b023e\transformed\payments-core-20.37.4\AndroidManifest.xml:67:13-54
+173        <activity
+173-->[com.stripe:payments-core:20.37.4] C:\Users\Tuan PC\.gradle\caches\transforms-3\20f811a934a701279c9a06d9b66b023e\transformed\payments-core-20.37.4\AndroidManifest.xml:68:9-71:66
+174            android:name="com.stripe.android.googlepaylauncher.GooglePayLauncherActivity"
+174-->[com.stripe:payments-core:20.37.4] C:\Users\Tuan PC\.gradle\caches\transforms-3\20f811a934a701279c9a06d9b66b023e\transformed\payments-core-20.37.4\AndroidManifest.xml:69:13-90
+175            android:exported="false"
+175-->[com.stripe:payments-core:20.37.4] C:\Users\Tuan PC\.gradle\caches\transforms-3\20f811a934a701279c9a06d9b66b023e\transformed\payments-core-20.37.4\AndroidManifest.xml:70:13-37
+176            android:theme="@style/StripeGooglePayDefaultTheme" />
+176-->[com.stripe:payments-core:20.37.4] C:\Users\Tuan PC\.gradle\caches\transforms-3\20f811a934a701279c9a06d9b66b023e\transformed\payments-core-20.37.4\AndroidManifest.xml:71:13-63
+177        <activity
+177-->[com.stripe:payments-core:20.37.4] C:\Users\Tuan PC\.gradle\caches\transforms-3\20f811a934a701279c9a06d9b66b023e\transformed\payments-core-20.37.4\AndroidManifest.xml:72:9-75:66
+178            android:name="com.stripe.android.googlepaylauncher.GooglePayPaymentMethodLauncherActivity"
+178-->[com.stripe:payments-core:20.37.4] C:\Users\Tuan PC\.gradle\caches\transforms-3\20f811a934a701279c9a06d9b66b023e\transformed\payments-core-20.37.4\AndroidManifest.xml:73:13-103
+179            android:exported="false"
+179-->[com.stripe:payments-core:20.37.4] C:\Users\Tuan PC\.gradle\caches\transforms-3\20f811a934a701279c9a06d9b66b023e\transformed\payments-core-20.37.4\AndroidManifest.xml:74:13-37
+180            android:theme="@style/StripeGooglePayDefaultTheme" />
+180-->[com.stripe:payments-core:20.37.4] C:\Users\Tuan PC\.gradle\caches\transforms-3\20f811a934a701279c9a06d9b66b023e\transformed\payments-core-20.37.4\AndroidManifest.xml:75:13-63
+181        <activity
+181-->[com.stripe:payments-core:20.37.4] C:\Users\Tuan PC\.gradle\caches\transforms-3\20f811a934a701279c9a06d9b66b023e\transformed\payments-core-20.37.4\AndroidManifest.xml:76:9-79:68
+182            android:name="com.stripe.android.payments.paymentlauncher.PaymentLauncherConfirmationActivity"
+182-->[com.stripe:payments-core:20.37.4] C:\Users\Tuan PC\.gradle\caches\transforms-3\20f811a934a701279c9a06d9b66b023e\transformed\payments-core-20.37.4\AndroidManifest.xml:77:13-107
+183            android:exported="false"
+183-->[com.stripe:payments-core:20.37.4] C:\Users\Tuan PC\.gradle\caches\transforms-3\20f811a934a701279c9a06d9b66b023e\transformed\payments-core-20.37.4\AndroidManifest.xml:78:13-37
+184            android:theme="@style/StripePayLauncherDefaultTheme" />
+184-->[com.stripe:payments-core:20.37.4] C:\Users\Tuan PC\.gradle\caches\transforms-3\20f811a934a701279c9a06d9b66b023e\transformed\payments-core-20.37.4\AndroidManifest.xml:79:13-65
+185        <activity
+185-->[com.stripe:payments-core:20.37.4] C:\Users\Tuan PC\.gradle\caches\transforms-3\20f811a934a701279c9a06d9b66b023e\transformed\payments-core-20.37.4\AndroidManifest.xml:80:9-83:61
+186            android:name="com.stripe.android.payments.bankaccount.ui.CollectBankAccountActivity"
+186-->[com.stripe:payments-core:20.37.4] C:\Users\Tuan PC\.gradle\caches\transforms-3\20f811a934a701279c9a06d9b66b023e\transformed\payments-core-20.37.4\AndroidManifest.xml:81:13-97
+187            android:exported="false"
+187-->[com.stripe:payments-core:20.37.4] C:\Users\Tuan PC\.gradle\caches\transforms-3\20f811a934a701279c9a06d9b66b023e\transformed\payments-core-20.37.4\AndroidManifest.xml:82:13-37
+188            android:theme="@style/StripeTransparentTheme" />
+188-->[com.stripe:payments-core:20.37.4] C:\Users\Tuan PC\.gradle\caches\transforms-3\20f811a934a701279c9a06d9b66b023e\transformed\payments-core-20.37.4\AndroidManifest.xml:83:13-58
+189        <activity
+189-->[com.stripe:stripe-3ds2-android:6.1.8] C:\Users\Tuan PC\.gradle\caches\transforms-3\9de9bfb080bbfb04b6a00b39ee61a8e6\transformed\stripe-3ds2-android-6.1.8\AndroidManifest.xml:8:9-11:54
+190            android:name="com.stripe.android.stripe3ds2.views.ChallengeActivity"
+190-->[com.stripe:stripe-3ds2-android:6.1.8] C:\Users\Tuan PC\.gradle\caches\transforms-3\9de9bfb080bbfb04b6a00b39ee61a8e6\transformed\stripe-3ds2-android-6.1.8\AndroidManifest.xml:9:13-81
+191            android:exported="false"
+191-->[com.stripe:stripe-3ds2-android:6.1.8] C:\Users\Tuan PC\.gradle\caches\transforms-3\9de9bfb080bbfb04b6a00b39ee61a8e6\transformed\stripe-3ds2-android-6.1.8\AndroidManifest.xml:10:13-37
+192            android:theme="@style/Stripe3DS2Theme" /> <!-- Needs to be explicitly declared on P+ -->
+192-->[com.stripe:stripe-3ds2-android:6.1.8] C:\Users\Tuan PC\.gradle\caches\transforms-3\9de9bfb080bbfb04b6a00b39ee61a8e6\transformed\stripe-3ds2-android-6.1.8\AndroidManifest.xml:11:13-51
+193        <uses-library
+193-->[com.google.android.gms:play-services-maps:18.0.2] C:\Users\Tuan PC\.gradle\caches\transforms-3\17aed05a69bbfe8b1d743db9c25eb568\transformed\play-services-maps-18.0.2\AndroidManifest.xml:39:9-41:40
+194            android:name="org.apache.http.legacy"
+194-->[com.google.android.gms:play-services-maps:18.0.2] C:\Users\Tuan PC\.gradle\caches\transforms-3\17aed05a69bbfe8b1d743db9c25eb568\transformed\play-services-maps-18.0.2\AndroidManifest.xml:40:13-50
+195            android:required="false" />
+195-->[com.google.android.gms:play-services-maps:18.0.2] C:\Users\Tuan PC\.gradle\caches\transforms-3\17aed05a69bbfe8b1d743db9c25eb568\transformed\play-services-maps-18.0.2\AndroidManifest.xml:41:13-37
+196
+197        <activity
+197-->[com.google.android.gms:play-services-base:18.0.1] C:\Users\Tuan PC\.gradle\caches\transforms-3\b68a2cc168d368001ea8561676d2eb17\transformed\play-services-base-18.0.1\AndroidManifest.xml:20:9-22:45
+198            android:name="com.google.android.gms.common.api.GoogleApiActivity"
+198-->[com.google.android.gms:play-services-base:18.0.1] C:\Users\Tuan PC\.gradle\caches\transforms-3\b68a2cc168d368001ea8561676d2eb17\transformed\play-services-base-18.0.1\AndroidManifest.xml:20:19-85
+199            android:exported="false"
+199-->[com.google.android.gms:play-services-base:18.0.1] C:\Users\Tuan PC\.gradle\caches\transforms-3\b68a2cc168d368001ea8561676d2eb17\transformed\play-services-base-18.0.1\AndroidManifest.xml:22:19-43
+200            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+200-->[com.google.android.gms:play-services-base:18.0.1] C:\Users\Tuan PC\.gradle\caches\transforms-3\b68a2cc168d368001ea8561676d2eb17\transformed\play-services-base-18.0.1\AndroidManifest.xml:21:19-78
+201        <activity
+201-->[androidx.compose.ui:ui-test-manifest:1.5.4] C:\Users\Tuan PC\.gradle\caches\transforms-3\aad258c11e976616172e8cd97ad5bde5\transformed\ui-test-manifest-1.5.4\AndroidManifest.xml:23:9-25:39
+202            android:name="androidx.activity.ComponentActivity"
+202-->[androidx.compose.ui:ui-test-manifest:1.5.4] C:\Users\Tuan PC\.gradle\caches\transforms-3\aad258c11e976616172e8cd97ad5bde5\transformed\ui-test-manifest-1.5.4\AndroidManifest.xml:24:13-63
+203            android:exported="true" />
+203-->[androidx.compose.ui:ui-test-manifest:1.5.4] C:\Users\Tuan PC\.gradle\caches\transforms-3\aad258c11e976616172e8cd97ad5bde5\transformed\ui-test-manifest-1.5.4\AndroidManifest.xml:25:13-36
+204        <activity
+204-->[androidx.compose.ui:ui-tooling-android:1.5.4] C:\Users\Tuan PC\.gradle\caches\transforms-3\9aac51d1dbe401cc54edd1fed11e8afc\transformed\ui-tooling-release\AndroidManifest.xml:23:9-25:39
+205            android:name="androidx.compose.ui.tooling.PreviewActivity"
+205-->[androidx.compose.ui:ui-tooling-android:1.5.4] C:\Users\Tuan PC\.gradle\caches\transforms-3\9aac51d1dbe401cc54edd1fed11e8afc\transformed\ui-tooling-release\AndroidManifest.xml:24:13-71
+206            android:exported="true" />
+206-->[androidx.compose.ui:ui-tooling-android:1.5.4] C:\Users\Tuan PC\.gradle\caches\transforms-3\9aac51d1dbe401cc54edd1fed11e8afc\transformed\ui-tooling-release\AndroidManifest.xml:25:13-36
+207
+208        <provider
+208-->[androidx.emoji2:emoji2:1.4.0] C:\Users\Tuan PC\.gradle\caches\transforms-3\6f341ab93192e852dbeed143bf93c1b3\transformed\emoji2-1.4.0\AndroidManifest.xml:24:9-32:20
+209            android:name="androidx.startup.InitializationProvider"
+209-->[androidx.emoji2:emoji2:1.4.0] C:\Users\Tuan PC\.gradle\caches\transforms-3\6f341ab93192e852dbeed143bf93c1b3\transformed\emoji2-1.4.0\AndroidManifest.xml:25:13-67
+210            android:authorities="com.example.ebook.androidx-startup"
+210-->[androidx.emoji2:emoji2:1.4.0] C:\Users\Tuan PC\.gradle\caches\transforms-3\6f341ab93192e852dbeed143bf93c1b3\transformed\emoji2-1.4.0\AndroidManifest.xml:26:13-68
+211            android:exported="false" >
+211-->[androidx.emoji2:emoji2:1.4.0] C:\Users\Tuan PC\.gradle\caches\transforms-3\6f341ab93192e852dbeed143bf93c1b3\transformed\emoji2-1.4.0\AndroidManifest.xml:27:13-37
+212            <meta-data
+212-->[androidx.emoji2:emoji2:1.4.0] C:\Users\Tuan PC\.gradle\caches\transforms-3\6f341ab93192e852dbeed143bf93c1b3\transformed\emoji2-1.4.0\AndroidManifest.xml:29:13-31:52
+213                android:name="androidx.emoji2.text.EmojiCompatInitializer"
+213-->[androidx.emoji2:emoji2:1.4.0] C:\Users\Tuan PC\.gradle\caches\transforms-3\6f341ab93192e852dbeed143bf93c1b3\transformed\emoji2-1.4.0\AndroidManifest.xml:30:17-75
+214                android:value="androidx.startup" />
+214-->[androidx.emoji2:emoji2:1.4.0] C:\Users\Tuan PC\.gradle\caches\transforms-3\6f341ab93192e852dbeed143bf93c1b3\transformed\emoji2-1.4.0\AndroidManifest.xml:31:17-49
+215            <meta-data
+215-->[androidx.lifecycle:lifecycle-process:2.7.0] C:\Users\Tuan PC\.gradle\caches\transforms-3\4868e5ec2e2f28ed0d515004eaa83088\transformed\lifecycle-process-2.7.0\AndroidManifest.xml:29:13-31:52
+216                android:name="androidx.lifecycle.ProcessLifecycleInitializer"
+216-->[androidx.lifecycle:lifecycle-process:2.7.0] C:\Users\Tuan PC\.gradle\caches\transforms-3\4868e5ec2e2f28ed0d515004eaa83088\transformed\lifecycle-process-2.7.0\AndroidManifest.xml:30:17-78
+217                android:value="androidx.startup" />
+217-->[androidx.lifecycle:lifecycle-process:2.7.0] C:\Users\Tuan PC\.gradle\caches\transforms-3\4868e5ec2e2f28ed0d515004eaa83088\transformed\lifecycle-process-2.7.0\AndroidManifest.xml:31:17-49
+218            <meta-data
+218-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\Tuan PC\.gradle\caches\transforms-3\94fdbf6b73f70b7cd36ac41b7050cd94\transformed\profileinstaller-1.3.0\AndroidManifest.xml:29:13-31:52
+219                android:name="androidx.profileinstaller.ProfileInstallerInitializer"
+219-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\Tuan PC\.gradle\caches\transforms-3\94fdbf6b73f70b7cd36ac41b7050cd94\transformed\profileinstaller-1.3.0\AndroidManifest.xml:30:17-85
+220                android:value="androidx.startup" />
+220-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\Tuan PC\.gradle\caches\transforms-3\94fdbf6b73f70b7cd36ac41b7050cd94\transformed\profileinstaller-1.3.0\AndroidManifest.xml:31:17-49
+221        </provider>
+222
+223        <meta-data
+223-->[com.google.android.gms:play-services-basement:18.0.0] C:\Users\Tuan PC\.gradle\caches\transforms-3\3a065e497cdad6c2376dca36d93b561c\transformed\play-services-basement-18.0.0\AndroidManifest.xml:21:9-23:69
+224            android:name="com.google.android.gms.version"
+224-->[com.google.android.gms:play-services-basement:18.0.0] C:\Users\Tuan PC\.gradle\caches\transforms-3\3a065e497cdad6c2376dca36d93b561c\transformed\play-services-basement-18.0.0\AndroidManifest.xml:22:13-58
+225            android:value="@integer/google_play_services_version" />
+225-->[com.google.android.gms:play-services-basement:18.0.0] C:\Users\Tuan PC\.gradle\caches\transforms-3\3a065e497cdad6c2376dca36d93b561c\transformed\play-services-basement-18.0.0\AndroidManifest.xml:23:13-66
+226
+227        <receiver
+227-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\Tuan PC\.gradle\caches\transforms-3\94fdbf6b73f70b7cd36ac41b7050cd94\transformed\profileinstaller-1.3.0\AndroidManifest.xml:34:9-52:20
+228            android:name="androidx.profileinstaller.ProfileInstallReceiver"
+228-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\Tuan PC\.gradle\caches\transforms-3\94fdbf6b73f70b7cd36ac41b7050cd94\transformed\profileinstaller-1.3.0\AndroidManifest.xml:35:13-76
+229            android:directBootAware="false"
+229-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\Tuan PC\.gradle\caches\transforms-3\94fdbf6b73f70b7cd36ac41b7050cd94\transformed\profileinstaller-1.3.0\AndroidManifest.xml:36:13-44
+230            android:enabled="true"
+230-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\Tuan PC\.gradle\caches\transforms-3\94fdbf6b73f70b7cd36ac41b7050cd94\transformed\profileinstaller-1.3.0\AndroidManifest.xml:37:13-35
+231            android:exported="true"
+231-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\Tuan PC\.gradle\caches\transforms-3\94fdbf6b73f70b7cd36ac41b7050cd94\transformed\profileinstaller-1.3.0\AndroidManifest.xml:38:13-36
+232            android:permission="android.permission.DUMP" >
+232-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\Tuan PC\.gradle\caches\transforms-3\94fdbf6b73f70b7cd36ac41b7050cd94\transformed\profileinstaller-1.3.0\AndroidManifest.xml:39:13-57
+233            <intent-filter>
+233-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\Tuan PC\.gradle\caches\transforms-3\94fdbf6b73f70b7cd36ac41b7050cd94\transformed\profileinstaller-1.3.0\AndroidManifest.xml:40:13-42:29
+234                <action android:name="androidx.profileinstaller.action.INSTALL_PROFILE" />
+234-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\Tuan PC\.gradle\caches\transforms-3\94fdbf6b73f70b7cd36ac41b7050cd94\transformed\profileinstaller-1.3.0\AndroidManifest.xml:41:17-91
+234-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\Tuan PC\.gradle\caches\transforms-3\94fdbf6b73f70b7cd36ac41b7050cd94\transformed\profileinstaller-1.3.0\AndroidManifest.xml:41:25-88
+235            </intent-filter>
+236            <intent-filter>
+236-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\Tuan PC\.gradle\caches\transforms-3\94fdbf6b73f70b7cd36ac41b7050cd94\transformed\profileinstaller-1.3.0\AndroidManifest.xml:43:13-45:29
+237                <action android:name="androidx.profileinstaller.action.SKIP_FILE" />
+237-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\Tuan PC\.gradle\caches\transforms-3\94fdbf6b73f70b7cd36ac41b7050cd94\transformed\profileinstaller-1.3.0\AndroidManifest.xml:44:17-85
+237-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\Tuan PC\.gradle\caches\transforms-3\94fdbf6b73f70b7cd36ac41b7050cd94\transformed\profileinstaller-1.3.0\AndroidManifest.xml:44:25-82
+238            </intent-filter>
+239            <intent-filter>
+239-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\Tuan PC\.gradle\caches\transforms-3\94fdbf6b73f70b7cd36ac41b7050cd94\transformed\profileinstaller-1.3.0\AndroidManifest.xml:46:13-48:29
+240                <action android:name="androidx.profileinstaller.action.SAVE_PROFILE" />
+240-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\Tuan PC\.gradle\caches\transforms-3\94fdbf6b73f70b7cd36ac41b7050cd94\transformed\profileinstaller-1.3.0\AndroidManifest.xml:47:17-88
+240-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\Tuan PC\.gradle\caches\transforms-3\94fdbf6b73f70b7cd36ac41b7050cd94\transformed\profileinstaller-1.3.0\AndroidManifest.xml:47:25-85
+241            </intent-filter>
+242            <intent-filter>
+242-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\Tuan PC\.gradle\caches\transforms-3\94fdbf6b73f70b7cd36ac41b7050cd94\transformed\profileinstaller-1.3.0\AndroidManifest.xml:49:13-51:29
+243                <action android:name="androidx.profileinstaller.action.BENCHMARK_OPERATION" />
+243-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\Tuan PC\.gradle\caches\transforms-3\94fdbf6b73f70b7cd36ac41b7050cd94\transformed\profileinstaller-1.3.0\AndroidManifest.xml:50:17-95
+243-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\Tuan PC\.gradle\caches\transforms-3\94fdbf6b73f70b7cd36ac41b7050cd94\transformed\profileinstaller-1.3.0\AndroidManifest.xml:50:25-92
+244            </intent-filter>
+245        </receiver>
+246
+247        <meta-data
+247-->[com.google.android.instantapps:instantapps:1.1.0] C:\Users\Tuan PC\.gradle\caches\transforms-3\a0e6ec2fb95450783b0a4a06b3ccf033\transformed\instantapps-1.1.0\AndroidManifest.xml:10:9-12:33
+248            android:name="aia-compat-api-min-version"
+248-->[com.google.android.instantapps:instantapps:1.1.0] C:\Users\Tuan PC\.gradle\caches\transforms-3\a0e6ec2fb95450783b0a4a06b3ccf033\transformed\instantapps-1.1.0\AndroidManifest.xml:11:13-54
+249            android:value="1" />
+249-->[com.google.android.instantapps:instantapps:1.1.0] C:\Users\Tuan PC\.gradle\caches\transforms-3\a0e6ec2fb95450783b0a4a06b3ccf033\transformed\instantapps-1.1.0\AndroidManifest.xml:12:13-30
+250    </application>
+251
+252</manifest>
