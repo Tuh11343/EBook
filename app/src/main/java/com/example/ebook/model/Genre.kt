@@ -22,7 +22,7 @@ class Genre(var id: Int, var name: String) {
             return gson.fromJson(genreList, type)
         }
 
-        fun getGenre(jsonElement: JsonElement):Genre{
+        fun getGenre(jsonElement: JsonElement): Genre {
             val jsonObject = jsonElement.asJsonObject
             val genre: JsonObject =jsonObject.get("genre").asJsonObject
             val type=object : TypeToken<Genre>(){}.type
