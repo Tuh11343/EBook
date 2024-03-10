@@ -9,7 +9,6 @@ import com.example.ebook.model.Genre
 
 class GenreAdapter(
     var genreList: MutableList<Genre>,
-    var length:Int
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>(){
 
     companion object {
@@ -20,7 +19,7 @@ class GenreAdapter(
     var isLoadingAdd=false
 
     inner class GenreViewHolder(val binding: GenreBinding) : RecyclerView.ViewHolder(binding.root)
-    inner class LoadingViewHolder(val binding: LoadingBinding) : RecyclerView.ViewHolder(binding.root)
+    inner class LoadingViewHolder(binding: LoadingBinding) : RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
@@ -48,36 +47,27 @@ class GenreAdapter(
         if(holder.itemViewType == VIEW_TYPE_GENRE){
             val genre=genreList[position]
             if(genre!=null) {
-                val genreHolder = holder as GenreViewHolder
-                genreHolder.binding.id.text = genre.id.toString()
-                genreHolder.binding.name.text = genre.name
-
+                val genreHolder=holder as GenreViewHolder
+                genreHolder.binding.viewModel=genre
             }
         }
     }
 
-    fun isLastPage():Boolean{
-        if(genreList.size==length){
-            return true
-        }
-        return false
-    }
-
-    fun updateUI(){
-        notifyDataSetChanged()
+    fun updateUI(limit:Int){
+        notifyItemRangeChanged(genreList.size-limit,genreList.size)
     }
 
     fun addFooterLoading(){
         isLoadingAdd=true
         genreList.add(Genre())
-        notifyDataSetChanged()
+        notifyItemInserted(genreList.size)
     }
 
     fun removeFooterLoading(){
         if(genreList[genreList.size-1]!=null){
-            genreList.removeAt(genreList.size-1)
-            notifyDataSetChanged()
             isLoadingAdd=false
+            genreList.removeAt(genreList.size-1)
+            notifyItemChanged(genreList.size)
         }
     }
 }
