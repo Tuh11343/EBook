@@ -20,6 +20,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
         android:id="@+id/genreList"
+        tools:listitem="@layout/genre"
         />
 
 </LinearLayout>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/navigation_home"
+        android:icon="@drawable/baseline_home_24"
+        android:title="Trang chủ" />
+
+    <item
+        android:id="@+id/navigation_newandhot"
+        android:icon="@drawable/baseline_star_24"
+        android:title="Mới và hot" />
+
+    <item
+        android:id="@+id/navigation_library"
+        android:icon="@drawable/baseline_book_24"
+        android:title="Thư viện" />
+    <item
+        android:id="@+id/navigation_upgrade"
+        android:icon="@drawable/baseline_diamond_24"
+        android:title="Nâng cấp" />
+</menu>
