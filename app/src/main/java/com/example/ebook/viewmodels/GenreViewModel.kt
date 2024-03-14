@@ -20,6 +20,10 @@ class GenreViewModel : ViewModel() {
         RetrofitClient.get()!!.create(GenreAPIService::class.java)
 
 
+    //Error
+    var errorLiveData=MutableLiveData<String>()
+
+
     fun firstLoadGenreList(limit: Int?, offset: Int?) {
         mDisposable = apiService.findAll(limit, offset)
             .subscribeOn(Schedulers.io())
@@ -30,6 +34,7 @@ class GenreViewModel : ViewModel() {
 
             }, { throwable ->
                 run {
+                    errorLiveData.value=throwable.toString()
                     Log.e("ERROR", "Loi getGenreList:${throwable}")
                 }
             }, {
@@ -45,6 +50,7 @@ class GenreViewModel : ViewModel() {
                 loadMoreGenreList.value= Genre.getGenreList(jsonElement)
             }, { throwable ->
                 run {
+                    errorLiveData.value=throwable.toString()
                     Log.e("ERROR", "Loi getGenreList:${throwable}")
                 }
             }, {
