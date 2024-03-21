@@ -28,13 +28,13 @@ class MainActivity : ComponentActivity() {
         genreViewModel = ViewModelProvider(this)[GenreViewModel::class.java]
         genreViewModel.firstLoadGenreList(12, 0)
 
-        firstLoadGenreList()
+        /*firstLoadGenreList()
         loadMoreGenreList()
-        observeError()
+        observeError()*/
     }
 
 
-    private fun firstLoadGenreList() {
+    /*private fun firstLoadGenreList() {
         genreViewModel.firstLoadGenreList.observe(this) { genreList ->
 
             if (genreList != null && genreList.size != 0) {
@@ -51,7 +51,6 @@ class MainActivity : ComponentActivity() {
             } else {
                 Toast.makeText(this, "Call api error", Toast.LENGTH_SHORT).show()
             }
-
 
         }
 
@@ -103,7 +102,7 @@ class MainActivity : ComponentActivity() {
         genreViewModel.errorLiveData.observe(this) {
             Toast.makeText(this, "Call Api Error", Toast.LENGTH_SHORT).show()
         }
-    }
+    }*/
 
 
 }
