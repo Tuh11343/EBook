@@ -15,7 +15,7 @@
             android:layout_width="80dp"
             android:layout_height="80dp"
             android:layout_alignParentStart="true"
-            android:src="@drawable/Readitasblack">
+            android:src="@drawable/icon_app">
 
         </ImageView>
 
@@ -41,11 +41,9 @@
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="100dp"
-            android:cardCornerRadius="10dp"
-            android:cardElevation="2dp">
+            android:layout_marginTop="100dp">
 
-            <SearchView
+            <androidx.appcompat.widget.SearchView
                 android:id="@+id/searchBook"
                 android:layout_width="wrap_content"
                 android:layout_height="30dp"
@@ -169,15 +167,5 @@
             tools:listitem="@layout/book_view" />
     </LinearLayout>
 
-    <FrameLayout
-        android:id="@+id/framenavbar"
-        android:layout_width="match_parent"
-        android:layout_height="0dp" />
 
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/bottomnav"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:labelVisibilityMode="labeled"
-        app:menu="@menu/menu" />
 </LinearLayout>

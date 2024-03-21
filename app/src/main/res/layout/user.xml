@@ -1,19 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
 
-    android:orientation="vertical"
-    >
+    android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
         android:layout_marginTop="20dp"
-        >
+        android:orientation="horizontal">
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/img_author"
@@ -42,8 +40,8 @@
         <ImageView
             android:layout_width="35dp"
             android:layout_height="35dp"
-            android:src="@drawable/test"
-            android:layout_gravity="center_horizontal">
+            android:layout_gravity="center_horizontal"
+            android:src="@drawable/test">
 
         </ImageView>
 
@@ -72,22 +70,20 @@
             android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:text="Nâng cấp ngay"
             android:layout_margin="8dp"
-            android:background="@drawable/buttonborder">
+            android:background="@drawable/buttonborder"
+            android:text="Nâng cấp ngay">
 
         </Button>
 
     </LinearLayout>
 
-    
-
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
         android:layout_marginTop="30dp"
+        android:layout_weight="1"
         android:background="@drawable/rounded_corner_drawablecolor"
         android:orientation="vertical">
 
@@ -95,51 +91,34 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:background="@drawable/rounded_corner_drawable"
             android:layout_margin="20dp"
-            >
+            android:background="@drawable/rounded_corner_drawable"
+            android:orientation="horizontal">
 
             <ImageView
                 android:id="@+id/img_volume"
                 android:layout_width="80dp"
                 android:layout_height="100dp"
-                android:src="@drawable/volume"
                 android:layout_alignParentStart="true"
                 android:layout_marginLeft="50dp"
                 android:layout_marginTop="50dp"
                 android:layout_marginBottom="50dp"
-                />
+                android:src="@drawable/volume" />
 
             <ImageView
                 android:id="@+id/img_topuser"
                 android:layout_width="80dp"
                 android:layout_height="100dp"
-                android:src="@drawable/user"
                 android:layout_alignParentEnd="true"
-                android:layout_marginRight="50dp"
                 android:layout_marginTop="50dp"
+                android:layout_marginRight="50dp"
                 android:layout_marginBottom="50dp"
-                />
+                android:src="@drawable/user" />
 
-    </RelativeLayout>
-
-
-</LinearLayout>
-    <FrameLayout
-        android:id="@+id/framenavbar"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        />
-
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/bottomnav"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:labelVisibilityMode="labeled"
-        app:menu="@menu/menu"/>
+        </RelativeLayout>
 
 
+    </LinearLayout>
 
 
 </LinearLayout>
