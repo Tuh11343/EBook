@@ -2,7 +2,6 @@ package com.example.ebook.fragment
 
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
-import android.media.MediaPlayer
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -13,58 +12,106 @@ import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.LinearInterpolator
 import android.widget.SeekBar
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
+import androidx.viewpager2.widget.ViewPager2
 import com.example.ebook.R
+import com.example.ebook.adapter.MainPageAdapter
 import com.example.ebook.databinding.FragmentMainBinding
 import com.example.ebook.model.Lyric
+import com.example.ebook.services.MusicService
 import com.example.ebook.viewmodels.SongViewModel
+import com.example.ebook.views.HomeActivity
 import java.io.BufferedReader
 import java.io.InputStreamReader
 
-class MainFragment(var activity: AppCompatActivity, var viewModel: SongViewModel) : Fragment() {
+
+class AudioFragment(
+    private var mainViewPage: ViewPager2,
+) : Fragment() {
 
     private lateinit var binding: FragmentMainBinding
-    private lateinit var mediaPlayer: MediaPlayer
-    private var isPlaying = false
-    private var canPlay = false
     private var handler = Handler(Looper.getMainLooper())
     private var animatorSet = AnimatorSet()
     private var rotation: Float = 0.0f
+    private lateinit var songViewModel: SongViewModel
+    private var musicService: MusicService? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        //Set up animation
-
         setUpSong()
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        val activity = requireActivity() as HomeActivity
+
+        musicService = activity.getMusicService()
+        musicService!!.load("https://voicereplay-backgroundmusics.s3.ap-southeast-1.amazonaws.com/media/Believer+-+Imagine+Dragons.mp3")
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
+        songViewModel = ViewModelProvider(requireActivity())[SongViewModel::class.java]
         binding = FragmentMainBinding.inflate(inflater, container, false)
         return binding.root
     }
 
-
     private fun setUpSong() {
 
-        loadSong()
+        musicService!!.loadIsDone.observe(viewLifecycleOwner) {
+
+            binding.seekBar.max = musicService!!.mediaPlayer!!.duration
+            binding.totalTime.text = formatDuration(musicService!!.mediaPlayer!!.duration.toLong())
+
+            setUpObserve()
+            loadLyrics()
+            setUpProgressBar()
+        }
+
         binding.btnPlay.setOnClickListener {
             btnPlayClick()
-            Log.i("Nothing", "Play song")
         }
 
-        binding.btnFastForward.setOnClickListener {
-            btnFFClick(1000)
+        binding.btnRewind.setOnClickListener{
+            btnRewindClick(2000)
         }
 
-        binding.btnRewind.setOnClickListener {
-            btnRewindClick(1000)
+        binding.btnFastForward.setOnClickListener{
+            btnFFClick(2000)
         }
 
+        binding.btnDown.setOnClickListener{
+            btnDownClick()
+        }
+    }
+
+    private fun setUpObserve(){
+        musicService!!.btnPlayClick.observe(viewLifecycleOwner){
+            if (!musicService!!.mediaPlayer!!.isPlaying) {
+                pauseAnimation()
+                stopSeekBar()
+                binding.btnPlay.setImageResource(R.drawable.icon_play)
+            } else {
+                startAnimation()
+                updateSeekBar()
+                binding.btnPlay.setImageResource(R.drawable.icon_pause)
+            }
+        }
+
+        musicService!!.btnRewindClick.observe(viewLifecycleOwner){
+            btnRewindClick(2000)
+        }
+
+        musicService!!.btnFastForwardClick.observe(viewLifecycleOwner){
+            btnFFClick(2000)
+        }
+
+        musicService!!.seekBarSlide.observe(viewLifecycleOwner){
+            updateCurrentTime()
+        }
     }
 
     private fun loadLyrics() {
@@ -85,14 +132,14 @@ class MainFragment(var activity: AppCompatActivity, var viewModel: SongViewModel
         reader.close()
 
         //Update lyric List
-        viewModel.updateLyricList(lyricsList)
+        songViewModel.updateLyricList(lyricsList)
 
         //Update total Lyrics
         val lyricsBuilder = StringBuilder()
         for (lyric in lyricsList) {
             lyricsBuilder.append("${lyric.content}\n")
         }
-        viewModel.updateTotalLyrics(lyricsBuilder.toString())
+        songViewModel.updateTotalLyrics(lyricsBuilder.toString())
 
     }
 
@@ -102,28 +149,6 @@ class MainFragment(var activity: AppCompatActivity, var viewModel: SongViewModel
         val seconds = time.substring(3, 5).toLong()
         val millis = time.substring(6, 8).toLong() * 10 // convert centiseconds to milliseconds
         return (minutes * 60 + seconds) * 1000 + millis
-    }
-
-
-    /*fun printLyrics() {
-        lyricsList.forEach { lyric ->
-            println("[${lyric.time} ms]: ${lyric.content}")
-        }
-    }*/
-
-
-    private fun loadSong() {
-        mediaPlayer = MediaPlayer()
-        mediaPlayer?.setDataSource("https://voicereplay-backgroundmusics.s3.ap-southeast-1.amazonaws.com/media/Believer+-+Imagine+Dragons.mp3")
-        mediaPlayer?.setOnPreparedListener {
-            binding.seekBar.max = mediaPlayer.duration
-            binding.totalTime.text = formatDuration(mediaPlayer.duration.toLong())
-            Log.i("Nothing", "Du lieu:${formatDuration(mediaPlayer.duration.toLong())}")
-            canPlay = true
-            loadLyrics()
-            setUpProgressBar()
-        }
-        mediaPlayer?.prepareAsync()
     }
 
     private fun startAnimation() {
@@ -140,38 +165,20 @@ class MainFragment(var activity: AppCompatActivity, var viewModel: SongViewModel
         animatorSet.cancel()
     }
 
-    private fun btnPlayClick() {
-        if (canPlay) {
-            if (isPlaying) {
-                pauseAnimation()
-                stopSeekBar()
-                binding.btnPlay.setImageResource(R.drawable.icon_play)
-                mediaPlayer.pause()
-                isPlaying = false
-            } else {
-                startAnimation()
-                updateSeekBar()
-                binding.btnPlay.setImageResource(R.drawable.icon_pause)
-                mediaPlayer.start()
-                isPlaying = true
-            }
-        }
-    }
-
     private fun updateSeekBar() {
         val updateSeekBar = object : Runnable {
             override fun run() {
 
                 updateCurrentTime()
 
-                val currentTime = mediaPlayer?.currentPosition?.toLong()
-                val lyricList = viewModel.lyricList.value!!
+                val currentTime = musicService!!.mediaPlayer?.currentPosition?.toLong()
+                val lyricList = songViewModel.lyricList.value!!
                 for (i in 0 until lyricList.size - 1) {
                     val currentKey = lyricList[i].time
                     val nextKey = lyricList[i + 1].time
                     if (nextKey != null) {
-                        if (currentTime!! >= currentKey && currentTime < nextKey) {
-                            if (viewModel.currentLyric.value != lyricList[i].content) {
+                        if (currentTime!! >= currentKey && currentTime!! < nextKey) {
+                            if (songViewModel.currentLyric.value != lyricList[i].content) {
                                 var start = 0
                                 for ((index, lyric) in lyricList.withIndex()) {
                                     if (lyric.time < currentTime) {
@@ -184,8 +191,8 @@ class MainFragment(var activity: AppCompatActivity, var viewModel: SongViewModel
                                         break
                                     }
                                 }
-                                viewModel.updateStart(start)
-                                viewModel.updateLyric(lyricList[i].content)
+                                songViewModel.updateStart(start)
+                                songViewModel.updateLyric(lyricList[i].content)
 
                             }
                         }
@@ -202,22 +209,38 @@ class MainFragment(var activity: AppCompatActivity, var viewModel: SongViewModel
         handler.removeCallbacksAndMessages(null)
     }
 
+    private fun btnPlayClick() {
+        try{
+            if (musicService!!.mediaPlayer!!.isPlaying) {
+                pauseAnimation()
+                stopSeekBar()
+                binding.btnPlay.setImageResource(R.drawable.icon_play)
+            } else {
+                startAnimation()
+                updateSeekBar()
+                binding.btnPlay.setImageResource(R.drawable.icon_pause)
+            }
+
+            musicService!!.play()
+        }catch (e:Exception){
+            Log.i("ERROR","Error:${e}")
+        }
+    }
 
     private fun btnRewindClick(time: Int) {
-        mediaPlayer.seekTo(mediaPlayer.currentPosition - time)
+        musicService!!.rewind(2000)
         updateCurrentTime()
-        viewModel.updatePositionChanged()
     }
 
     private fun btnFFClick(time: Int) {
-        mediaPlayer.seekTo(mediaPlayer.currentPosition + time)
+        musicService!!.fastForward(2000)
         updateCurrentTime()
-        viewModel.updatePositionChanged()
     }
 
     private fun updateCurrentTime() {
-        binding.seekBar.progress = mediaPlayer.currentPosition
-        binding.currentTime.text = formatDuration(mediaPlayer.currentPosition.toLong())
+        binding.seekBar.progress = musicService!!.mediaPlayer!!.currentPosition
+        binding.currentTime.text =
+            formatDuration(musicService!!.mediaPlayer!!.currentPosition.toLong())
     }
 
     private fun formatDuration(durationInMillis: Long): String {
@@ -231,17 +254,24 @@ class MainFragment(var activity: AppCompatActivity, var viewModel: SongViewModel
     private fun setUpProgressBar() {
         binding.seekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
-                if (fromUser) {
-                    // Nếu giá trị thay đổi do người dùng, cập nhật thời lượng của bài hát
-                    mediaPlayer.seekTo(progress)
-                    updateCurrentTime()
-                    viewModel.updatePositionChanged()
-                }
             }
 
             override fun onStartTrackingTouch(seekBar: SeekBar?) {}
 
-            override fun onStopTrackingTouch(seekBar: SeekBar?) {}
+            override fun onStopTrackingTouch(seekBar: SeekBar?) {
+
+                musicService!!.seekTo(seekBar!!.progress)
+                updateCurrentTime()
+            }
         })
     }
+
+    private fun btnDownClick() {
+        var adapter = mainViewPage.adapter as MainPageAdapter
+        mainViewPage.currentItem = adapter.toHomeFragment()
+        songViewModel.updateIsReadBook(false)
+    }
+
 }
+
+

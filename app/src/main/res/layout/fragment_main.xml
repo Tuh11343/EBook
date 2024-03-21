@@ -6,13 +6,23 @@
     android:orientation="vertical"
     >
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/btnDown"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/button_icon"
+        android:src="@drawable/icon_arrow_down"
+        app:shapeAppearanceOverlay="@style/IconButton"
+        app:tint="@color/white" />
+
     <de.hdodenhof.circleimageview.CircleImageView
         android:layout_marginTop="20dp"
         android:id="@+id/songImg"
         android:layout_width="300dp"
         android:layout_height="300dp"
         android:layout_gravity="center_horizontal"
-        android:src="@drawable/song_circle" />
+        android:src="@drawable/song_circle"
+        />
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -27,9 +37,7 @@
             android:backgroundTint="@color/button_icon"
             android:src="@drawable/icon_bookmark"
             app:shapeAppearanceOverlay="@style/IconButton"
-            app:tint="@color/white"
-            android:contentDescription="Book mark"
-            />
+            app:tint="@color/white" />
 
         <TextView
             android:id="@+id/tvName"
@@ -55,7 +63,6 @@
             app:shapeAppearanceOverlay="@style/IconButton"
             app:tint="@color/white"
             android:layout_alignParentEnd="true"
-            android:contentDescription="Favorite"
             />
 
     </RelativeLayout>
@@ -116,7 +123,6 @@
             android:scaleType="center"
             app:maxImageSize="32dp"
             android:layout_centerHorizontal="true"
-            android:contentDescription=" "
             />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -132,7 +138,6 @@
             android:layout_toLeftOf="@+id/btnPlay"
             android:layout_centerVertical="true"
             android:layout_marginRight="25dp"
-            android:contentDescription="Rewind Button"
             />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -148,7 +153,6 @@
             android:layout_toRightOf="@+id/btnPlay"
             android:layout_centerVertical="true"
             android:layout_marginLeft="25dp"
-            android:contentDescription="Fast Forward"
             />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -163,7 +167,6 @@
             android:scaleType="center"
             android:layout_centerVertical="true"
             android:layout_alignParentEnd="true"
-            android:contentDescription=" "
             />
 
     </RelativeLayout>

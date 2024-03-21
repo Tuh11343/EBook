@@ -93,5 +93,7 @@ dependencies {
     implementation("io.reactivex.rxjava3:rxjava:3.1.5")
     implementation("com.github.akarnokd:rxjava3-retrofit-adapter:3.0.0")
     implementation("com.tbuonomo:dotsindicator:5.0")
+    implementation("nl.joery.animatedbottombar:library:1.1.0")
+    implementation("androidx.media:media:1.4.3")
 
 }
