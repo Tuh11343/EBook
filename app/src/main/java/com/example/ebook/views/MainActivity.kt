@@ -32,7 +32,6 @@ class MainActivity : ComponentActivity() {
         setContentView(binding.root)
 
         getGenres()
-
     }
 
     private fun getGenres() {

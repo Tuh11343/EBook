@@ -83,7 +83,9 @@
             android:background="@drawable/button_background"
             android:text="Đọc ngay"
             android:textColor="@color/black"
-            android:textSize="18sp"></Button>
+            android:textSize="18sp"
+            app:backgroundTint = "@null"
+            ></Button>
 
     </RelativeLayout>
 
