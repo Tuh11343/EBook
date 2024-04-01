@@ -11,13 +11,14 @@ datasource db {
 }
 
 model User {
-  id          Int       @id @default(autoincrement())
-  name        String    @db.VarChar(255)
-  phoneNumber String?
-  address     String?
-  createdAt   DateTime? @default(now())
-  updatedAt   DateTime? @updatedAt
-  Account     Account[]
+  id           Int            @id @default(autoincrement())
+  name         String         @db.VarChar(255)
+  phoneNumber  String?
+  address      String?
+  createdAt    DateTime?      @default(now())
+  updatedAt    DateTime?      @updatedAt
+  Account      Account[]
+  bookProgress BookProgress[]
 
   @@map("users")
 }
@@ -41,11 +42,11 @@ model Book {
   id             Int      @id @default(autoincrement())
   name           String
   description    String?
-  rating         Int @default(0)
+  rating         Int      @default(0)
   progress       Float    @default(0)
   published_year Int
   image          String?
-  language       String @default("Unknown")
+  language       String   @default("Unknown")
   book_type      BookType @default(NORMAL)
 
   bookGenres BookGenre[]
@@ -57,15 +58,16 @@ model Genre {
   name String
 
   bookGenres BookGenre[]
+
   @@map("genre")
 }
 
 model BookGenre {
-  id Int @id @default(autoincrement())
-  book_id   Int
-  book     Book   @relation(fields: [book_id], references: [id],onDelete: Cascade,onUpdate: Cascade)
+  id       Int   @id @default(autoincrement())
+  book_id  Int
+  book     Book  @relation(fields: [book_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
   genre_id Int
-  genre   Genre @relation(fields: [genre_id], references: [id],onDelete: Cascade,onUpdate: Cascade)
+  genre    Genre @relation(fields: [genre_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
 
   @@map("book_genre")
 }
@@ -85,39 +87,48 @@ model BookAuthor {
   id Int @id @default(autoincrement())
 
   book_id   Int
-  book     Book   @relation(fields: [book_id], references: [id],onDelete: Cascade,onUpdate: Cascade)
+  book      Book   @relation(fields: [book_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
   author_id Int
-  author   Author @relation(fields: [author_id], references: [id],onDelete: Cascade,onUpdate: Cascade)
+  author    Author @relation(fields: [author_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
 
   @@map("book_author")
 }
 
-model SubcriptionHistory{
-  id Int @id @default(autoincrement())
-  name String
+model SubcriptionHistory {
+  id    Int       @id @default(autoincrement())
+  name  String
   price Float
   start DateTime?
-  end DateTime?
+  end   DateTime?
 
   subcription Subcription[]
 
   @@map("subcription_history")
 }
 
-model Subcription{
-  id Int @id @default(autoincrement())
-  duration Float
+model Subcription {
+  id              Int       @id @default(autoincrement())
+  duration        Float
   price_per_month Float
-  type String
+  type            String
   limit_book_mark Int
-  book_type BookType? @default(NORMAL)
+  book_type       BookType? @default(NORMAL)
 
-  subcription_id Int
-  subcription_history SubcriptionHistory @relation(fields: [subcription_id],references: [id],onDelete: Cascade,onUpdate: Cascade)
-
+  subcription_id      Int
+  subcription_history SubcriptionHistory @relation(fields: [subcription_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
 }
 
 enum BookType {
   PREMIUM
   NORMAL
+}
+
+model BookProgress {
+  id       Int   @id @default(autoincrement())
+  book_id  Int
+  user_id  Int
+  progress Float
+  User     User? @relation(fields: [user_id], references: [id])
+
+  @@map("book_progress")
 }
