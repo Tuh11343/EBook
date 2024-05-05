@@ -1,5 +1,5 @@
 const prisma = require('../prisma/prisma')
-const SubcriptionHistoryUtils = require('../utils/subcriptionHistoryUtils')
+const SubcriptionHistoryUtils = require('../utils/subscriptionHistoryUtils')
 const catchAsync = require('../utils/catchAsync')
 const subcriptionHistoryUtil = new SubcriptionHistoryUtils()
 
@@ -18,8 +18,8 @@ exports.create = catchAsync(async (req, res) => {
         data: {
             name: data.name,
             price: data.price,
-            start: data.start,
-            end: data.end,
+            start: new Date().toISOString,
+            end: new Date(start.end).toISOString,
         }
     })
     if (!result) {
@@ -28,7 +28,8 @@ exports.create = catchAsync(async (req, res) => {
         })
     } else {
         return res.status(200).json({
-            status: 'Create subcriptionHistory success!!!'
+            status: 'Create subcriptionHistory success!!!',
+            subscriptionHistory:result
         })
     }
 })
@@ -90,8 +91,8 @@ exports.update = catchAsync(async (req, res) => {
         data: {
             name: data.name ?? subcriptionHistory.name,
             price: data.price ?? subcriptionHistory.price,
-            start: data.start ?? subcriptionHistory.start,
-            end: data.end ?? subcriptionHistory.end,
+            start: new Date().toISOString,
+            end: new Date(start.end).toISOString,
         }
     })
     if (!result) {
@@ -100,7 +101,8 @@ exports.update = catchAsync(async (req, res) => {
         })
     } else {
         return res.status(200).json({
-            status: 'Update subcriptionHistory success!!!'
+            status: 'Update subcriptionHistory success!!!',
+            subscriptionHistory:result
         })
     }
 })
@@ -156,5 +158,3 @@ exports.findByID = catchAsync(async (req, res) => {
         })
     }
 })
-
-
