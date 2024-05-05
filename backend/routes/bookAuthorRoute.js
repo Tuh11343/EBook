@@ -1,6 +1,6 @@
 const express = require('express')
 const router = express.Router()
-const bookAuthorController = require('../controller/bookAuthorController')
+const bookAuthorController = require('../controllers/bookAuthorController')
 
 const authMiddleware = require('../middlewares/authMiddleware')
 router.use(authMiddleware.protect)
