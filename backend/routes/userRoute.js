@@ -3,7 +3,7 @@ const authMiddleware = require('../middlewares/authMiddleware')
 const userController = require('../controllers/userController')
 
 const router = express.Router()
-router.use(authMiddleware.protect)
+// router.use(authMiddleware.protect)
 
 router.get('/', userController.getAllUsers)
 router.get('/:id', userController.getUserById)
