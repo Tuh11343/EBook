@@ -4,7 +4,7 @@ class SubcriptionUtils {
   constructor() {}
 
   async findByID(id) {
-    return await prisma.subcription.findFirst({
+    return await prisma.subscription.findFirst({
       where: {
         id:id
       },
@@ -12,7 +12,7 @@ class SubcriptionUtils {
   }
 
   async count(){
-    return await prisma.subcription.count({})
+    return await prisma.subscription.count({})
   }
 }
 

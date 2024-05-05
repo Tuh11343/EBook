@@ -20,22 +20,22 @@ model User {
   Account      Account[]
   bookProgress BookProgress[]
 
-  @@map("users")
+  @@map("user")
 }
 
 model Account {
-  id          Int       @id @default(autoincrement())
-  user_id     Int
-  email       String    @db.VarChar(255)
-  password    String
-  createdAt   DateTime? @default(now())
-  updatedAt   DateTime? @updatedAt
-  User        User      @relation(fields: [user_id], references: [id], onDelete: Cascade)
-  is_verified Boolean   @default(false)
-  otpCode     String?
-  otpExpires  DateTime
+  id              Int @id @default(autoincrement())
+  user_id         Int
+  subscription_id Int
 
-  @@map("accounts")
+  email       String  @db.VarChar(255)
+  password    String
+  is_verified Boolean @default(false)
+
+  User         User        @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  Subscription Subscription @relation(fields: [subscription_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+
+  @@map("account")
 }
 
 model Book {
@@ -48,9 +48,13 @@ model Book {
   image          String?
   language       String   @default("Unknown")
   book_type      BookType @default(NORMAL)
+  src_audio      String?
+  lyric          String?
 
   bookGenres BookGenre[]
   bookAuthor BookAuthor[]
+
+  @@map("book")
 }
 
 model Genre {
@@ -94,28 +98,33 @@ model BookAuthor {
   @@map("book_author")
 }
 
-model SubcriptionHistory {
+model SubscriptionHistory {
   id    Int       @id @default(autoincrement())
   name  String
   price Float
   start DateTime?
   end   DateTime?
 
-  subcription Subcription[]
+  subcription Subscription[]
 
   @@map("subcription_history")
 }
 
-model Subcription {
-  id              Int       @id @default(autoincrement())
+model Subscription {
+  id                      Int @id @default(autoincrement())
+  subscription_history_id Int
+
   duration        Float
   price_per_month Float
   type            String
   limit_book_mark Int
   book_type       BookType? @default(NORMAL)
 
-  subcription_id      Int
-  subcription_history SubcriptionHistory @relation(fields: [subcription_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  subcription_history SubscriptionHistory @relation(fields: [subscription_history_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+
+  accounts Account[]
+
+  @@map("subscription")
 }
 
 enum BookType {
