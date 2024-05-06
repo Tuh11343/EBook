@@ -1,7 +1,7 @@
 const prisma = require('../prisma/prisma')
 const SubcriptionHistoryUtils = require('../utils/subscriptionHistoryUtils')
 const catchAsync = require('../utils/catchAsync')
-const subcriptionHistoryUtil = new SubcriptionHistoryUtils()
+const subscriptionHistoryUtil = new SubcriptionHistoryUtils()
 
 exports.create = catchAsync(async (req, res) => {
     const data = req.body
@@ -14,21 +14,21 @@ exports.create = catchAsync(async (req, res) => {
     }
 
     //Create SubcriptionHistory
-    const result = await prisma.subcriptionHistory.create({
+    const result = await prisma.subscriptionHistory.create({
         data: {
             name: data.name,
             price: data.price,
-            start: new Date().toISOString,
-            end: new Date(start.end).toISOString,
+            start: new Date(data.start).toISOString(),
+            end: new Date(data.end).toISOString(),
         }
     })
     if (!result) {
         return res.status(400).json({
-            status: 'Create subcriptionHistory failed!!!'
+            status: 'Create subscriptionHistory failed!!!'
         })
     } else {
         return res.status(200).json({
-            status: 'Create subcriptionHistory success!!!',
+            status: 'Create subscriptionHistory success!!!',
             subscriptionHistory:result
         })
     }
@@ -42,25 +42,25 @@ exports.delete = catchAsync(async (req, res) => {
         })
     }
 
-    const subcriptionHistory = await subcriptionHistoryUtil.findByID(parseInt(id))
-    if (!subcriptionHistory) {
+    const subscriptionHistory = await subscriptionHistoryUtil.findByID(parseInt(id))
+    if (!subscriptionHistory) {
         return res.status(400).json({
-            status: 'No subcriptionHistory found'
+            status: 'No subscriptionHistory found'
         })
     }
 
-    const result = await prisma.subcriptionHistory.delete({
+    const result = await prisma.subscriptionHistory.delete({
         where: {
             id: parseInt(id)
         }
     })
     if (!result) {
         return res.status(400).json({
-            status: 'Delete subcriptionHistory failed!!!'
+            status: 'Delete subscriptionHistory failed!!!'
         })
     } else {
         return res.status(200).json({
-            status: 'Delete subcriptionHistory success!!!'
+            status: 'Delete subscriptionHistory success!!!'
         })
     }
 })
@@ -75,33 +75,33 @@ exports.update = catchAsync(async (req, res) => {
         })
     }
 
-    //Check if subcriptionHistory exist
-    const subcriptionHistory = await subcriptionHistoryUtil.findByID(parseInt(data.id))
-    if (!subcriptionHistory) {
+    //Check if subscriptionHistory exist
+    const subscriptionHistory = await subscriptionHistoryUtil.findByID(parseInt(data.id))
+    if (!subscriptionHistory) {
         return res.status(400).json({
-            status: 'No subcriptionHistory found'
+            status: 'No subscriptionHistory found'
         })
     }
 
-    //Update subcriptionHistory
-    const result = await prisma.subcriptionHistory.update({
+    //Update subscriptionHistory
+    const result = await prisma.subscriptionHistory.update({
         where: {
             id: parseInt(data.id)
         },
         data: {
-            name: data.name ?? subcriptionHistory.name,
-            price: data.price ?? subcriptionHistory.price,
-            start: new Date().toISOString,
-            end: new Date(start.end).toISOString,
+            name: data.name ?? subscriptionHistory.name,
+            price: data.price ?? subscriptionHistory.price,
+            start: new Date(data.start).toISOString(),
+            end: new Date(data.end).toISOString(),
         }
     })
     if (!result) {
         return res.status(400).json({
-            status: 'Update subcriptionHistory failed!!!'
+            status: 'Update subscriptionHistory failed!!!'
         })
     } else {
         return res.status(200).json({
-            status: 'Update subcriptionHistory success!!!',
+            status: 'Update subscriptionHistory success!!!',
             subscriptionHistory:result
         })
     }
@@ -110,12 +110,12 @@ exports.update = catchAsync(async (req, res) => {
 exports.findAll = catchAsync(async (req, res) => {
     const query=req.query
     var subcriptionHistories
-    const length=await subcriptionHistoryUtil.count()
+    const length=await subscriptionHistoryUtil.count()
 
     if(!query.limit||!query.offset){
-        subcriptionHistories = await prisma.subcriptionHistory.findMany()
+        subcriptionHistories = await prisma.subscriptionHistory.findMany()
     }else{
-        subcriptionHistories = await prisma.subcriptionHistory.findMany({
+        subcriptionHistories = await prisma.subscriptionHistory.findMany({
             take:parseInt(query.limit),
             skip:parseInt(query.offset),
         })
@@ -142,19 +142,19 @@ exports.findByID = catchAsync(async (req, res) => {
         })
     }
 
-    const subcriptionHistory = await prisma.subcriptionHistory.findUnique({
+    const subscriptionHistory = await prisma.subscriptionHistory.findUnique({
         where: {
             id: parseInt(id)
         }
     })
-    if (!subcriptionHistory) {
+    if (!subscriptionHistory) {
         return res.status(400).json({
-            status: 'No subcriptionHistory found !!!'
+            status: 'No subscriptionHistory found !!!'
         })
     } else {
         return res.status(200).json({
             status: 'SubcriptionHistory search successful',
-            subcriptionHistory
+            subscriptionHistory
         })
     }
 })

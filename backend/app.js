@@ -34,7 +34,7 @@ app.use('/api/v1/book', bookRoute)
 app.use('/api/v1/genre', genreRoute)
 app.use('/api/v1/payment', paymentRoute)
 app.use('/api/v1/subscription', subscriptionRoute)
-app.use('/api/v1/user', subscriptionHistoryRoute)
+app.use('/api/v1/subscriptionHistory', subscriptionHistoryRoute)
 app.use('/api/v1/bookProgress', bookProgressRoute)
 
 swagger(app)

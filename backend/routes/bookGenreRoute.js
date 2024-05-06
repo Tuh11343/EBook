@@ -1,24 +1,24 @@
 const express = require('express')
 const router = express.Router()
-const bookGenresController = require('../controller/bookGenresController')
+const bookGenreController = require('../controllers/bookGenreController')
 
-const authMiddleware = require('../middlewares/authMiddleware')
-router.use(authMiddleware.protect)
+// const authMiddleware = require('../middlewares/authMiddleware')
+// router.use(authMiddleware.protect)
 
 //Get
-router.get('/genresName', bookGenresController.findByGenresName)
-router.get('/id', bookGenresController.findByID)
-router.get('/', bookGenresController.findAll)
-router.get('/bookName', bookGenresController.findByBookName)
+router.get('/genresName', bookGenreController.findByGenreName)
+router.get('/id', bookGenreController.findByID)
+router.get('/', bookGenreController.findAll)
+router.get('/bookName', bookGenreController.findByBookName)
 
 //Update
-router.put('/', bookGenresController.update)
+router.put('/', bookGenreController.update)
 
 //Create
-router.post('/', bookGenresController.create)
+router.post('/', bookGenreController.create)
 
 //Delete
-router.delete('/', bookGenresController.delete)
+router.delete('/', bookGenreController.delete)
 
 
 module.exports = router

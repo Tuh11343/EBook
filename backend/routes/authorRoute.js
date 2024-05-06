@@ -1,9 +1,9 @@
 const express = require('express')
 const router = express.Router()
-const authorController = require('../controller/authorController')
+const authorController = require('../controllers/authorController')
 
-const authMiddleware = require('../middlewares/authMiddleware')
-router.use(authMiddleware.protect)
+// const authMiddleware = require('../middlewares/authMiddleware')
+// router.use(authMiddleware.protect)
 
 //Get
 router.get('/name', authorController.findByName)

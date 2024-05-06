@@ -15,7 +15,7 @@ exports.create = catchAsync(async (req, res) => {
 
     //Create Subcription
     const result = await prisma.subscription.create({
-        data: result
+        data: data
     })
     if (!result) {
         return res.status(400).json({

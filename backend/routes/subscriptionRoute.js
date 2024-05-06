@@ -1,9 +1,9 @@
 const express = require('express')
 const router = express.Router()
-const subscriptionController = require('../controllers/subcriptionController')
+const subscriptionController = require('../controllers/subscriptionController')
 
-const authMiddleware = require('../middlewares/authMiddleware')
-router.use(authMiddleware.protect)
+// const authMiddleware = require('../middlewares/authMiddleware')
+// router.use(authMiddleware.protect)
 
 //Get
 router.get('/', subscriptionController.findAll)
