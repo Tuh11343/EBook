@@ -1,22 +1,22 @@
 const express = require('express')
 const router = express.Router()
-const subcriptionHistoryController = require('../controllers/subcriptionHistoryController')
+const subscriptionHistoryController = require('../controllers/subscriptionHistoryController')
 
-const authMiddleware = require('../middlewares/authMiddleware')
-router.use(authMiddleware.protect)
+// const authMiddleware = require('../middlewares/authMiddleware')
+// router.use(authMiddleware.protect)
 
 //Get
-router.get('/', subcriptionHistoryController.findAll)
-router.get('/id', subcriptionHistoryController.findByID)
+router.get('/', subscriptionHistoryController.findAll)
+router.get('/id', subscriptionHistoryController.findByID)
 
 //Update
-router.put('/', subcriptionHistoryController.update)
+router.put('/', subscriptionHistoryController.update)
 
 //Create
-router.post('/', subcriptionHistoryController.create)
+router.post('/', subscriptionHistoryController.create)
 
 //Delete
-router.delete('/', subcriptionHistoryController.delete)
+router.delete('/', subscriptionHistoryController.delete)
 
 
 module.exports = router

@@ -88,3 +88,21 @@ exports.findUserByName = catchAsync(async (req, res) => {
     user,
   })
 })
+
+
+exports.create = catchAsync(async (req, res) => {
+  const body=req.body
+  if (!body) {
+    return res.status(400).json({ message: 'No data provided' })
+  }
+  const user = await prisma.user.create({
+    data:body
+  })
+  if (!user) {
+    return res.status(400).json({ message: 'User not exists, please create one!' })
+  }
+  return res.status(200).json({
+    status: 'Create user successfully!',
+    user,
+  })
+})

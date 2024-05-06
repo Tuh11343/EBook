@@ -75,14 +75,51 @@ exports.updateAccountById = catchAsync(async (req, res) => {
 exports.findAccountByEmail = catchAsync(async (req, res) => {
   const accountEmail = req.params.email
   if (!accountEmail) {
-    res.status(400).json({ message: 'Please provide email to find account' })
+    return res.status(400).json({ message: 'Please provide email to find account' })
   }
   const account = await accountUtils.getAccountByEmail(accountEmail)
   if (!account) {
-    res.status(400).json({ message: 'Account not exists, please create one!' })
+    return res.status(400).json({ message: 'Account not exists, please create one!' })
   }
-  res.status(200).json({
+  return res.status(200).json({
     status: 'Get account successfully!',
+    account,
+  })
+})
+
+exports.signIn = catchAsync(async (req, res) => {
+  const query=req.query
+  if (!query) {
+    return res.status(400).json({ message: 'No data provided' })
+  }
+  const account = await prisma.account.findFirst({
+    where:{
+      email:query.email,
+      password:query.password
+    }
+  })
+  if (!account) {
+    return res.status(400).json({ message: 'Account not exists, please create one!' })
+  }
+  return res.status(200).json({
+    status: 'Sign In successfully!',
+    account,
+  })
+})
+
+exports.create = catchAsync(async (req, res) => {
+  const body=req.body
+  if (!body) {
+    return res.status(400).json({ message: 'No data provided' })
+  }
+  const account = await prisma.account.create({
+    data:body
+  })
+  if (!account) {
+    return res.status(400).json({ message: 'Create account Error!' })
+  }
+  return res.status(200).json({
+    status: 'Create account successfully!',
     account,
   })
 })
