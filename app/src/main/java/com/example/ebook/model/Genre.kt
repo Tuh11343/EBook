@@ -1,13 +1,14 @@
 package com.example.ebook.model
 
+
 import com.google.gson.Gson
 import com.google.gson.JsonArray
 import com.google.gson.JsonElement
 import com.google.gson.JsonObject
 import com.google.gson.reflect.TypeToken
 
-class Genre(var id: Int, var name: String) {
-    constructor(): this(-1, "")
+class Genre(var id: Int, var name: String,var image:String?) {
+    constructor(): this(-1, "",null)
 
     override fun toString(): String {
         return "ID: $id, Name: $name"
@@ -24,8 +25,8 @@ class Genre(var id: Int, var name: String) {
 
         fun getGenre(jsonElement: JsonElement): Genre {
             val jsonObject = jsonElement.asJsonObject
-            val genre: JsonObject =jsonObject.get("genre").asJsonObject
-            val type=object : TypeToken<Genre>(){}.type
+            val genre:JsonObject=jsonObject.get("genre").asJsonObject
+            val type=object :TypeToken<Genre>(){}.type
             return gson.fromJson(genre,type)
         }
 
