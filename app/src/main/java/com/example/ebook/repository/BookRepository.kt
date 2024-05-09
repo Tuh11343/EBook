@@ -23,6 +23,27 @@ class BookRepository {
             }
     }
 
+    fun findNormalBook(limit: Int?, offset: Int?): Single<JsonElement> {
+        return apiService.findNormalBook(limit,offset)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .onErrorResumeNext { throwable: Throwable ->
+                Log.i("ERROR", "Get all book error: $throwable")
+                Single.error(throwable)
+            }
+    }
+
+    fun findPremiumBook(limit: Int?, offset: Int?): Single<JsonElement> {
+        return apiService.findPremiumBook(limit, offset)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .onErrorResumeNext { throwable: Throwable ->
+                Log.i("ERROR", "Get all book error: $throwable")
+                Single.error(throwable)
+            }
+    }
+
+
     fun findByGenreID(id:Int,limit: Int?, offset: Int?): Single<JsonElement> {
         return apiService.findByGenreID(id,limit,offset)
             .subscribeOn(Schedulers.io())
