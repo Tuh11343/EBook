@@ -1,66 +1,36 @@
 package com.example.ebook.viewmodels
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.ebook.network.api.GenreAPIService
 import com.example.ebook.model.Genre
-import com.example.ebook.network.RetrofitClient
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
-import io.reactivex.rxjava3.disposables.Disposable
-import io.reactivex.rxjava3.schedulers.Schedulers
+import com.example.ebook.repository.GenreRepository
 
 class GenreViewModel : ViewModel() {
 
-    var firstLoadGenreList=MutableLiveData<MutableList<Genre>>()
-    var loadMoreGenreList=MutableLiveData<MutableList<Genre>>()
-    var length=MutableLiveData<Int>()
-    private var mDisposable: Disposable? = null
-    private val apiService: GenreAPIService =
-        RetrofitClient.get()!!.create(GenreAPIService::class.java)
+    var firstLoadGenreList = MutableLiveData<MutableList<Genre>>()
+    var loadMoreGenreList = MutableLiveData<MutableList<Genre>>()
+    var length = MutableLiveData<Int>()
 
-
-    //Error
-    var errorLiveData=MutableLiveData<String>()
-
+    var errorLiveData = MutableLiveData<String>()
+    var genreRepository = GenreRepository()
 
     fun firstLoadGenreList(limit: Int?, offset: Int?) {
-        mDisposable = apiService.findAll(limit, offset)
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
+        genreRepository.getAllGenres(limit, offset)
             .subscribe({ jsonElement ->
-                firstLoadGenreList.value= Genre.getGenreList(jsonElement)
-                length.value= Genre.getLength(jsonElement)
-
-            }, { throwable ->
-                run {
-                    errorLiveData.value=throwable.toString()
-                    Log.e("ERROR", "Loi getGenreList:${throwable}")
-                }
-            }, {
+                firstLoadGenreList.value = Genre.getGenreList(jsonElement)
+                length.value = Genre.getLength(jsonElement)
+            }, { error ->
+                errorLiveData.value = "Error loading genres: ${error.message}"
             })
-
     }
 
     fun loadMoreGenreList(limit: Int?, offset: Int?) {
-        mDisposable = apiService.findAll(limit, offset)
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
+        genreRepository.getAllGenres(limit, offset)
             .subscribe({ jsonElement ->
-                loadMoreGenreList.value= Genre.getGenreList(jsonElement)
-            }, { throwable ->
-                run {
-                    errorLiveData.value=throwable.toString()
-                    Log.e("ERROR", "Loi getGenreList:${throwable}")
-                }
-            }, {
+                loadMoreGenreList.value = Genre.getGenreList(jsonElement)
+            }, { error ->
+                errorLiveData.value = "Error loading genres: ${error.message}"
             })
-
-    }
-
-    override fun onCleared() {
-        super.onCleared()
-        mDisposable?.dispose()
     }
 
 }

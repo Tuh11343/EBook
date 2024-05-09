@@ -2,4 +2,6 @@
     <string name="app_name">EBook</string>
     <string name="title_activity_main">MainActivity</string>
     <string name="title_login">Đăng nhập</string>
+    <string name="library">Thư viện</string>
+    <string name="allbooks">Tất cả</string>
 </resources>

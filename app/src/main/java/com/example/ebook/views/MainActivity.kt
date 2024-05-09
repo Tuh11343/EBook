@@ -1,17 +1,10 @@
 package com.example.ebook.views
 
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
-import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.ebook.adapter.GenreAdapter
 import com.example.ebook.databinding.MainBinding
-import com.example.ebook.model.Genre
 import com.example.ebook.viewmodels.GenreViewModel
-import com.example.ebook.utils.PaginationScrollListener
 
 
 class MainActivity : ComponentActivity() {
@@ -28,13 +21,13 @@ class MainActivity : ComponentActivity() {
         genreViewModel = ViewModelProvider(this)[GenreViewModel::class.java]
         genreViewModel.firstLoadGenreList(12, 0)
 
-        firstLoadGenreList()
+        /*firstLoadGenreList()
         loadMoreGenreList()
-        observeError()
+        observeError()*/
     }
 
 
-    private fun firstLoadGenreList() {
+    /*private fun firstLoadGenreList() {
         genreViewModel.firstLoadGenreList.observe(this) { genreList ->
 
             if (genreList != null && genreList.size != 0) {
@@ -51,7 +44,6 @@ class MainActivity : ComponentActivity() {
             } else {
                 Toast.makeText(this, "Call api error", Toast.LENGTH_SHORT).show()
             }
-
 
         }
 
@@ -103,7 +95,7 @@ class MainActivity : ComponentActivity() {
         genreViewModel.errorLiveData.observe(this) {
             Toast.makeText(this, "Call Api Error", Toast.LENGTH_SHORT).show()
         }
-    }
+    }*/
 
 
 }
