@@ -79,6 +79,29 @@ exports.login = catchAsync(async (req, res, next) => {
   }
 })
 
+exports.checkIsLogin = catchAsync(async (req, res, next) => {
+  const data = req.body
+  const authUtils = new AuthUtils(data.email, data.password)
+
+  try {
+    const account = await authUtils.getAccountByEmail()
+    if (!account) {
+      res.status(400).json({ message: 'Account not exists, please create one!', isLogin: false })
+      return
+    }
+
+    const isPasswordValid = authUtils.comparePassword(account.password)
+    if (!isPasswordValid) {
+      res.status(400).json({ message: 'Password is not correct!', isLogin: false })
+      return
+    }
+
+    res.status(200).json({ message: 'Login successfully!', isLogin: true })
+  } catch (e) {
+    next(new AppError(e, 500))
+  }
+})
+
 exports.verifyOtp = catchAsync(async (req, res, next) => {
   const data = req.body
   try {

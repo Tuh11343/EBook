@@ -76,18 +76,5 @@
 
     </LinearLayout>
 
-    <FrameLayout
-        android:id="@+id/framenavbar"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-         />
-
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/bottomnav"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:labelVisibilityMode="labeled"
-        app:menu="@menu/menu" />
-
 
 </LinearLayout>

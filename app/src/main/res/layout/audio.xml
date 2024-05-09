@@ -7,6 +7,7 @@
     android:orientation="vertical"
     android:background="@drawable/gradientbackground"
     >
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -75,7 +76,6 @@
                 android:layout_marginTop="5dp"
                 android:src="@drawable/share2"
                 android:layout_alignParentStart="true"
-                android:background=""
                 />
 
             <TextView
@@ -95,7 +95,6 @@
                 android:layout_marginTop="5dp"
                 android:src="@drawable/heart2"
                 android:layout_alignParentEnd="true"
-                android:background=""
                 android:contentDescription="Yêu thích"
                 />
 
@@ -127,7 +126,7 @@
                 android:id="@+id/buttonPlayPause"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
-                android:src="@drawable/Vector"
+                android:src="@drawable/icon_play"
                 android:background="@drawable/roundedmusic"
                 android:layout_centerHorizontal="true"
                 />
