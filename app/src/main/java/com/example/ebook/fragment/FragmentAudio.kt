@@ -14,47 +14,51 @@ import android.view.animation.LinearInterpolator
 import android.widget.SeekBar
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.viewpager2.widget.ViewPager2
 import com.example.ebook.R
-import com.example.ebook.adapter.MainPageAdapter
-import com.example.ebook.databinding.FragmentMainBinding
+import com.example.ebook.databinding.FragmentAudioBinding
 import com.example.ebook.model.Lyric
 import com.example.ebook.services.MusicService
+import com.example.ebook.viewmodels.MainViewModel
 import com.example.ebook.viewmodels.SongViewModel
+import com.example.ebook.views.MainActivity
 import java.io.BufferedReader
 import java.io.InputStreamReader
 
 
-class AudioFragment(
-    private var mainViewPage: ViewPager2,
+class FragmentAudio(
 ) : Fragment() {
 
-    private lateinit var binding: FragmentMainBinding
+    private lateinit var binding: FragmentAudioBinding
     private var handler = Handler(Looper.getMainLooper())
     private var animatorSet = AnimatorSet()
     private var rotation: Float = 0.0f
     private lateinit var songViewModel: SongViewModel
+    private lateinit var mainViewModel: MainViewModel
     private var musicService: MusicService? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val activity = requireActivity() as MainActivity
+
+        musicService = activity.getMusicService()
+        var book=mainViewModel.selectedBook.value
+
+        //https://voicereplay-backgroundmusics.s3.ap-southeast-1.amazonaws.com/media/Believer+-+Imagine+Dragons.mp3
+        musicService!!.load(book?.srcAudio?:"")
         setUpSong()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val activity = requireActivity() as HomeActivity
-
-        musicService = activity.getMusicService()
-        musicService!!.load("https://voicereplay-backgroundmusics.s3.ap-southeast-1.amazonaws.com/media/Believer+-+Imagine+Dragons.mp3")
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
+        mainViewModel=ViewModelProvider(requireActivity())[MainViewModel::class.java]
         songViewModel = ViewModelProvider(requireActivity())[SongViewModel::class.java]
-        binding = FragmentMainBinding.inflate(inflater, container, false)
+        binding = FragmentAudioBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -176,7 +180,7 @@ class AudioFragment(
                     val currentKey = lyricList[i].time
                     val nextKey = lyricList[i + 1].time
                     if (nextKey != null) {
-                        if (currentTime!! >= currentKey && currentTime!! < nextKey) {
+                        if (currentTime!! >= currentKey && currentTime < nextKey) {
                             if (songViewModel.currentLyric.value != lyricList[i].content) {
                                 var start = 0
                                 for ((index, lyric) in lyricList.withIndex()) {
@@ -266,9 +270,7 @@ class AudioFragment(
     }
 
     private fun btnDownClick() {
-        var adapter = mainViewPage.adapter as MainPageAdapter
-        mainViewPage.currentItem = adapter.toHomeFragment()
-        songViewModel.updateIsReadBook(false)
+        mainViewModel.updateCurrentState(MainViewModel.Companion.CurrentState.Home)
     }
 
 }

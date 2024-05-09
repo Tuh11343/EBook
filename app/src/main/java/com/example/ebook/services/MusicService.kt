@@ -27,7 +27,7 @@ import androidx.core.app.NotificationManagerCompat
 import androidx.lifecycle.MutableLiveData
 import com.example.ebook.R
 import com.example.ebook.utils.AppInstance
-import com.example.ebook.views.HomeActivity
+import com.example.ebook.views.MainActivity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -38,7 +38,7 @@ class MusicService : Service() {
     var mediaPlayer: MediaPlayer? = null
     private val binder = LocalBinder()
     private val coroutineScope = CoroutineScope(Dispatchers.IO)
-    private var isNotificationCreated=false
+    var isNotificationCreated=false
     private lateinit var bitmap:Bitmap
 
     var loadIsDone=MutableLiveData<Boolean>()
@@ -124,7 +124,7 @@ class MusicService : Service() {
 
         setUpSeekBar(mediaSession, action)
 
-        val intent = Intent(this, HomeActivity::class.java)
+        val intent = Intent(this, MainActivity::class.java)
         intent.putExtra("data", "test")
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP)
         val pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
@@ -195,7 +195,7 @@ class MusicService : Service() {
         }
     }
 
-    private fun cancelNotification() {
+    fun cancelNotification() {
         if (isNotificationCreated) {
             stopForeground(STOP_FOREGROUND_REMOVE)
             isNotificationCreated = false
@@ -222,7 +222,7 @@ class MusicService : Service() {
         val playPendingIntent =
             PendingIntent.getService(
                 this,
-                AppInstance.PLAY_PAUSE_REQUEST_CODE,
+                0,
                 playIntent,
                 PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
             )
@@ -304,7 +304,7 @@ class MusicService : Service() {
         if (mediaPlayer == null) {
             createNotificationChannel()
             mediaPlayer = MediaPlayer()
-            mediaPlayer?.setDataSource(url)
+            mediaPlayer?.setDataSource("https://firebasestorage.googleapis.com/v0/b/myprojet1803.appspot.com/o/Ed%20Sheeran%20-Shape%20of%20You%20%5BOfficial%5D.mp3?alt=media&token=62f539e6-1927-4e19-bc7a-bdb36b8bcde4")
             mediaPlayer?.setOnPreparedListener {
                 Log.i("Nothing","Media Player Set Up is Done")
                 loadIsDone.postValue(true)
