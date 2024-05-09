@@ -13,4 +13,10 @@ interface BookAPIService {
     @GET("/api/v1/book/genre")
     fun findByGenreID(@Query("limit") id:Int,@Query("limit") limit:Int?, @Query("offset") offset:Int?): Single<JsonElement>
 
+    @GET("/api/v1/book/normal")
+    fun findNormalBook(@Query("limit") limit:Int?, @Query("offset") offset:Int?): Single<JsonElement>
+
+    @GET("/api/v1/book/premium")
+    fun findPremiumBook(@Query("limit") limit:Int?, @Query("offset") offset:Int?): Single<JsonElement>
+
 }
