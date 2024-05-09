@@ -20,15 +20,15 @@ exports.register = catchAsync(async (req, res, next) => {
       data: {
         name: data.name,
         address: data.address,
-        phoneNumber: data.phoneNumber
-      }
+        phoneNumber: data.phoneNumber,
+      },
     })
     const mobile = '+84828098274'
 
     const OtpCode = authUtils.generateOtp()
     const params = {
       Message: `Your OTP code is: ${OtpCode}`,
-      PhoneNumber: mobile
+      PhoneNumber: mobile,
     }
     await authUtils.sendOtpSMS(params)
     const ttl = 5 * 60 * 1000
@@ -39,8 +39,8 @@ exports.register = catchAsync(async (req, res, next) => {
         password: hashPassword,
         user_id: user.id,
         otpCode: OtpCode,
-        otpExpires: new Date(expiresIn)
-      }
+        otpExpires: new Date(expiresIn),
+      },
     })
 
     res.status(200).json({ message: 'Register successfully!' })
@@ -87,8 +87,8 @@ exports.verifyOtp = catchAsync(async (req, res, next) => {
 
     const account = await prisma.account.findFirst({
       where: {
-        otpCode
-      }
+        otpCode,
+      },
     })
     if (!account) {
       res.status(400).json({ message: 'Account not exists, please create one!' })
@@ -100,12 +100,12 @@ exports.verifyOtp = catchAsync(async (req, res, next) => {
     }
     await prisma.account.update({
       where: {
-        id: account.id
+        id: account.id,
       },
       data: {
         is_verified: true,
-        otpCode: ''
-      }
+        otpCode: '',
+      },
     })
     res.status(200).send({ message: 'Verify account success' })
   } catch (e) {
