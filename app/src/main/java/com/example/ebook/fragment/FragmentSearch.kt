@@ -1,4 +1,4 @@
-package com.example.connectnodejs.fragment
+package com.example.ebook.fragment
 
 import android.app.Dialog
 import android.os.Bundle
@@ -13,21 +13,23 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.connectnodejs.PaginationScrollListener
-import com.example.connectnodejs.adapter.SearchBookViewAdapter
 import com.example.connectnodejs.adapter.FilterBottomSheetAdapter
-import com.example.connectnodejs.adapter.SortBottomSheetAdapter
-import com.example.connectnodejs.databinding.FilterBottomSheetBinding
-import com.example.connectnodejs.databinding.FragmentSearchBinding
-import com.example.connectnodejs.databinding.SortBottomSheetBinding
-import com.example.connectnodejs.listener.FilterListener
-import com.example.connectnodejs.listener.SearchBookListener
-import com.example.connectnodejs.listener.SortListener
-import com.example.connectnodejs.model.Book
-import com.example.connectnodejs.model.Genre
-import com.example.connectnodejs.utils.AppInstance
-import com.example.connectnodejs.viewmodels.MainViewModel
-import com.example.connectnodejs.viewmodels.SearchViewModel
+
+
+import com.example.ebook.adapter.SearchBookViewAdapter
+import com.example.ebook.adapter.SortBottomSheetAdapter
+import com.example.ebook.databinding.FilterBottomSheetBinding
+import com.example.ebook.databinding.FragmentSearchBinding
+import com.example.ebook.databinding.SortBottomSheetBinding
+import com.example.ebook.listener.FilterListener
+import com.example.ebook.listener.SearchBookListener
+import com.example.ebook.listener.SortListener
+import com.example.ebook.model.Book
+import com.example.ebook.model.Genre
+import com.example.ebook.utils.AppInstance
+import com.example.ebook.utils.PaginationScrollListener
+import com.example.ebook.viewmodels.MainViewModel
+import com.example.ebook.viewmodels.SearchViewModel
 import com.google.android.material.R
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment

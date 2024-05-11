@@ -10,7 +10,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.widget.ViewPager2
 import com.example.ebook.adapter.ReadBookPageAdapter
 import com.example.ebook.databinding.SongBinding
-import com.example.ebook.viewmodels.SongViewModel
+
 
 
 class ReadBookFragment(

@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.ebook.databinding.SortBottomSheetItemBinding
+import com.example.ebook.listener.SortListener
 
 class SortBottomSheetAdapter(var sortTypeList:MutableList<SortType>,var listener:SortListener):RecyclerView.Adapter<SortBottomSheetAdapter.MyViewHolder>() {
 

@@ -1,12 +1,13 @@
-package com.example.connectnodejs.viewmodels
+package com.example.ebook.viewmodels
 
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.connectnodejs.model.Book
-import com.example.connectnodejs.model.Genre
-import com.example.connectnodejs.repository.BookRepository
-import com.example.connectnodejs.repository.GenreRepository
+import com.example.ebook.model.Book
+import com.example.ebook.model.Genre
+import com.example.ebook.repository.BookRepository
+import com.example.ebook.repository.GenreRepository
+
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 
 class SearchViewModel : ViewModel() {
