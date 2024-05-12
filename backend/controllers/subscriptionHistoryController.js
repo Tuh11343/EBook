@@ -1,7 +1,7 @@
 const prisma = require('../prisma/prisma')
-const SubcriptionHistoryUtils = require('../utils/subscriptionHistoryUtils')
+const SubscriptionHistoryUtils = require('../utils/subscriptionHistoryUtils')
 const catchAsync = require('../utils/catchAsync')
-const subscriptionHistoryUtil = new SubcriptionHistoryUtils()
+const subscriptionHistoryUtil = new SubscriptionHistoryUtils()
 
 exports.create = catchAsync(async (req, res) => {
     const data = req.body
