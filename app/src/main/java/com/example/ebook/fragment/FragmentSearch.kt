@@ -9,13 +9,12 @@ import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
-import android.widget.SearchView.OnQueryTextListener
 import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.connectnodejs.adapter.FilterBottomSheetAdapter
+import com.example.ebook.adapter.FilterBottomSheetAdapter
 import com.example.ebook.adapter.SearchBookViewAdapter
 import com.example.ebook.adapter.SortBottomSheetAdapter
 import com.example.ebook.databinding.FilterBottomSheetBinding
