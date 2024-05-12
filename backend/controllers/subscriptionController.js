@@ -85,7 +85,7 @@ exports.update=catchAsync(async (req,res)=>{
         where:{
             id:parseInt(data.id)
         },
-        data:result
+        data:data
     })
     if (!result) {
         return res.status(400).json({
