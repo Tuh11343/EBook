@@ -9,17 +9,16 @@ import com.example.ebook.model.User
 import com.example.ebook.repository.AccountRepository
 import com.example.ebook.repository.SubscriptionHistoryRepository
 import com.example.ebook.repository.SubscriptionRepository
-
 import com.example.ebook.repository.UserRepository
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 
 class SignInViewModel: ViewModel() {
 
     private var disposable = CompositeDisposable()
-    private var accountRepository=AccountRepository()
-    private var userRepository=UserRepository()
-    private var subscriptionRepository=SubscriptionRepository()
-    private var subscriptionHistoryRepository=SubscriptionHistoryRepository()
+    private var accountRepository= AccountRepository()
+    private var userRepository= UserRepository()
+    private var subscriptionRepository= SubscriptionRepository()
+    private var subscriptionHistoryRepository= SubscriptionHistoryRepository()
 
     var signInAccount=MutableLiveData<Account>()
     var errorLiveData=MutableLiveData<String>()

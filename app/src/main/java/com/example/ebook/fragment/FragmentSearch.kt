@@ -9,13 +9,13 @@ import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import android.widget.SearchView.OnQueryTextListener
 import android.widget.Toast
+import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.connectnodejs.adapter.FilterBottomSheetAdapter
-
-
 import com.example.ebook.adapter.SearchBookViewAdapter
 import com.example.ebook.adapter.SortBottomSheetAdapter
 import com.example.ebook.databinding.FilterBottomSheetBinding
@@ -44,6 +44,8 @@ class FragmentSearch : Fragment() {
     private lateinit var modalSortBottomSheet: ModalSortBottomSheet
     private lateinit var searchViewAdapter: SearchBookViewAdapter
     private var genreFilter: Genre? = null
+    private var bookSearchLimit=12
+    private var bookSearchMoreLimit=5
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -58,10 +60,15 @@ class FragmentSearch : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         searchViewModel.loadFilterGenres(null, null)
-        findBookList()
 
         setUpComponent()
         observe()
+    }
+
+    override fun onStart() {
+        super.onStart()
+        findBookList("",
+            genreFilter?.id)
     }
 
     private fun observeGenreList() {
@@ -69,7 +76,10 @@ class FragmentSearch : Fragment() {
             modalFilterBottomSheet = ModalBottomSheet(genreList, object : FilterListener {
                 override fun onGenreClick(genre: Genre?) {
                     genreFilter = genre
-                    findBookList()
+                    binding.bookList.clearOnScrollListeners()
+                    binding.bookList.adapter=null
+                    findBookList(binding.searchBar.query.toString(),
+                        genreFilter?.id)
                 }
             })
         }
@@ -98,6 +108,28 @@ class FragmentSearch : Fragment() {
     }
 
     private fun setUpComponent() {
+
+        binding.searchBar.setOnQueryTextListener(object: SearchView.OnQueryTextListener{
+            override fun onQueryTextSubmit(p0: String?): Boolean {
+                binding.bookList.clearOnScrollListeners()
+                binding.bookList.adapter=null
+                findBookList(binding.searchBar.query.toString(),
+                    genreFilter?.id)
+                return true
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                if(newText!!.isEmpty()){
+                    binding.bookList.clearOnScrollListeners()
+                    binding.bookList.adapter=null
+                    findBookList(binding.searchBar.query.toString(),
+                        genreFilter?.id)
+
+                }
+                return false
+            }
+        })
+
         binding.btnFilter.setOnClickListener {
             showFilterBottomSheet()
         }
@@ -107,7 +139,7 @@ class FragmentSearch : Fragment() {
                 Log.i("Nothing","Sort type:${sortType}")
                 when (sortType) {
                     SortBottomSheetAdapter.SortType.Name -> searchViewAdapter.bookList.sortBy { it.name }
-                    SortBottomSheetAdapter.SortType.YearPublished -> searchViewAdapter.bookList.sortBy { it.publishedYear }
+                    SortBottomSheetAdapter.SortType.YearPublished -> searchViewAdapter.bookList.sortBy { it.published_year }
                     SortBottomSheetAdapter.SortType.Rating -> searchViewAdapter.bookList.sortBy { it.rating }
                     SortBottomSheetAdapter.SortType.ID->searchViewAdapter.bookList.sortBy { it.id }
                 }
@@ -134,7 +166,7 @@ class FragmentSearch : Fragment() {
             binding.progressBar.visibility = View.GONE
             binding.bookList.visibility = View.VISIBLE
 
-            searchViewAdapter = SearchBookViewAdapter(bookList,object:SearchBookListener{
+            searchViewAdapter = SearchBookViewAdapter(bookList,object: SearchBookListener {
                 override fun onBookClick(book: Book) {
                     /*mainViewModel.updateSelectedBook(book)
                     mainViewModel.updateCurrentState(MainViewModel.Companion.CurrentState.DetailBook)*/
@@ -151,7 +183,8 @@ class FragmentSearch : Fragment() {
                 PaginationScrollListener(binding.bookList.layoutManager as LinearLayoutManager) {
                 override fun loadMoreItem() {
                     searchViewAdapter.addFooterLoading()
-                    findMoreBookList()
+                    findMoreBookList(binding.searchBar.query.toString(),
+                        genreFilter?.id)
                 }
 
                 override fun isLoading(): Boolean {
@@ -167,25 +200,35 @@ class FragmentSearch : Fragment() {
     }
 
     private fun bookClickHandle(book: Book) {
-        if (book.bookType == Book.BookType.PREMIUM) {
-            val currentAccountSubscription = AppInstance.currentSubscription
-            if (currentAccountSubscription!!.book_type == Book.BookType.PREMIUM) {
-                bookClick(book)
-            } else {
+        if (book.book_type == Book.BookType.PREMIUM) {
+            if(AppInstance.currentAccount==null){
                 Toast.makeText(
                     requireContext(),
-                    "Bạn cần nâng cấp tài khoản để truy cập",
+                    "Bạn cần đăng nhập tài khoản để truy cập",
                     Toast.LENGTH_SHORT
                 ).show()
+            }else{
+                val currentAccountSubscription = AppInstance.currentSubscription
+                if (currentAccountSubscription!!.book_type == Book.BookType.PREMIUM) {
+                    bookClick(book)
+                } else {
+                    Toast.makeText(
+                        requireContext(),
+                        "Bạn cần nâng cấp tài khoản để truy cập",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
             }
 
-        } else if (book.bookType == Book.BookType.NORMAL) {
+
+        } else if (book.book_type == Book.BookType.NORMAL) {
             bookClick(book)
         }
     }
 
     private fun bookClick(book: Book) {
         mainViewModel.updateSelectedBook(book)
+        mainViewModel.updateLastState2(null)
         mainViewModel.updateCurrentState(MainViewModel.Companion.CurrentState.DetailBook)
     }
 
@@ -203,16 +246,15 @@ class FragmentSearch : Fragment() {
         }
     }
 
-    private fun findBookList() {
+    private fun findBookList(name:String,genreID:Int?) {
         binding.progressBar.visibility = View.VISIBLE
         binding.bookList.visibility = View.GONE
-        searchViewModel.loadBookList(genreFilter?.id, 8, 0)
+        searchViewModel.loadBookList(name,genreID, bookSearchLimit, 0)
     }
 
-    private fun findMoreBookList() {
-        searchViewModel.loadMoreBookList(
-            genreFilter?.id,
-            5,
+    private fun findMoreBookList(name:String,genreID:Int?) {
+        searchViewModel.loadMoreBookList(name,genreID,
+            bookSearchMoreLimit,
             searchViewAdapter.bookList.size - 1
         )
     }
@@ -222,7 +264,7 @@ class FragmentSearch : Fragment() {
 class ModalBottomSheet(var genreList: MutableList<Genre>, var listener: FilterListener) :
     BottomSheetDialogFragment() {
 
-    private lateinit var binding: FilterBottomSheetBinding
+    private var binding: FilterBottomSheetBinding? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,

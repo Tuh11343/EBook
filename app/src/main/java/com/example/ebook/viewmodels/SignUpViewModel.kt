@@ -15,10 +15,10 @@ import io.reactivex.rxjava3.disposables.CompositeDisposable
 class SignUpViewModel: ViewModel() {
 
     private var disposable = CompositeDisposable()
-    private var accountRepository=AccountRepository()
-    private var userRepository=UserRepository()
-    private var subscriptionRepository=SubscriptionRepository()
-    private var subscriptionHistoryRepository=SubscriptionHistoryRepository()
+    private var accountRepository= AccountRepository()
+    private var userRepository= UserRepository()
+    private var subscriptionRepository= SubscriptionRepository()
+    private var subscriptionHistoryRepository= SubscriptionHistoryRepository()
 
     var createdAccount=MutableLiveData<Account>()
     var createdUser=MutableLiveData<User>()

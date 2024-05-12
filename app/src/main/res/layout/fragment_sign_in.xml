@@ -146,7 +146,7 @@
                 android:layout_marginTop="20dp"
                 />
 
-            <RelativeLayout
+            <!--<RelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
@@ -162,17 +162,17 @@
                     android:textSize="18dp" />
 
                 <TextView
-                    android:id="@+id/signIn"
+                    android:id="@+id/btnSignUp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
+                    android:layout_marginLeft="7dp"
                     android:layout_toRightOf="@+id/txt1"
                     android:text="Đăng Ký"
                     android:textColor="@color/red"
                     android:textSize="18dp"
                     android:textStyle="bold" />
 
-            </RelativeLayout>
+            </RelativeLayout>-->
 
 
         </LinearLayout>
