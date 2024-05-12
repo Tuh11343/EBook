@@ -158,3 +158,31 @@ exports.findByID = catchAsync(async (req, res) => {
         })
     }
 })
+
+exports.findBySubscriptionID = catchAsync(async (req, res) => {
+    const id=req.query.id
+    if (!id) {
+        return res.status(400).json({
+            status: 'No id provided !!!'
+        })
+    }
+
+    const subscription = await prisma.subscription.findUnique({
+        where: {
+            id: parseInt(id)
+        },
+        include:{
+            subcription_history:true
+        }
+    })
+    if (!subscription) {
+        return res.status(400).json({
+            status: 'No subscriptionHistory found !!!'
+        })
+    } else {
+        return res.status(200).json({
+            status: 'SubcriptionHistory search successful',
+            subscriptionHistory:subscription.subcription_history
+        })
+    }
+})
