@@ -34,4 +34,14 @@ class AuthorRepository {
             }
     }
 
+    fun findOneByBookID(id:Int):Single<JsonElement>{
+        return apiService.findOneByBookID(id)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .onErrorResumeNext { throwable: Throwable ->
+                Log.i("ERROR", "Find One Author By BookID error: $throwable")
+                Single.error(throwable)
+            }
+    }
+
 }

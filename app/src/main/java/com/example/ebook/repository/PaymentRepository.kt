@@ -14,8 +14,8 @@ class PaymentRepository {
     private val apiService: PaymentAPIService =
         RetrofitClient.get()!!.create(PaymentAPIService::class.java)
 
-    fun paymentRequest(account: Account): Single<JsonElement> {
-        return apiService.paymentRequest(account)
+    fun paymentRequest(accountID:Int,total:Float): Single<JsonElement> {
+        return apiService.paymentRequest(accountID,total)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .onErrorResumeNext { throwable: Throwable ->

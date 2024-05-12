@@ -34,7 +34,7 @@ class FavoriteRepository {
             }
     }
 
-    fun update(favorite: Favorite): Single<JsonElement> {
+    fun update(favorite:Favorite): Single<JsonElement> {
         return apiService.updateFavorite(favorite)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())

@@ -14,7 +14,7 @@ class SubscriptionHistoryRepository {
     private val apiService: SubscriptionHistoryAPIService =
         RetrofitClient.get()!!.create(SubscriptionHistoryAPIService::class.java)
 
-    fun create(subscriptionHistory: SubscriptionHistory): Single<JsonElement> {
+    fun create(subscriptionHistory:SubscriptionHistory): Single<JsonElement> {
         return apiService.createSubscriptionHistory(subscriptionHistory)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
@@ -44,7 +44,15 @@ class SubscriptionHistoryRepository {
             }
     }
 
-
+    fun findBySubscriptionID(id:Int): Single<JsonElement> {
+        return apiService.findBySubscriptionID(id)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .onErrorResumeNext { throwable: Throwable ->
+                Log.i("ERROR", "Find subscriptionHistory by subscription id error: $throwable")
+                Single.error(throwable)
+            }
+    }
 
 
 }
