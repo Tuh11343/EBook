@@ -1,11 +1,11 @@
-package com.example.connectnodejs.adapter
+package com.example.ebook.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.connectnodejs.databinding.GenreBottomSheetBinding
-import com.example.connectnodejs.listener.FilterListener
-import com.example.connectnodejs.model.Genre
+import com.example.ebook.databinding.GenreBottomSheetBinding
+import com.example.ebook.listener.FilterListener
+import com.example.ebook.model.Genre
 
 class FilterBottomSheetAdapter(var genreList: MutableList<Genre>, var listener: FilterListener) :
     RecyclerView.Adapter<FilterBottomSheetAdapter.MyViewHolder>() {
