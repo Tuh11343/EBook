@@ -19,6 +19,7 @@ model User {
   updatedAt    DateTime?      @updatedAt
   Account      Account[]
   bookProgress BookProgress[]
+  Favorite Favorite[]
 
   @@map("user")
 }
@@ -49,10 +50,11 @@ model Book {
   language       String   @default("Unknown")
   book_type      BookType @default(NORMAL)
   src_audio      String?
-  lyric          String?
+  lyric          String? @db.VarChar(9999)
 
   bookGenres BookGenre[]
   bookAuthor BookAuthor[]
+  bookFavorite Favorite[]
 
   @@map("book")
 }
@@ -141,4 +143,15 @@ model BookProgress {
   User     User? @relation(fields: [user_id], references: [id])
 
   @@map("book_progress")
+}
+
+model Favorite{
+  id Int @id @default(autoincrement())
+  book_id Int
+  user_id Int
+
+  book Book @relation(fields: [book_id],references: [id],onDelete: Cascade,onUpdate: Cascade)
+  user User @relation(fields: [user_id],references: [id],onDelete: Cascade,onUpdate: Cascade)
+
+  @@map("favorite")
 }

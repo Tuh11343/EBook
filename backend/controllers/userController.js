@@ -27,6 +27,25 @@ exports.getUserById = catchAsync(async (req, res) => {
   res.status(200).json({ status: 'Get user successfully!', user })
 })
 
+exports.getByAccountID = catchAsync(async (req, res) => {
+  const query=req.query
+  if (!query) {
+    res.status(400).json({ message: 'Please provide id to get user' })
+  }
+  const account = await prisma.account.findUnique({
+    where:{
+      id:parseInt(query.id)
+    },
+    include:{
+      User:true
+    }
+  })
+  if (!account) {
+    res.status(400).json({ message: 'Account not exists, please create one!' })
+  }
+  return res.status(200).json({ status: 'Get account successfully!', user:account.User })
+})
+
 exports.deleteUserById = catchAsync(async (req, res) => {
   const userId = parseInt(req.params.id)
   if (!userId) {
