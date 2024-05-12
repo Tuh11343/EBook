@@ -1,12 +1,12 @@
-package com.example.connectnodejs.viewmodels
+package com.example.ebook.viewmodels
 
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.connectnodejs.model.Book
-import com.example.connectnodejs.model.Genre
-import com.example.connectnodejs.repository.BookRepository
-import com.example.connectnodejs.repository.GenreRepository
+import com.example.ebook.model.Book
+import com.example.ebook.model.Genre
+import com.example.ebook.repository.BookRepository
+import com.example.ebook.repository.GenreRepository
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 
 class SearchViewModel : ViewModel() {
@@ -32,13 +32,14 @@ class SearchViewModel : ViewModel() {
         )
     }
 
-    fun loadBookList(genreID: Int?, limit: Int?, offset: Int?) {
+    fun loadBookList(name:String,genreID: Int?, limit: Int?, offset: Int?) {
         if (genreID != null) {
             disposable.add(
-                bookRepository.findByGenreID(genreID, limit, offset)
+                bookRepository.findByNameAndGenre(name,genreID,limit,offset)
                     .subscribe({ jsonElement ->
-                        bookList.postValue(Book.getBookList(jsonElement))
-                        length.postValue(Book.getLength(jsonElement))
+                        bookList.value=Book.getBookList(jsonElement)
+                        length.value=Book.getLength(jsonElement)
+                        Log.i("Nothing","Length:${length.value}")
                     }, { error ->
                         errorLiveData.value = "Error loading book: ${error.message}"
                         Log.i("ERROR","Error:${error.message}")
@@ -46,10 +47,12 @@ class SearchViewModel : ViewModel() {
             )
         } else {
             disposable.add(
-                bookRepository.findAll(limit, offset)
+                bookRepository.findByName(name,limit, offset)
                     .subscribe({ jsonElement ->
-                        bookList.postValue(Book.getBookList(jsonElement))
-                        length.postValue(Book.getLength(jsonElement))
+                        bookList.value=Book.getBookList(jsonElement)
+                        length.value=Book.getLength(jsonElement)
+
+                        Log.i("Nothing","Length:${length.value}")
                     }, { error ->
                         errorLiveData.value = "Error loading book: ${error.message}"
                         Log.i("ERROR","Error:${error.message}")
@@ -58,10 +61,10 @@ class SearchViewModel : ViewModel() {
         }
     }
 
-    fun loadMoreBookList(genreID: Int?, limit: Int?, offset: Int?) {
+    fun loadMoreBookList(name:String,genreID: Int?, limit: Int?, offset: Int?) {
         if (genreID != null) {
             disposable.add(
-                bookRepository.findByGenreID(genreID, limit, offset)
+                bookRepository.findByNameAndGenre(name,genreID, limit, offset)
                     .subscribe({ jsonElement ->
                         loadMoreBookList.postValue(Book.getBookList(jsonElement))
                     }, { error ->
@@ -70,7 +73,7 @@ class SearchViewModel : ViewModel() {
             )
         } else {
             disposable.add(
-                bookRepository.findAll(limit, offset)
+                bookRepository.findByName(name, limit, offset)
                     .subscribe({ jsonElement ->
                         loadMoreBookList.postValue(Book.getBookList(jsonElement))
                     }, { error ->

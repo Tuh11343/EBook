@@ -10,37 +10,17 @@
     <RelativeLayout
         android:id="@+id/firstLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <ImageView
-            android:id="@+id/btnBack"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginEnd="20dp"
-            android:layout_marginBottom="20dp"
-            android:src="@drawable/icon_back" />
-
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/authorImg"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="50dp"
-            android:src="@drawable/background_readbook"
-            />
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginBottom="20dp"
+        >
 
         <TextView
-            android:id="@+id/authorName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             style="@style/White_Bold_18"
-            android:layout_below="@id/authorImg"
-            android:layout_marginTop="20dp"
-            android:layout_centerHorizontal="true"
-            android:text="Robert T.Kiyosaki"
-            android:layout_marginBottom="20dp"
+            android:text="Thư viện"
             />
 
 
@@ -66,18 +46,9 @@
                 android:layout_margin="20dp"
                 >
 
-                <TextView
-                    android:id="@+id/authorDescription"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    style="@style/Black_Normal_16"
-                    android:text="Testing"
-                    />
-
                 <RelativeLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
                     >
 
                     <TextView
@@ -102,9 +73,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
-                    android:orientation="horizontal"
+                    android:orientation="vertical"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    tools:listitem="@layout/book_view_normal" />
+                    tools:listitem="@layout/book_view_normal_vertical" />
 
 
             </LinearLayout>
@@ -118,4 +89,3 @@
 
 
 </RelativeLayout>
-

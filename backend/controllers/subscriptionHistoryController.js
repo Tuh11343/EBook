@@ -1,7 +1,7 @@
 const prisma = require('../prisma/prisma')
-const SubcriptionHistoryUtils = require('../utils/subscriptionHistoryUtils')
+const SubscriptionHistoryUtils = require('../utils/subscriptionHistoryUtils')
 const catchAsync = require('../utils/catchAsync')
-const subscriptionHistoryUtil = new SubcriptionHistoryUtils()
+const subscriptionHistoryUtil = new SubscriptionHistoryUtils()
 
 exports.create = catchAsync(async (req, res) => {
     const data = req.body
@@ -155,6 +155,34 @@ exports.findByID = catchAsync(async (req, res) => {
         return res.status(200).json({
             status: 'SubcriptionHistory search successful',
             subscriptionHistory
+        })
+    }
+})
+
+exports.findBySubscriptionID = catchAsync(async (req, res) => {
+    const id=req.query.id
+    if (!id) {
+        return res.status(400).json({
+            status: 'No id provided !!!'
+        })
+    }
+
+    const subscription = await prisma.subscription.findUnique({
+        where: {
+            id: parseInt(id)
+        },
+        include:{
+            subcription_history:true
+        }
+    })
+    if (!subscription) {
+        return res.status(400).json({
+            status: 'No subscriptionHistory found !!!'
+        })
+    } else {
+        return res.status(200).json({
+            status: 'SubcriptionHistory search successful',
+            subscriptionHistory:subscription.subcription_history
         })
     }
 })
