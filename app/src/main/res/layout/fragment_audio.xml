@@ -4,25 +4,25 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@drawable/background_readbook"
     >
-
 
     <ImageView
         android:id="@+id/btnDown"
         android:layout_width="36dp"
         android:layout_height="36dp"
         android:src="@drawable/icon_arrow_down"
+        android:backgroundTint="@color/white"
         android:layout_margin="20dp"
         />
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:layout_marginTop="20dp"
-        android:id="@+id/songImg"
+        android:id="@+id/bookImg"
         android:layout_width="350dp"
         android:layout_height="350dp"
         android:layout_gravity="center_horizontal"
         android:src="@drawable/song_circle"
+        android:scaleType="centerCrop"
         />
 
     <RelativeLayout
@@ -31,7 +31,7 @@
         android:layout_margin="20dp"
         >
 
-        <ImageView
+        <!--<ImageView
             android:id="@+id/btnBookmark"
             android:layout_width="36dp"
             android:layout_height="36dp"
@@ -39,10 +39,10 @@
             android:layout_marginTop="20dp"
             android:layout_marginEnd="20dp"
             android:layout_marginBottom="20dp"
-            android:src="@drawable/icon_bookmark" />
+            android:src="@drawable/icon_bookmark" />-->
 
         <TextView
-            android:id="@+id/tvName"
+            android:id="@+id/bookName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
@@ -56,7 +56,7 @@
             android:textSize="18dp"
             android:textStyle="normal" />
 
-        <ImageView
+        <!--<ImageView
             android:id="@+id/btnFavorite"
             android:layout_width="36dp"
             android:layout_height="36dp"
@@ -65,7 +65,7 @@
             android:layout_marginTop="20dp"
             android:layout_marginEnd="20dp"
             android:layout_marginBottom="20dp"
-            android:src="@drawable/icon_favorite" />
+            android:src="@drawable/icon_favorite" />-->
 
     </RelativeLayout>
 
@@ -73,7 +73,7 @@
         android:id="@+id/seekBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:progress="50"
+        android:progress="0"
         android:progressDrawable="@drawable/custom_seekbar"
         android:thumb="@drawable/custom_thumb"
         android:splitTrack="false"

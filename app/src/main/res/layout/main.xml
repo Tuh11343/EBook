@@ -3,8 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white_80"
-    android:orientation="vertical">
+    android:background="@color/white_80">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appBar"
@@ -28,7 +27,9 @@
         android:id="@+id/viewPager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/appBar" />
+        android:layout_below="@id/appBar"
+        android:layout_above="@id/bottomBar"
+        />
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/songControl"
@@ -39,12 +40,13 @@
         android:backgroundTint="@color/white"
         app:cardCornerRadius="40dp"
         android:visibility="gone"
+        app:cardMaxElevation="12dp"
+        app:cardPreventCornerOverlap="true"
         >
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/songControlClickView"
             >
 
             <ImageView
@@ -55,11 +57,12 @@
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="10dp"
                 android:layout_marginBottom="10dp"
-                android:src="@drawable/song_circle" />
+                android:src="@drawable/song_circle"
+                />
 
             <TextView
                 android:id="@+id/bookName"
-                style="@style/Content_Black_Bold"
+                style="@style/Black_Bold_16"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
@@ -67,7 +70,8 @@
                 android:layout_toRightOf="@id/songImg"
                 android:ellipsize="end"
                 android:maxLines="1"
-                android:text="Tuần Làm Việc 4 Giờ" />
+                android:text="Tuần Làm Việc 4 Giờ"
+                />
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/btnPlay"

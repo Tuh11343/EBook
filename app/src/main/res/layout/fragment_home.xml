@@ -38,7 +38,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:text="Sách miễn phí" />
+                    android:text="Đặc sắc" />
 
                 <!--<ImageView
                     android:id="@+id/btnFreeBook"
@@ -52,7 +52,7 @@
 
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/freeBookList"
+                android:id="@+id/multiBookList"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
@@ -71,21 +71,30 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:text="Gu của bạn là hài hước ?"/>
-
-                <!--<ImageView
-                    android:id="@+id/btnMoreYourType"
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
-                    android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true"
-                    android:src="@drawable/icon_right_black" />-->
-
+                    android:text="Sách miễn phí"/>
 
             </RelativeLayout>
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/yourTypeBookList"
+                android:id="@+id/freeBookList"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:orientation="horizontal"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:listitem="@layout/book_view_normal" />
+
+            <TextView
+                style="@style/Black_Bold_20"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:text="Sách giới hạn"
+                android:layout_marginTop="20dp"
+                />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/premiumBookList"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
@@ -103,7 +112,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:text="Đặc sắc" />
+                    android:text="Được khuyên đọc" />
 
                 <!--<ImageView
                     android:id="@+id/btnMoreContinueBook"
@@ -116,7 +125,7 @@
             </RelativeLayout>
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/continueBookList"
+                android:id="@+id/topRatingBookList"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"

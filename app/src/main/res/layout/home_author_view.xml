@@ -4,6 +4,8 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:layout_marginRight="20dp"
+    android:id="@+id/authorView"
+    android:clickable="true"
     >
 
     <de.hdodenhof.circleimageview.CircleImageView
@@ -12,6 +14,7 @@
         android:layout_height="100dp"
         android:src="@drawable/song_circle"
         android:layout_gravity="center"
+        android:scaleType="centerCrop"
         />
 
     <TextView

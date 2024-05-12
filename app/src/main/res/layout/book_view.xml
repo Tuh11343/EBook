@@ -6,7 +6,6 @@
     android:layout_marginRight="20dp"
     >
 
-
     <RelativeLayout
         android:id="@+id/bookLayout"
         android:layout_width="wrap_content"
@@ -23,13 +22,13 @@
                 android:id="@+id/bookImg"
                 android:layout_width="130dp"
                 android:layout_height="180dp"
-                android:scaleType="fitXY"
+                android:scaleType="centerCrop"
                 android:src="@drawable/song_circle" />
 
         </com.google.android.material.card.MaterialCardView>
 
         <TextView
-            android:id="@+id/bookName"
+            android:id="@+id/bookType"
             style="@style/Content_White_BookView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -97,14 +96,14 @@
                 android:id="@+id/bookImg3"
                 android:layout_width="130dp"
                 android:layout_height="180dp"
-                android:scaleType="fitXY"
+                android:scaleType="centerCrop"
                 android:src="@drawable/song_circle"
                 />
 
         </com.google.android.material.card.MaterialCardView>
 
         <TextView
-            android:id="@+id/bookName3"
+            android:id="@+id/bookType3"
             style="@style/Content_White_BookView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
