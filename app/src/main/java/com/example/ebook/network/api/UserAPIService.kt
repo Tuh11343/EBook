@@ -14,8 +14,11 @@ interface UserAPIService {
     @GET("/api/v1/user/id")
     fun findByID(@Query("id") id:Int):Single<JsonElement>
 
+    @GET("/api/v1/user/accountID")
+    fun findByAccountID(@Query("id") id:Int):Single<JsonElement>
+
     @PUT("/api/v1/user")
-    fun updateUser(@Body user: User):Single<JsonElement>
+    fun updateUser(@Body user:User):Single<JsonElement>
 
     @POST("/api/v1/user")
     fun createUser(@Body user: User):Single<JsonElement>

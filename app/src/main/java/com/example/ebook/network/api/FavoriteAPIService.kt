@@ -16,7 +16,7 @@ interface FavoriteAPIService {
     fun findByUserID(@Query("id") id:Int):Single<JsonElement>
 
     @PUT("/api/v1/favorite")
-    fun updateFavorite(@Body favorite: Favorite):Single<JsonElement>
+    fun updateFavorite(@Body favorite:Favorite):Single<JsonElement>
 
     @POST("/api/v1/favorite")
     fun createFavorite(@Body favorite: Favorite):Single<JsonElement>
