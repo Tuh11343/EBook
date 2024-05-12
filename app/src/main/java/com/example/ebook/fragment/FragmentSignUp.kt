@@ -90,7 +90,8 @@ class FragmentSignUp : Fragment() {
         createLoadingDialog()
 
         binding.btnClose.setOnClickListener{
-            goBack()
+            mainViewModel.updateCurrentState(MainViewModel.Companion.CurrentState.User)
+            mainViewModel.updateLastState(MainViewModel.Companion.CurrentState.User)
         }
 
         binding.btnGoogle.setOnClickListener{

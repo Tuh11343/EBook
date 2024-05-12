@@ -1,6 +1,5 @@
 package com.example.ebook.fragment
 
-
 import android.app.AlertDialog
 import android.content.ContentValues
 import android.content.Context
@@ -25,6 +24,7 @@ import com.example.ebook.utils.AppInstance
 import com.example.ebook.utils.RegexPattern
 import com.example.ebook.viewmodels.MainViewModel
 import com.example.ebook.viewmodels.SignInViewModel
+
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -71,6 +71,7 @@ class FragmentSignIn : Fragment() {
             .requestEmail()
             .build()
         mGoogleSignInClient = GoogleSignIn.getClient(requireActivity(), gso)
+        mGoogleSignInClient.revokeAccess()
         sharedPreferences = requireContext().getSharedPreferences("MyPrefs", Context.MODE_PRIVATE)
         mainViewModel = ViewModelProvider(requireActivity())[MainViewModel::class.java]
         signInViewModel = ViewModelProvider(requireActivity())[SignInViewModel::class.java]
@@ -94,7 +95,8 @@ class FragmentSignIn : Fragment() {
         }
 
         binding.btnClose.setOnClickListener {
-            goBack()
+            mainViewModel.updateCurrentState(MainViewModel.Companion.CurrentState.User)
+            mainViewModel.updateLastState(MainViewModel.Companion.CurrentState.User)
         }
     }
 
@@ -289,7 +291,7 @@ class FragmentSignIn : Fragment() {
                 .show()
 
             AppInstance.currentAccount = account
-            mainViewModel.updateCurrentState(MainViewModel.Companion.CurrentState.Home)
+            mainViewModel.updateBottomBarTab(0)
         }
     }
 
@@ -395,7 +397,7 @@ class FragmentSignIn : Fragment() {
             editor.apply()
 
             //Go Back To Home
-            mainViewModel.updateCurrentState(MainViewModel.Companion.CurrentState.Home)
+            mainViewModel.updateBottomBarTab(0)
         }
     }
 

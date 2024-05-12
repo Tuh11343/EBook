@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <ImageButton
+        <!--<ImageButton
             android:id="@+id/btnBack"
             android:layout_width="36dp"
             android:layout_height="36dp"
@@ -22,9 +22,9 @@
             android:layout_margin="20dp"
             android:scaleType="center"
             app:tint="@color/black"
-            />
+            />-->
 
-
+=
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
