@@ -7,7 +7,7 @@ import com.google.gson.JsonElement
 import com.google.gson.JsonObject
 import com.google.gson.reflect.TypeToken
 
-class User(var id:Int?, var name:String,var phoneNumber:String?,var address:String?) {
+class User(var id:Int?, var name:String, var phoneNumber:String?, var address:String?) {
 
     constructor():this(null,"",null,null)
 

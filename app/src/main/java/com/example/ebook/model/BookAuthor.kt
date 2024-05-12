@@ -7,7 +7,7 @@ import com.google.gson.JsonElement
 import com.google.gson.JsonObject
 import com.google.gson.reflect.TypeToken
 
-class BookAuthor(var id:Int?,var bookID:Int,var authorID:Int) {
+class BookAuthor(var id:Int?,var book_id:Int,var author_id:Int) {
 
     constructor():this(null,-1,-1)
 

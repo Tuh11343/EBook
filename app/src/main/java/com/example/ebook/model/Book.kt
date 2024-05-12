@@ -13,18 +13,15 @@ class Book(
     var description: String?,
     var rating: Int?,
     var progress: Float?,
-    var publishedYear: Int,
+    var published_year: Int,
     var image: String?,
     var language: String?,
-    var bookType: BookType,
-    var srcAudio: String,
+    var book_type: BookType,
+    var src_audio: String,
     var lyric: String?,
-    var primaryColor: String?,
+) {
 
-
-    ) {
-
-    constructor() : this(-1, "", "", null, null, -1, null, null, BookType.NORMAL, "", null, null)
+    constructor() : this(-1, "", "", null, null, -1, null, null, BookType.NORMAL, "", null)
 
     companion object {
         private val gson = Gson()
