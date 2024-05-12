@@ -14,7 +14,6 @@ import com.example.ebook.model.Book
 class ContinueBookAdapter(private var bookList: MutableList<Book>, var mListener: IBookListener) :
     RecyclerView.Adapter<ContinueBookAdapter.BookViewHolder>() {
 
-
     inner class BookViewHolder(val binding: BookviewContinueBinding) :
         RecyclerView.ViewHolder(binding.root)
 
@@ -39,27 +38,14 @@ class ContinueBookAdapter(private var bookList: MutableList<Book>, var mListener
                 .load(book.image)
                 .placeholder(R.drawable.song_circle)
                 .error(R.drawable.song_circle)
+                .centerCrop()
                 .into(holder.binding.bookImg)
 
             holder.binding.bookName.text = book.name
-
-            holder.binding.bookImg.setOnClickListener {
-                val shrinkAnimation =
-                    AnimationUtils.loadAnimation(holder.itemView.context, R.anim.shrink_effect)
-                shrinkAnimation.setAnimationListener(object : Animation.AnimationListener {
-                    override fun onAnimationStart(animation: Animation?) {
-                    }
-
-                    override fun onAnimationEnd(animation: Animation?) {
-                        mListener.onBookClick(book)
-                    }
-
-                    override fun onAnimationRepeat(animation: Animation?) {
-                    }
-                })
-
-                holder.binding.cardView.startAnimation(shrinkAnimation)
+            holder.binding.btnPlay.setOnClickListener {
+                mListener.onBookClick(book)
             }
+
         }
     }
 

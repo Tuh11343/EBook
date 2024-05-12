@@ -36,6 +36,7 @@ class BookWithBigCardAdapter(var bookList: MutableList<Book>, var mListener: IBo
                 .load(book.image)
                 .placeholder(R.drawable.song_circle)
                 .error(R.drawable.song_circle)
+                .centerCrop()
                 .into(holder.binding.bookImg)
 
             holder.binding.bookImg.setOnClickListener {

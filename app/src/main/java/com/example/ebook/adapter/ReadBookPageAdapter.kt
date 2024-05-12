@@ -4,8 +4,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
-import com.example.ebook.fragment.AudioFragment
-import com.example.ebook.fragment.LyricsFragment
+import com.example.ebook.fragment.FragmentAudio
+import com.example.ebook.fragment.FragmentLyric
 
 
 class ReadBookPageAdapter(
@@ -19,8 +19,8 @@ class ReadBookPageAdapter(
 
     override fun createFragment(position: Int): Fragment {
         return when (position) {
-            0 -> AudioFragment(mainViewPage)
-            1 -> LyricsFragment()
+            0 -> FragmentAudio()
+            1 -> FragmentLyric()
 
             else -> throw IllegalArgumentException("Invalid position")
         }
