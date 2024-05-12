@@ -77,6 +77,33 @@ class BookUtils {
       }
     })
   }
+
+  async countByName(name){
+    return await prisma.book.count({
+      where:{
+        name:{
+          contains:name
+        }
+      }
+    })
+  }
+
+  async countByNameAndGenre(name,genreID){
+    return await prisma.book.count({
+      where:{
+        bookGenres: {
+          some: {
+            genre_id: parseInt(genreID)
+          }
+        },
+        name:{
+          contains:name
+        }
+      }
+    })
+  }
+
+
 }
 
 module.exports = BookUtils

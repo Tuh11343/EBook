@@ -15,6 +15,7 @@ const subscriptionRoute=require('./routes/subscriptionRoute')
 const subscriptionHistoryRoute=require('./routes/subscriptionHistoryRoute')
 const bookProgressRoute=require('./routes/bookProgressRoute')
 const userRoute=require('./routes/userRoute')
+const favoriteRoute=require('./routes/favoriteRoute')
 
 const swagger = require('./configs/swagger')
 const port = process.env.PORT || 5000
@@ -36,6 +37,7 @@ app.use('/api/v1/payment', paymentRoute)
 app.use('/api/v1/subscription', subscriptionRoute)
 app.use('/api/v1/subscriptionHistory', subscriptionHistoryRoute)
 app.use('/api/v1/bookProgress', bookProgressRoute)
+app.use('/api/v1/favorite',favoriteRoute)
 
 swagger(app)
 app.listen(port, () => {

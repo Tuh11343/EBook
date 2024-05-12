@@ -149,7 +149,7 @@ exports.findByID = catchAsync(async (req, res) => {
 
 exports.findByName = catchAsync(async (req, res) => {
     const query=req.query
-    
+
     if (!query.name) {
         return res.status(400).json({
             status: 'No name provided'
@@ -189,6 +189,40 @@ exports.findByName = catchAsync(async (req, res) => {
             status: 'Genres search successful',
             genres,
             length
+        })
+    }
+})
+
+exports.findByBookID = catchAsync(async (req, res) => {
+    const id = req.query.id
+    if (!id) {
+        return res.status(400).json({
+            status: 'No id provided'
+        })
+    }
+
+    const bookGenres = await prisma.bookGenre.findMany({
+        where: {
+            book_id:parseInt(id)
+        },
+        include:{
+            book:true,
+            genre:true
+        }
+    })
+
+
+    if (!bookGenres) {
+        return res.status(400).json({
+            status: 'No genre found'
+        })
+    } else {
+
+        const genres = bookGenres.map(bookGenre=>bookGenre.genre);
+
+        return res.status(200).json({
+            status: 'Genre search successful',
+            genres
         })
     }
 })
