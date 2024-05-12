@@ -9,17 +9,17 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.widget.ViewPager2
 import com.example.ebook.adapter.ReadBookPageAdapter
-import com.example.ebook.databinding.SongBinding
+import com.example.ebook.databinding.FragmentReadBookBinding
+import com.example.ebook.viewmodels.AudioViewModel
 
 
-
-class ReadBookFragment(
+class FragmentReadBook(
     private var mainViewPager: ViewPager2,
 ) : Fragment() {
 
-    private lateinit var binding: SongBinding
+    private lateinit var binding: FragmentReadBookBinding
     private lateinit var viewPager: ViewPager2
-    private lateinit var songViewModel: SongViewModel
+    private lateinit var songViewModel: AudioViewModel
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -31,15 +31,14 @@ class ReadBookFragment(
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
-        binding = SongBinding.inflate(inflater, container, false)
+        binding = FragmentReadBookBinding.inflate(inflater, container, false)
         return binding.root
     }
-
 
     private fun setUpSong() {
         viewPager = binding.viewPager
 
-        songViewModel = ViewModelProvider(requireActivity())[SongViewModel::class.java]
+        songViewModel = ViewModelProvider(requireActivity())[AudioViewModel::class.java]
         var viewPageAdapter = ReadBookPageAdapter(requireActivity() as AppCompatActivity,mainViewPager)
         viewPager.adapter = viewPageAdapter
     }

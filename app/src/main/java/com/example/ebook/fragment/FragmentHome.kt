@@ -14,7 +14,10 @@ import com.example.ebook.adapter.BookWithMultiAdapter
 import com.example.ebook.adapter.ContinueBookAdapter
 import com.example.ebook.adapter.HomeAuthorAdapter
 import com.example.ebook.databinding.FragmentHomeBinding
+import com.example.ebook.listener.IAuthorListener
 import com.example.ebook.listener.IBookListener
+import com.example.ebook.listener.IMultiBookListener
+import com.example.ebook.model.Author
 import com.example.ebook.model.Book
 import com.example.ebook.utils.AppInstance
 import com.example.ebook.viewmodels.HomeViewModel
@@ -41,7 +44,10 @@ class FragmentHome() : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+    }
 
+    override fun onResume() {
+        super.onResume()
         setUpBinding()
 
         observe()
@@ -52,7 +58,8 @@ class FragmentHome() : Fragment() {
         homeViewModel.findAllBookList(12, 0)
         homeViewModel.findAllAuthorList(12, 0)
         homeViewModel.findNormalBook(12, 0)
-        homeViewModel.findPremiumBook(12, 0)
+        homeViewModel.findPremiumBook(10, 0)
+        homeViewModel.findTopRatingBook(10,0)
     }
 
     private fun observe() {
@@ -66,7 +73,6 @@ class FragmentHome() : Fragment() {
             binding.bigCardBookList.adapter =
                 BookWithBigCardAdapter(bookList, object : IBookListener {
                     override fun onBookClick(book: Book) {
-
                         //Check if book premium
                         bookClickHandle(book)
                     }
@@ -77,7 +83,7 @@ class FragmentHome() : Fragment() {
 
             //------------------------------------------------------------------------------------//
 
-            binding.yourTypeBookList.adapter =
+            binding.multiBookList.adapter =
                 BookViewNormalAdapter(bookList, object : IBookListener {
                     override fun onBookClick(book: Book) {
                         //Check if book premium
@@ -86,11 +92,47 @@ class FragmentHome() : Fragment() {
 
                 })
             val snapperWithCard = GravitySnapHelper(Gravity.START)
-            snapperWithCard.attachToRecyclerView(binding.yourTypeBookList)
+            snapperWithCard.attachToRecyclerView(binding.multiBookList)
 
-            //------------------------------------------------------------------------------------//
+        }
 
-            binding.continueBookList.adapter =
+        //------------------------------------------------------------------------------------//
+        homeViewModel.normalBookList.observe(viewLifecycleOwner){ bookList->
+
+            binding.freeBookList.adapter =
+                BookWithMultiAdapter(bookList, object : IMultiBookListener {
+                    override fun onFirstBookClick(book: Book) {
+                        bookClickHandle(book)
+                    }
+
+                    override fun onSecondBookClick(book: Book) {
+                        bookClickHandle(book)
+                    }
+
+
+                })
+            val snapper = GravitySnapHelper(Gravity.START)
+            snapper.attachToRecyclerView(binding.freeBookList)
+        }
+
+        //------------------------------------------------------------------------------------//
+        homeViewModel.premiumBookList.observe(viewLifecycleOwner) { bookList ->
+            binding.premiumBookList.adapter =
+                BookViewNormalAdapter(bookList, object : IBookListener {
+                    override fun onBookClick(book: Book) {
+                        //Check if book premium
+                        bookClickHandle(book)
+                    }
+
+                })
+            val snapperWithCard = GravitySnapHelper(Gravity.START)
+            snapperWithCard.attachToRecyclerView(binding.premiumBookList)
+        }
+
+        //------------------------------------------------------------------------------------//
+        homeViewModel.topRatingBookList.observe(viewLifecycleOwner){bookList->
+
+            binding.topRatingBookList.adapter =
                 ContinueBookAdapter(bookList, object : IBookListener {
                     override fun onBookClick(book: Book) {
                         //Check if book premium
@@ -99,53 +141,58 @@ class FragmentHome() : Fragment() {
 
                 })
             val snapperContinueBook = GravitySnapHelper(Gravity.START)
-            snapperContinueBook.attachToRecyclerView(binding.continueBookList)
-
-            //------------------------------------------------------------------------------------//
-
-            binding.freeBookList.adapter =
-                BookWithMultiAdapter(bookList, "Miễn phí", object : IBookListener {
-                    override fun onBookClick(book: Book) {
-                        //Check if book premium
-                        bookClickHandle(book)
-                    }
-
-                })
-            val snapper = GravitySnapHelper(Gravity.START)
-            snapper.attachToRecyclerView(binding.freeBookList)
+            snapperContinueBook.attachToRecyclerView(binding.topRatingBookList)
 
         }
 
     }
 
     private fun bookClickHandle(book: Book) {
-        if (book.bookType == Book.BookType.PREMIUM) {
-            val currentAccountSubscription = AppInstance.currentSubscription
-            if (currentAccountSubscription!!.book_type == Book.BookType.PREMIUM) {
-                bookClick(book)
-            } else {
+        if (book.book_type == Book.BookType.PREMIUM) {
+            if(AppInstance.currentAccount==null){
                 Toast.makeText(
                     requireContext(),
-                    "Bạn cần nâng cấp tài khoản để truy cập",
+                    "Bạn cần đăng nhập tài khoản để truy cập",
                     Toast.LENGTH_SHORT
                 ).show()
+            }else{
+                val currentAccountSubscription = AppInstance.currentSubscription
+                if (currentAccountSubscription!!.book_type == Book.BookType.PREMIUM) {
+                    bookClick(book)
+                } else {
+                    Toast.makeText(
+                        requireContext(),
+                        "Bạn cần nâng cấp tài khoản để truy cập",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
             }
 
-        } else if (book.bookType == Book.BookType.NORMAL) {
+
+        } else if (book.book_type == Book.BookType.NORMAL) {
             bookClick(book)
         }
     }
 
     private fun bookClick(book: Book) {
         mainViewModel.updateSelectedBook(book)
+        mainViewModel.updateLastState2(null)
         mainViewModel.updateCurrentState(MainViewModel.Companion.CurrentState.DetailBook)
     }
 
     private fun observeAuthorList() {
         homeViewModel.authorList.observe(viewLifecycleOwner) { authorList ->
-            binding.authorList.adapter = HomeAuthorAdapter(authorList)
+
+            binding.authorList.adapter = HomeAuthorAdapter(authorList, object : IAuthorListener {
+                override fun onAuthorClick(author: Author) {
+                    mainViewModel.updateSelectedAuthor(author)
+                    mainViewModel.updateCurrentState(MainViewModel.Companion.CurrentState.Author)
+                }
+
+            })
             val authorSnapper = GravitySnapHelper(Gravity.START)
             authorSnapper.attachToRecyclerView(binding.authorList)
+
         }
     }
 
