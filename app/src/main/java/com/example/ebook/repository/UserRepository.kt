@@ -24,7 +24,17 @@ class UserRepository {
             }
     }
 
-    fun updateUser(user: User): Single<JsonElement> {
+    fun findByAccountID(id:Int): Single<JsonElement> {
+        return apiService.findByAccountID(id)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .onErrorResumeNext { throwable: Throwable ->
+                Log.i("ERROR", "Find user by account id error: $throwable")
+                Single.error(throwable)
+            }
+    }
+
+    fun updateUser(user:User): Single<JsonElement> {
         return apiService.updateUser(user)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())

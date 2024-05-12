@@ -10,6 +10,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.drawable.Drawable
 import android.media.MediaPlayer
 import android.os.Binder
 import android.os.Build
@@ -25,6 +26,9 @@ import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.lifecycle.MutableLiveData
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.target.CustomTarget
+import com.bumptech.glide.request.transition.Transition
 import com.example.ebook.R
 import com.example.ebook.utils.AppInstance
 import com.example.ebook.views.MainActivity
@@ -45,8 +49,8 @@ class MusicService : Service() {
     var btnPlayClick=MutableLiveData<Unit>()
     var btnRewindClick=MutableLiveData<Unit>()
     var btnFastForwardClick=MutableLiveData<Unit>()
+    var btnCloseClick=MutableLiveData<Unit>()
     var seekBarSlide=MutableLiveData<Unit>()
-
 
     override fun onBind(intent: Intent): IBinder? {
         return binder
@@ -199,6 +203,11 @@ class MusicService : Service() {
         if (isNotificationCreated) {
             stopForeground(STOP_FOREGROUND_REMOVE)
             isNotificationCreated = false
+            if(mediaPlayer!!.isPlaying){
+                btnCloseClick.value=Unit
+            }
+        }else{
+            Log.i("Nothing","Maybe something wrong")
         }
     }
 
@@ -253,7 +262,7 @@ class MusicService : Service() {
 
 
         return NotificationCompat.Action(
-            R.drawable.icon_bf, // Sử dụng biểu tượng mới
+            R.drawable.icon_rewind_24,
             "Rewind",
             rewindPendingIntent
         )
@@ -273,7 +282,7 @@ class MusicService : Service() {
 
 
         return NotificationCompat.Action(
-            R.drawable.icon_ff, // Sử dụng biểu tượng mới
+            R.drawable.icon_ff_24,
             "Fast Forward",
             rewindPendingIntent
         )
@@ -293,7 +302,7 @@ class MusicService : Service() {
 
 
         return NotificationCompat.Action(
-            R.drawable.icon_cancel, // Sử dụng biểu tượng mới
+            R.drawable.icon_cancel,
             "Close",
             rewindPendingIntent
         )
@@ -301,17 +310,32 @@ class MusicService : Service() {
 
 
     fun load(url:String){
-        if (mediaPlayer == null) {
-            createNotificationChannel()
-            mediaPlayer = MediaPlayer()
-            mediaPlayer?.setDataSource("https://firebasestorage.googleapis.com/v0/b/myprojet1803.appspot.com/o/Ed%20Sheeran%20-Shape%20of%20You%20%5BOfficial%5D.mp3?alt=media&token=62f539e6-1927-4e19-bc7a-bdb36b8bcde4")
-            mediaPlayer?.setOnPreparedListener {
-                Log.i("Nothing","Media Player Set Up is Done")
-                loadIsDone.postValue(true)
-                bitmap = BitmapFactory.decodeResource(this.resources, R.drawable.song_circle)
-            }
-            mediaPlayer?.prepareAsync()
+        if(mediaPlayer!=null){
+            mediaPlayer!!.release()
+            btnPlayClick.postValue(Unit)
         }
+
+        createNotificationChannel()
+        mediaPlayer = MediaPlayer()
+        mediaPlayer?.setDataSource(url)
+        mediaPlayer?.setOnPreparedListener {
+            Log.i("Nothing","Media Player Set Up is Done")
+            loadIsDone.postValue(true)
+            Glide.with(this)
+                .asBitmap()
+                .load(AppInstance.bookImg)
+                .into(object : CustomTarget<Bitmap>() {
+                    override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
+                        bitmap = resource
+                    }
+
+                    override fun onLoadCleared(placeholder: Drawable?) {
+                        // Xử lý khi việc tải bị xóa
+                    }
+                })
+            /*bitmap = BitmapFactory.decodeResource(this.resources, R.drawable.song_circle)*/
+        }
+        mediaPlayer?.prepareAsync()
     }
 
     fun seekTo(time:Int){
@@ -334,10 +358,10 @@ class MusicService : Service() {
         coroutineScope.launch {
             withContext(Dispatchers.IO) {
                 if (!isNotificationCreated) {
-                    startForeground(NOTIFICATION_ID, createNotification("Song Name", "Tuh",action))
+                    startForeground(NOTIFICATION_ID, createNotification(AppInstance.bookName!!, AppInstance.bookAuthorName!!,action))
                     isNotificationCreated = true
                 } else {
-                    val notification = createNotification("Song Name", "Tuh",action)
+                    val notification = createNotification(AppInstance.bookName!!, AppInstance.bookAuthorName!!,action)
                     if (ActivityCompat.checkSelfPermission(
                             this@MusicService,
                             Manifest.permission.POST_NOTIFICATIONS

@@ -44,7 +44,7 @@ class AccountRepository {
             }
     }
 
-    fun updateAccount(account: Account): Single<JsonElement> {
+    fun updateAccount(account:Account): Single<JsonElement> {
         return apiService.updateAccount(account)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())

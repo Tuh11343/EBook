@@ -14,14 +14,15 @@ class HomeViewModel:ViewModel() {
 
     private var disposable = CompositeDisposable()
     private var authorRepository = AuthorRepository()
-    private var bookRepository= BookRepository()
-    private var genreRepository= GenreRepository()
+    private var bookRepository=BookRepository()
+    private var genreRepository=GenreRepository()
 
     var authorList = MutableLiveData<MutableList<Author>>()
     var genreList=MutableLiveData<MutableList<Genre>>()
     var bigCardBookList=MutableLiveData<MutableList<Book>>()
     var premiumBookList= MutableLiveData<MutableList<Book>>()
     var normalBookList=MutableLiveData<MutableList<Book>>()
+    var topRatingBookList= MutableLiveData<MutableList<Book>>()
 
     var errorLiveData = MutableLiveData<String>()
 
@@ -35,14 +36,12 @@ class HomeViewModel:ViewModel() {
         )
     }
 
-
-
     fun findPremiumBook(limit: Int?, offset: Int?) {
         disposable.add(bookRepository.findPremiumBook(limit, offset)
             .subscribe({ jsonElement ->
                 premiumBookList.postValue(Book.getBookList(jsonElement))
             }, { error ->
-                errorLiveData.postValue("Error loading genres: ${error.message}")
+                errorLiveData.postValue("Error find normal book: ${error.message}")
             })
         )
     }
@@ -52,7 +51,17 @@ class HomeViewModel:ViewModel() {
             .subscribe({ jsonElement ->
                 normalBookList.postValue(Book.getBookList(jsonElement))
             }, { error ->
-                errorLiveData.postValue("Error loading genres: ${error.message}")
+                errorLiveData.postValue("Error find premium book: ${error.message}")
+            })
+        )
+    }
+
+    fun findTopRatingBook(limit: Int?, offset: Int?) {
+        disposable.add(bookRepository.findByTopRating(limit, offset)
+            .subscribe({ jsonElement ->
+                topRatingBookList.postValue(Book.getBookList(jsonElement))
+            }, { error ->
+                errorLiveData.postValue("Error find top rating book: ${error.message}")
             })
         )
     }

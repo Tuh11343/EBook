@@ -9,7 +9,7 @@ import io.reactivex.rxjava3.disposables.CompositeDisposable
 class UserLoginViewModel: ViewModel() {
 
     private var disposable = CompositeDisposable()
-    private var userRepository= UserRepository()
+    private var userRepository=UserRepository()
 
     var user=MutableLiveData<User>()
     var errorLiveData = MutableLiveData<String>()

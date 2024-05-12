@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="filter_options">
+        <item>Mới nhất</item>
+        <item>Phổ biến nhất</item>
+
+    </array>
+    <color name="black">#FF000000</color>
+    <color name="blue">#44648D</color>
+    <color name="blue_100">#394E71</color>
+    <color name="button_icon">#FFB156</color>
+    <color name="button_icon_blue">#d8ebfa</color>
+    <color name="cardview_blue_white">#61799B</color>
+    <color name="default_book_color">#575050</color>
+    <color name="default_read_book">#617D88</color>
+    <color name="fragment_user_linear_1">#314766</color>
+    <color name="fragment_user_linear_2">#9ECDF9</color>
+    <color name="gray">#e5e7eb</color>
+    <color name="gray_80">#dcdfe4</color>
+    <color name="light_blue">#e7f1fa</color>
+    <color name="org_cl">#FF8A00</color>
+    <color name="purple">#7F5AF0</color>
+    <color name="purple_200">#FFBB86FC</color>
+    <color name="purple_500">#FF6200EE</color>
+    <color name="purple_700">#FF3700B3</color>
+    <color name="red">#FF0000</color>
+    <color name="teal_200">#FF03DAC5</color>
+    <color name="teal_700">#FF018786</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="white_60">#DCEFFD</color>
+    <color name="white_80">#f3f8fc</color>
+    <color name="yellow">#FFEACB</color>
+    <string name="app_name">EBook</string>
+    <string name="default_web_client_id" translatable="false">148615248582-oi2oe90p0vaam63c3cr2u0p4hkmd23s3.apps.googleusercontent.com</string>
+    <string name="gcm_defaultSenderId" translatable="false">148615248582</string>
+    <string name="google_api_key" translatable="false">AIzaSyDxo6jxQAb7MAYSq018lBarJlpTMdlvv10</string>
+    <string name="google_app_id" translatable="false">1:148615248582:android:cb82d6b423e97859ee35c7</string>
+    <string name="google_crash_reporting_api_key" translatable="false">AIzaSyDxo6jxQAb7MAYSq018lBarJlpTMdlvv10</string>
+    <string name="google_storage_bucket" translatable="false">book-41cab.appspot.com</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="project_id" translatable="false">book-41cab</string>
+    <string name="title_activity_home">HomeActivity</string>
+    <string name="title_activity_splash_screen">SplashScreen</string>
+    <style name="Black_Bold_16">
+        <item name="android:textSize">16dp</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:ellipsize">end</item>
+    </style>
+    <style name="Black_Bold_18">
+        <item name="android:textSize">18dp</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:ellipsize">end</item>
+    </style>
+    <style name="Black_Bold_20">
+        <item name="android:textSize">20dp</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:ellipsize">end</item>
+    </style>
+    <style name="Black_Normal_16">
+        <item name="android:textSize">16dp</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:ellipsize">end</item>
+    </style>
+    <style name="Content_Black">
+        <item name="android:textSize">18dp</item>
+        <item name="android:textColor">@color/black</item>
+
+    </style>
+    <style name="Content_Black_Bold">
+        <item name="android:textSize">18dp</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textStyle">bold</item>
+
+    </style>
+    <style name="Content_White">
+        <item name="android:textSize">18dp</item>
+        <item name="android:textColor">@color/white</item>
+
+    </style>
+    <style name="Content_White_BookView">
+        <item name="android:textSize">15dp</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+    <style name="IconButton">
+        <item name="cornerSize">50%</item>
+    </style>
+    <style name="Theme.Ebook" parent="Theme.Material3.Light.NoActionBar"/>
+    <style name="Tittle_Black">
+        <item name="android:textSize">20dp</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:ellipsize">end</item>
+
+    </style>
+    <style name="White_Bold_16">
+        <item name="android:textSize">16dp</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:ellipsize">end</item>
+    </style>
+    <style name="White_Bold_18">
+        <item name="android:textSize">18dp</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:ellipsize">end</item>
+    </style>
+    <style name="White_Bold_20">
+        <item name="android:textSize">20dp</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:ellipsize">end</item>
+    </style>
+    <style name="White_Normal_16">
+        <item name="android:textSize">16dp</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:ellipsize">end</item>
+    </style>
+    <style name="White_Normal_18">
+        <item name="android:textSize">18dp</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:ellipsize">end</item>
+    </style>
+</resources>

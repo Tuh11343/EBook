@@ -39,7 +39,14 @@ class BookViewNormalAdapter(var bookList: MutableList<Book>, var mListener: IBoo
                 .load(book.image)
                 .placeholder(R.drawable.song_circle)
                 .error(R.drawable.song_circle)
+                .centerCrop()
                 .into(holder.binding.bookImg)
+
+            if(book.book_type==Book.BookType.NORMAL){
+                holder.binding.bookType.text="Miễn phí"
+            }else if(book.book_type==Book.BookType.PREMIUM){
+                holder.binding.bookType.text="Giới hạn"
+            }
 
             holder.binding.bookImg.setOnClickListener {
                 val shrinkAnimation =

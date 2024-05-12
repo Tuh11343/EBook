@@ -165,7 +165,7 @@ class FragmentSearch : Fragment() {
             binding.progressBar.visibility = View.GONE
             binding.bookList.visibility = View.VISIBLE
 
-            searchViewAdapter = SearchBookViewAdapter(bookList,object: SearchBookListener {
+            searchViewAdapter = SearchBookViewAdapter(bookList,object:SearchBookListener{
                 override fun onBookClick(book: Book) {
                     /*mainViewModel.updateSelectedBook(book)
                     mainViewModel.updateCurrentState(MainViewModel.Companion.CurrentState.DetailBook)*/
@@ -263,7 +263,7 @@ class FragmentSearch : Fragment() {
 class ModalBottomSheet(var genreList: MutableList<Genre>, var listener: FilterListener) :
     BottomSheetDialogFragment() {
 
-    private var binding: FilterBottomSheetBinding? = null
+    private lateinit var binding: FilterBottomSheetBinding
 
     override fun onCreateView(
         inflater: LayoutInflater,

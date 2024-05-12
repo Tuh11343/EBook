@@ -12,17 +12,19 @@ import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.LinearInterpolator
 import android.widget.SeekBar
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import com.bumptech.glide.Glide
 import com.example.ebook.R
 import com.example.ebook.databinding.FragmentAudioBinding
 import com.example.ebook.model.Lyric
 import com.example.ebook.services.MusicService
+import com.example.ebook.utils.AppInstance
+import com.example.ebook.viewmodels.AudioViewModel
 import com.example.ebook.viewmodels.MainViewModel
-import com.example.ebook.viewmodels.SongViewModel
 import com.example.ebook.views.MainActivity
-import java.io.BufferedReader
-import java.io.InputStreamReader
+import java.util.Scanner
 
 
 class FragmentAudio(
@@ -32,45 +34,91 @@ class FragmentAudio(
     private var handler = Handler(Looper.getMainLooper())
     private var animatorSet = AnimatorSet()
     private var rotation: Float = 0.0f
-    private lateinit var songViewModel: SongViewModel
+    private lateinit var songViewModel: AudioViewModel
     private lateinit var mainViewModel: MainViewModel
+    private lateinit var activity: MainActivity
     private var musicService: MusicService? = null
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        val activity = requireActivity() as MainActivity
-
-        musicService = activity.getMusicService()
-        var book=mainViewModel.selectedBook.value
-
-        //https://voicereplay-backgroundmusics.s3.ap-southeast-1.amazonaws.com/media/Believer+-+Imagine+Dragons.mp3
-        musicService!!.load(book?.srcAudio?:"")
-        setUpSong()
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
-        mainViewModel=ViewModelProvider(requireActivity())[MainViewModel::class.java]
-        songViewModel = ViewModelProvider(requireActivity())[SongViewModel::class.java]
+        mainViewModel = ViewModelProvider(requireActivity())[MainViewModel::class.java]
+        songViewModel = ViewModelProvider(requireActivity())[AudioViewModel::class.java]
         binding = FragmentAudioBinding.inflate(inflater, container, false)
         return binding.root
     }
 
-    private fun setUpSong() {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        activity = requireActivity() as MainActivity
+        musicService = activity.getMusicService()
+
+        observe()
+    }
+
+    private fun setUpMusicService() {
+        musicService!!.load(mainViewModel.selectedBook.value!!.src_audio)
+    }
+
+    private fun observe() {
+
+        mainViewModel.resetAudio.observe(activity) {
+
+            songViewModel.findBookAuthor(mainViewModel.selectedBook.value!!.id)
+
+            resetAnimation()
+            setUpMusicService()
+            setUpBinding()
+
+            musicService!!.btnPlayClick.observe(viewLifecycleOwner) {
+                if (!musicService!!.mediaPlayer!!.isPlaying) {
+                    pauseAnimation()
+                    stopSeekBar()
+                    binding.btnPlay.setImageResource(R.drawable.icon_play)
+                } else {
+                    startAnimation()
+                    updateSeekBar()
+                    binding.btnPlay.setImageResource(R.drawable.icon_pause)
+                }
+            }
+
+            musicService!!.btnRewindClick.observe(viewLifecycleOwner) {
+                btnRewindClick(2000)
+            }
+
+            musicService!!.btnFastForwardClick.observe(viewLifecycleOwner) {
+                btnFFClick(2000)
+            }
+
+            musicService!!.seekBarSlide.observe(viewLifecycleOwner) {
+                updateCurrentTime()
+            }
+
+            musicService!!.btnCloseClick.observe(viewLifecycleOwner){
+                pauseAnimation()
+                stopSeekBar()
+                binding.btnPlay.setImageResource(R.drawable.icon_play)
+                musicService!!.mediaPlayer!!.pause()
+            }
+        }
+
+        songViewModel.bookAuthor.observe(viewLifecycleOwner){
+            AppInstance.bookAuthorName=it.name
+            AppInstance.bookName=mainViewModel.selectedBook.value!!.name
+            AppInstance.bookImg=mainViewModel.selectedBook.value!!.image
+        }
+
+    }
+
+    private fun setUpBinding() {
 
         musicService!!.loadIsDone.observe(viewLifecycleOwner) {
 
             binding.seekBar.max = musicService!!.mediaPlayer!!.duration
             binding.totalTime.text = formatDuration(musicService!!.mediaPlayer!!.duration.toLong())
+            binding.currentTime.text = "00:00"
 
-            setUpObserve()
-            loadLyrics()
+            loadLyrics(mainViewModel.selectedBook.value?.lyric)
             setUpProgressBar()
         }
 
@@ -78,47 +126,36 @@ class FragmentAudio(
             btnPlayClick()
         }
 
-        binding.btnRewind.setOnClickListener{
+        binding.btnRewind.setOnClickListener {
             btnRewindClick(2000)
         }
 
-        binding.btnFastForward.setOnClickListener{
+        binding.btnFastForward.setOnClickListener {
             btnFFClick(2000)
         }
 
-        binding.btnDown.setOnClickListener{
-            btnDownClick()
-        }
-    }
-
-    private fun setUpObserve(){
-        musicService!!.btnPlayClick.observe(viewLifecycleOwner){
-            if (!musicService!!.mediaPlayer!!.isPlaying) {
-                pauseAnimation()
-                stopSeekBar()
-                binding.btnPlay.setImageResource(R.drawable.icon_play)
-            } else {
-                startAnimation()
-                updateSeekBar()
-                binding.btnPlay.setImageResource(R.drawable.icon_pause)
-            }
-        }
-
-        musicService!!.btnRewindClick.observe(viewLifecycleOwner){
-            btnRewindClick(2000)
-        }
-
-        musicService!!.btnFastForwardClick.observe(viewLifecycleOwner){
-            btnFFClick(2000)
-        }
-
-        musicService!!.seekBarSlide.observe(viewLifecycleOwner){
+        binding.btnRepeat.setOnClickListener {
+            musicService!!.seekTo(0)
             updateCurrentTime()
         }
+
+        binding.btnDown.setOnClickListener {
+            btnDownClick()
+        }
+
+        Glide.with(requireContext())
+            .load(mainViewModel.selectedBook.value!!.image)
+            .placeholder(R.drawable.song_circle)
+            .error(R.drawable.song_circle)
+            .centerCrop()
+            .into(binding.bookImg)
+
+        binding.bookName.text = mainViewModel.selectedBook.value!!.name
     }
 
-    private fun loadLyrics() {
-        var lyricsList = mutableListOf<Lyric>()
+    private fun loadLyrics(lyric: String?) {
+
+        /*var lyricsList = mutableListOf<Lyric>()
         val inputStream =
             resources.openRawResource(R.raw.test) // assuming your lyrics file is in the raw folder
         val reader = BufferedReader(InputStreamReader(inputStream))
@@ -132,17 +169,36 @@ class FragmentAudio(
             lyricsList.add(Lyric(time, text))
             line = reader.readLine()
         }
-        reader.close()
+        reader.close()*/
 
-        //Update lyric List
-        songViewModel.updateLyricList(lyricsList)
+        var lyricsList = mutableListOf<Lyric>()
+        val lyricsString = lyric ?: ""
+        if (lyricsString.isNotBlank()) {
+            val scanner = Scanner(lyricsString)
+            while (scanner.hasNextLine()) {
+                val line: String = scanner.nextLine()
 
-        //Update total Lyrics
-        val lyricsBuilder = StringBuilder()
-        for (lyric in lyricsList) {
-            lyricsBuilder.append("${lyric.content}\n")
+                val timeString: String = line.substring(line.indexOf("[") + 1, line.indexOf("]"))
+                val text: String = line.substring(line.indexOf("]") + 1).trim()
+                val time = parseTimeToMillis(timeString)
+
+                lyricsList.add(Lyric(time, text))
+            }
+            scanner.close()
+
+            songViewModel.updateLyricList(lyricsList)
+
+            //Update total Lyrics
+            val lyricsBuilder = StringBuilder()
+            for (lyric in lyricsList) {
+                lyricsBuilder.append("${lyric.content}\n")
+            }
+
+            songViewModel.updateTotalLyrics(lyricsBuilder.toString())
+        } else {
+            songViewModel.updateLyricList(mutableListOf())
+            songViewModel.updateTotalLyrics("")
         }
-        songViewModel.updateTotalLyrics(lyricsBuilder.toString())
 
     }
 
@@ -155,7 +211,7 @@ class FragmentAudio(
     }
 
     private fun startAnimation() {
-        val animator = ObjectAnimator.ofFloat(binding.songImg, "rotation", rotation, rotation + 360)
+        val animator = ObjectAnimator.ofFloat(binding.bookImg, "rotation", rotation, rotation + 360)
         animator.duration = 10000
         animator.interpolator = LinearInterpolator()
         animator.repeatCount = Animation.INFINITE
@@ -164,8 +220,13 @@ class FragmentAudio(
     }
 
     private fun pauseAnimation() {
-        rotation = binding.songImg.rotation
+        rotation = binding.bookImg.rotation
         animatorSet.cancel()
+    }
+
+    private fun resetAnimation() {
+        binding.bookImg.rotation = 0f
+        rotation = 0f
     }
 
     private fun updateSeekBar() {
@@ -176,27 +237,31 @@ class FragmentAudio(
 
                 val currentTime = musicService!!.mediaPlayer?.currentPosition?.toLong()
                 val lyricList = songViewModel.lyricList.value!!
-                for (i in 0 until lyricList.size - 1) {
-                    val currentKey = lyricList[i].time
-                    val nextKey = lyricList[i + 1].time
-                    if (nextKey != null) {
-                        if (currentTime!! >= currentKey && currentTime < nextKey) {
-                            if (songViewModel.currentLyric.value != lyricList[i].content) {
-                                var start = 0
-                                for ((index, lyric) in lyricList.withIndex()) {
-                                    if (lyric.time < currentTime) {
-                                        start += lyric.content.length + 1
-                                        Log.i("Test", "Time+:${lyric.time}")
-                                    } else {
-                                        Log.i("Test", "StartProgress:${start}")
-                                        if (index >= 1)
-                                            start -= lyricList[index - 1].content.length + 1
-                                        break
-                                    }
-                                }
-                                songViewModel.updateStart(start)
-                                songViewModel.updateLyric(lyricList[i].content)
+                if (lyricList.isEmpty()) {
 
+                } else {
+                    for (i in 0 until lyricList.size - 1) {
+                        val currentKey = lyricList[i].time
+                        val nextKey = lyricList[i + 1].time
+                        if (nextKey != null) {
+                            if (currentTime!! >= currentKey && currentTime < nextKey) {
+                                if (songViewModel.currentLyric.value != lyricList[i].content) {
+                                    var start = 0
+                                    for ((index, lyric) in lyricList.withIndex()) {
+                                        if (lyric.time < currentTime) {
+                                            start += lyric.content.length + 1
+                                            Log.i("Test", "Time+:${lyric.time}")
+                                        } else {
+                                            Log.i("Test", "StartProgress:${start}")
+                                            if (index >= 1)
+                                                start -= lyricList[index - 1].content.length + 1
+                                            break
+                                        }
+                                    }
+                                    songViewModel.updateStart(start)
+                                    songViewModel.updateLyric(lyricList[i].content)
+
+                                }
                             }
                         }
                     }
@@ -213,20 +278,25 @@ class FragmentAudio(
     }
 
     private fun btnPlayClick() {
-        try{
-            if (musicService!!.mediaPlayer!!.isPlaying) {
-                pauseAnimation()
-                stopSeekBar()
-                binding.btnPlay.setImageResource(R.drawable.icon_play)
-            } else {
-                startAnimation()
-                updateSeekBar()
-                binding.btnPlay.setImageResource(R.drawable.icon_pause)
-            }
+        try {
+            if(musicService!!.loadIsDone.value==true){
+                if (musicService!!.mediaPlayer!!.isPlaying) {
+                    pauseAnimation()
+                    stopSeekBar()
+                    binding.btnPlay.setImageResource(R.drawable.icon_play)
+                } else {
 
-            musicService!!.play()
-        }catch (e:Exception){
-            Log.i("ERROR","Error:${e}")
+                    startAnimation()
+                    updateSeekBar()
+                    binding.btnPlay.setImageResource(R.drawable.icon_pause)
+                }
+
+                musicService!!.play()
+            }else{
+                Toast.makeText(requireContext(),"Trình phát chưa sẵn sàng", Toast.LENGTH_SHORT).show()
+            }
+        } catch (e: Exception) {
+            Log.i("ERROR", "Error:${e}")
         }
     }
 
@@ -270,7 +340,8 @@ class FragmentAudio(
     }
 
     private fun btnDownClick() {
-        mainViewModel.updateCurrentState(MainViewModel.Companion.CurrentState.Home)
+        mainViewModel.updateCurrentState(mainViewModel.lastState.value!!)
+        mainViewModel.updateSongControlVisibility(true)
     }
 
 }

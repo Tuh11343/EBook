@@ -14,6 +14,9 @@ interface SubscriptionHistoryAPIService {
     @GET("/api/v1/subscriptionHistory")
     fun findByID(@Query("id") id:Int):Single<JsonElement>
 
+    @GET("/api/v1/subscriptionHistory/subscriptionID")
+    fun findBySubscriptionID(@Query("id") id:Int):Single<JsonElement>
+
     @POST("/api/v1/subscriptionHistory")
     fun createSubscriptionHistory(@Body subscriptionHistory: SubscriptionHistory):Single<JsonElement>
 

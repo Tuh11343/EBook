@@ -1,0 +1,19 @@
+{
+    "logs": [
+        {
+            "outputFile": "com.example.ebook.app-mergeDebugResources-102:/values-xh/values-xh.xml",
+            "map": [
+                {
+                    "source": "C:\\Users\\ADMIN\\.gradle\\caches\\transforms-3\\b105e15ce23459cab156f254d9a1a5ae\\transformed\\hcaptcha-20.37.4\\res\\values-xh\\values-xh.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "85",
+                        "endOffsets": "136"
+                    }
+                }
+            ]
+        }
+    ]
+}

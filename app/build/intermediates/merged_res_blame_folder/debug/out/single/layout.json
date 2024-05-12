@@ -1,0 +1,158 @@
+[
+    {
+        "merged": "com.example.ebook.app-mergeDebugResources-103:/layout/home.xml",
+        "source": "com.example.ebook.app-main-106:/layout/home.xml"
+    },
+    {
+        "merged": "com.example.ebook.app-mergeDebugResources-103:/layout/genre_view_home.xml",
+        "source": "com.example.ebook.app-main-106:/layout/genre_view_home.xml"
+    },
+    {
+        "merged": "com.example.ebook.app-mergeDebugResources-103:/layout/fragment_loginfragment.xml",
+        "source": "com.example.ebook.app-main-106:/layout/fragment_loginfragment.xml"
+    },
+    {
+        "merged": "com.example.ebook.app-mergeDebugResources-103:/layout/fragment_author.xml",
+        "source": "com.example.ebook.app-main-106:/layout/fragment_author.xml"
+    },
+    {
+        "merged": "com.example.ebook.app-mergeDebugResources-103:/layout/fragment_detail_book.xml",
+        "source": "com.example.ebook.app-main-106:/layout/fragment_detail_book.xml"
+    },
+    {
+        "merged": "com.example.ebook.app-mergeDebugResources-103:/layout/bookview_continue.xml",
+        "source": "com.example.ebook.app-main-106:/layout/bookview_continue.xml"
+    },
+    {
+        "merged": "com.example.ebook.app-mergeDebugResources-103:/layout/splash_screen.xml",
+        "source": "com.example.ebook.app-main-106:/layout/splash_screen.xml"
+    },
+    {
+        "merged": "com.example.ebook.app-mergeDebugResources-103:/layout/fragment_read_book.xml",
+        "source": "com.example.ebook.app-main-106:/layout/fragment_read_book.xml"
+    },
+    {
+        "merged": "com.example.ebook.app-mergeDebugResources-103:/layout/book_view.xml",
+        "source": "com.example.ebook.app-main-106:/layout/book_view.xml"
+    },
+    {
+        "merged": "com.example.ebook.app-mergeDebugResources-103:/layout/genre.xml",
+        "source": "com.example.ebook.app-main-106:/layout/genre.xml"
+    },
+    {
+        "merged": "com.example.ebook.app-mergeDebugResources-103:/layout/genre_bottom_sheet.xml",
+        "source": "com.example.ebook.app-main-106:/layout/genre_bottom_sheet.xml"
+    },
+    {
+        "merged": "com.example.ebook.app-mergeDebugResources-103:/layout/fragment_favorite.xml",
+        "source": "com.example.ebook.app-main-106:/layout/fragment_favorite.xml"
+    },
+    {
+        "merged": "com.example.ebook.app-mergeDebugResources-103:/layout/bookview_withcard.xml",
+        "source": "com.example.ebook.app-main-106:/layout/bookview_withcard.xml"
+    },
+    {
+        "merged": "com.example.ebook.app-mergeDebugResources-103:/layout/read_book.xml",
+        "source": "com.example.ebook.app-main-106:/layout/read_book.xml"
+    },
+    {
+        "merged": "com.example.ebook.app-mergeDebugResources-103:/layout/fragment_sign_up.xml",
+        "source": "com.example.ebook.app-main-106:/layout/fragment_sign_up.xml"
+    },
+    {
+        "merged": "com.example.ebook.app-mergeDebugResources-103:/layout/filter_bottom_sheet.xml",
+        "source": "com.example.ebook.app-main-106:/layout/filter_bottom_sheet.xml"
+    },
+    {
+        "merged": "com.example.ebook.app-mergeDebugResources-103:/layout/bookview_bigcard.xml",
+        "source": "com.example.ebook.app-main-106:/layout/bookview_bigcard.xml"
+    },
+    {
+        "merged": "com.example.ebook.app-mergeDebugResources-103:/layout/fragment_subscription.xml",
+        "source": "com.example.ebook.app-main-106:/layout/fragment_subscription.xml"
+    },
+    {
+        "merged": "com.example.ebook.app-mergeDebugResources-103:/layout/loading.xml",
+        "source": "com.example.ebook.app-main-106:/layout/loading.xml"
+    },
+    {
+        "merged": "com.example.ebook.app-mergeDebugResources-103:/layout/sort_bottom_sheet_item.xml",
+        "source": "com.example.ebook.app-main-106:/layout/sort_bottom_sheet_item.xml"
+    },
+    {
+        "merged": "com.example.ebook.app-mergeDebugResources-103:/layout/home_author_view.xml",
+        "source": "com.example.ebook.app-main-106:/layout/home_author_view.xml"
+    },
+    {
+        "merged": "com.example.ebook.app-mergeDebugResources-103:/layout/fragment_main.xml",
+        "source": "com.example.ebook.app-main-106:/layout/fragment_main.xml"
+    },
+    {
+        "merged": "com.example.ebook.app-mergeDebugResources-103:/layout/fragment_user_login.xml",
+        "source": "com.example.ebook.app-main-106:/layout/fragment_user_login.xml"
+    },
+    {
+        "merged": "com.example.ebook.app-mergeDebugResources-103:/layout/fragment_lyrics.xml",
+        "source": "com.example.ebook.app-main-106:/layout/fragment_lyrics.xml"
+    },
+    {
+        "merged": "com.example.ebook.app-mergeDebugResources-103:/layout/fragment_sign_in.xml",
+        "source": "com.example.ebook.app-main-106:/layout/fragment_sign_in.xml"
+    },
+    {
+        "merged": "com.example.ebook.app-mergeDebugResources-103:/layout/readbook_fragment_music.xml",
+        "source": "com.example.ebook.app-main-106:/layout/readbook_fragment_music.xml"
+    },
+    {
+        "merged": "com.example.ebook.app-mergeDebugResources-103:/layout/main.xml",
+        "source": "com.example.ebook.app-main-106:/layout/main.xml"
+    },
+    {
+        "merged": "com.example.ebook.app-mergeDebugResources-103:/layout/fragment_home.xml",
+        "source": "com.example.ebook.app-main-106:/layout/fragment_home.xml"
+    },
+    {
+        "merged": "com.example.ebook.app-mergeDebugResources-103:/layout/book_detail_genre.xml",
+        "source": "com.example.ebook.app-main-106:/layout/book_detail_genre.xml"
+    },
+    {
+        "merged": "com.example.ebook.app-mergeDebugResources-103:/layout/book_view_normal_vertical.xml",
+        "source": "com.example.ebook.app-main-106:/layout/book_view_normal_vertical.xml"
+    },
+    {
+        "merged": "com.example.ebook.app-mergeDebugResources-103:/layout/fragment_audio.xml",
+        "source": "com.example.ebook.app-main-106:/layout/fragment_audio.xml"
+    },
+    {
+        "merged": "com.example.ebook.app-mergeDebugResources-103:/layout/fragment_search.xml",
+        "source": "com.example.ebook.app-main-106:/layout/fragment_search.xml"
+    },
+    {
+        "merged": "com.example.ebook.app-mergeDebugResources-103:/layout/detail_book_author.xml",
+        "source": "com.example.ebook.app-main-106:/layout/detail_book_author.xml"
+    },
+    {
+        "merged": "com.example.ebook.app-mergeDebugResources-103:/layout/book_view_normal.xml",
+        "source": "com.example.ebook.app-main-106:/layout/book_view_normal.xml"
+    },
+    {
+        "merged": "com.example.ebook.app-mergeDebugResources-103:/layout/custom_bottom_sheet.xml",
+        "source": "com.example.ebook.app-main-106:/layout/custom_bottom_sheet.xml"
+    },
+    {
+        "merged": "com.example.ebook.app-mergeDebugResources-103:/layout/sort_bottom_sheet.xml",
+        "source": "com.example.ebook.app-main-106:/layout/sort_bottom_sheet.xml"
+    },
+    {
+        "merged": "com.example.ebook.app-mergeDebugResources-103:/layout/search_book_view.xml",
+        "source": "com.example.ebook.app-main-106:/layout/search_book_view.xml"
+    },
+    {
+        "merged": "com.example.ebook.app-mergeDebugResources-103:/layout/song.xml",
+        "source": "com.example.ebook.app-main-106:/layout/song.xml"
+    },
+    {
+        "merged": "com.example.ebook.app-mergeDebugResources-103:/layout/fragment_user.xml",
+        "source": "com.example.ebook.app-main-106:/layout/fragment_user.xml"
+    }
+]

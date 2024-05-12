@@ -3,11 +3,17 @@ package com.example.ebook.views
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.animation.ObjectAnimator
+import android.annotation.SuppressLint
+import android.app.AlarmManager
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.app.PendingIntent
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.content.ServiceConnection
 import android.content.SharedPreferences
+import android.os.Build
 import android.os.Bundle
 import android.os.IBinder
 import android.util.Log
@@ -25,10 +31,15 @@ import com.bumptech.glide.Glide
 import com.example.ebook.R
 import com.example.ebook.adapter.MainPageAdapter
 import com.example.ebook.databinding.MainBinding
+import com.example.ebook.model.Book
 import com.example.ebook.services.MusicService
+import com.example.ebook.utils.AlarmReceiver
 import com.example.ebook.utils.AppInstance
 import com.example.ebook.viewmodels.MainViewModel
 import nl.joery.animatedbottombar.AnimatedBottomBar
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Locale
 
 
 class MainActivity : AppCompatActivity() {
@@ -55,7 +66,6 @@ class MainActivity : AppCompatActivity() {
     fun getMusicService(): MusicService? {
         return musicService
     }
-
 
     override fun onStart() {
         super.onStart()
@@ -100,13 +110,17 @@ class MainActivity : AppCompatActivity() {
 
         songControlSwipeDown()
 
+        createNotificationChannel()
+        setUpAlarm()
+
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     private fun songControlSwipeDown() {
-        var gestureDetector =
+        val gestureDetector =
             GestureDetector(this, object : GestureDetector.SimpleOnGestureListener() {
                 override fun onDown(e: MotionEvent): Boolean {
-                    return true
+                    return false
                 }
 
                 override fun onFling(
@@ -125,17 +139,26 @@ class MainActivity : AppCompatActivity() {
                         }
                         animateHide.start()
                         animateHide.doOnEnd {
-                            binding.songControl.visibility = View.GONE
+                            binding.songControl.visibility = View.INVISIBLE
+                            binding.songControl.translationY = 0f
                             musicService?.mediaPlayer?.pause()
                             musicService?.btnPlayClick?.postValue(Unit)
                             musicService?.cancelNotification()
                         }
                     }
-                    return true
+                    return false
                 }
             })
 
-        binding.songControl.setOnTouchListener { _, event -> gestureDetector.onTouchEvent(event) }
+        binding.songControl.setOnTouchListener { _, event ->
+            gestureDetector.onTouchEvent(event)
+        }
+
+        binding.songControl.setOnClickListener {
+            Toast.makeText(this, "Testing click", Toast.LENGTH_SHORT).show()
+            mainViewModel.updateCurrentState(MainViewModel.Companion.CurrentState.ReadBook)
+        }
+
     }
 
     private fun bottomBarOnTabSelect() {
@@ -147,23 +170,41 @@ class MainActivity : AppCompatActivity() {
                 newTab: AnimatedBottomBar.Tab
             ) {
                 when (newIndex) {
-                    mainPageAdapter.toHomeFragment() -> {
-                        goToFragmentHome()
+                    0 -> {
+                        mainViewModel.updateCurrentState(MainViewModel.Companion.CurrentState.Home)
                     }
 
                     1 -> {
-                        goToFragmentSearch()
+                        mainViewModel.updateCurrentState(MainViewModel.Companion.CurrentState.Search)
+                    }
+
+                    2 -> {
+                        mainViewModel.updateCurrentState(MainViewModel.Companion.CurrentState.Favorite)
                     }
 
                     3 -> {
-                        goToFragmentSubscription()
+                        mainViewModel.updateCurrentState(MainViewModel.Companion.CurrentState.User)
                     }
                 }
             }
 
             override fun onTabReselected(index: Int, tab: AnimatedBottomBar.Tab) {
-                if (index == mainPageAdapter.toHomeFragment()) {
-                    goToFragmentHome()
+                when (index) {
+                    0 -> {
+                        mainViewModel.updateCurrentState(MainViewModel.Companion.CurrentState.Home)
+                    }
+
+                    1 -> {
+                        mainViewModel.updateCurrentState(MainViewModel.Companion.CurrentState.Search)
+                    }
+
+                    2 -> {
+                        mainViewModel.updateCurrentState(MainViewModel.Companion.CurrentState.Favorite)
+                    }
+
+                    3 -> {
+                        mainViewModel.updateCurrentState(MainViewModel.Companion.CurrentState.User)
+                    }
                 }
             }
         })
@@ -176,11 +217,8 @@ class MainActivity : AppCompatActivity() {
         mainViewModel = ViewModelProvider(this)[MainViewModel::class.java]
 
         sharedPreferences = this.getSharedPreferences("MyPrefs", Context.MODE_PRIVATE)
-        loadSignInAccount()
 
-        binding.songControlClickView.setOnClickListener {
-            mainViewModel.updateCurrentState(MainViewModel.Companion.CurrentState.ReadBook)
-        }
+        loadSignInAccount()
 
         binding.btnPlay.setOnClickListener {
             musicService?.btnPlayClick?.postValue(Unit)
@@ -205,7 +243,7 @@ class MainActivity : AppCompatActivity() {
                 }
 
                 R.id.user -> {
-                    mainViewModel.updateCurrentState(MainViewModel.Companion.CurrentState.User)
+                    binding.bottomBar.selectTabAt(3)
                     true
                 }
 
@@ -220,36 +258,24 @@ class MainActivity : AppCompatActivity() {
     private fun onBackPressedHandle() {
         onBackPressedDispatcher.addCallback(object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                Log.i("Nothing", "Last State:${mainViewModel.lastState.value}")
-                when (mainViewModel.currentState.value) {
-                    MainViewModel.Companion.CurrentState.DetailBook -> {
-                        if (mainViewModel.lastState.value == MainViewModel.Companion.CurrentState.Search) {
-                            mainViewModel.updateCurrentState(MainViewModel.Companion.CurrentState.Search)
-                        } else {
-                            mainViewModel.updateCurrentState(MainViewModel.Companion.CurrentState.Home)
-                        }
-                    }
 
-                    MainViewModel.Companion.CurrentState.ReadBook -> {
-                        mainViewModel.updateCurrentState(MainViewModel.Companion.CurrentState.Home)
-                    }
-
-                    MainViewModel.Companion.CurrentState.Search -> {
-                        mainViewModel.updateCurrentState(MainViewModel.Companion.CurrentState.Home)
-                    }
-
-                    MainViewModel.Companion.CurrentState.SignUp->{
-                        goBack()
-                    }
-
-                    MainViewModel.Companion.CurrentState.SignIn->{
-                        goBack()
-                    }
-
-                    else -> {
-                        showExitConfirmationDialog()
-                    }
-                }
+                val currentState = mainViewModel.currentState.value
+                if (currentState == MainViewModel.Companion.CurrentState.Home ||
+                    currentState == MainViewModel.Companion.CurrentState.Search ||
+                    currentState == MainViewModel.Companion.CurrentState.Favorite ||
+                    currentState == MainViewModel.Companion.CurrentState.User ||
+                    currentState == MainViewModel.Companion.CurrentState.Subscription
+                ) {
+                    showExitConfirmationDialog()
+                } else if (currentState == MainViewModel.Companion.CurrentState.SignIn ||
+                    currentState == MainViewModel.Companion.CurrentState.SignUp
+                ) {
+                    mainViewModel.updateCurrentState(MainViewModel.Companion.CurrentState.User)
+                }/*else if(currentState==MainViewModel.Companion.CurrentState.DetailBook){
+                    mainViewModel.updateCurrentState(MainViewModel.Companion.CurrentState.Home)
+                } else {
+                    mainViewModel.updateCurrentState(mainViewModel.lastState.value!!)
+                }*/
             }
         })
     }
@@ -261,7 +287,7 @@ class MainActivity : AppCompatActivity() {
         binding.viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
-                if(position==mainPageAdapter.toFragmentSubscription()){
+                if (position == mainPageAdapter.toFragmentSubscription()) {
                     binding.viewPager.adapter?.notifyDataSetChanged()
                 }
             }
@@ -272,35 +298,14 @@ class MainActivity : AppCompatActivity() {
 
     private fun observe() {
         observeCurrentState()
-        observeAppBarVisibility()
-        observeSongControl()
         observeCurrentAccount()
         observeCurrentAccountSubscription()
-    }
+        observeCurrentAccountSubscriptionHistory()
 
-    private fun observeSongControl() {
-        mainViewModel.showSongControl.observe(this) {
-            when (it) {
-                true -> {
-                    //Show SongView if exist
-                    if (musicService?.isNotificationCreated == true) {
-                        binding.songControl.visibility = View.VISIBLE
-
-                        //update songControl data
-                        Glide.with(this)
-                            .load(binding.songImg)
-                            .placeholder(R.drawable.song_circle)
-                            .error(R.drawable.song_circle)
-                            .into(binding.songImg)
-                        binding.bookName.text = mainViewModel.selectedBook.value?.name
-                    }
-                }
-
-                false -> {
-                    binding.songControl.visibility = View.GONE
-                }
-            }
-        }
+        observeAppBarVisibility()
+        observeSongControlVisibility()
+        observeBottomBarVisibility()
+        observeBottomBarTab()
     }
 
     private fun observeCurrentState() {
@@ -310,36 +315,64 @@ class MainActivity : AppCompatActivity() {
                 MainViewModel.Companion.CurrentState.ReadBook -> {
                     goToFragmentReadBook()
 
-                    showBottomBar(false)
-                    binding.appBar.visibility = View.GONE
-                    binding.songControl.visibility = View.GONE
                 }
 
                 MainViewModel.Companion.CurrentState.DetailBook -> {
+
+
                     goToFragmentDetailBook()
                 }
 
                 MainViewModel.Companion.CurrentState.Home -> {
+
+
                     goToFragmentHome()
 
-                    showBottomBar(true)
-                    binding.appBar.visibility = View.VISIBLE
-                    showSongControl()
                 }
 
                 MainViewModel.Companion.CurrentState.Search -> {
+
+
                     goToFragmentSearch()
                 }
 
                 MainViewModel.Companion.CurrentState.User -> {
-                    goToFragmentUser()
-                    showBottomBar(false)
+
+
+                    if (AppInstance.currentAccount != null) {
+                        goToFragmentUserLogin()
+                    } else {
+                        goToFragmentUser()
+                    }
                 }
 
-                MainViewModel.Companion.CurrentState.SignIn ->{
+                MainViewModel.Companion.CurrentState.SignIn -> {
+
+
+                    goToFragmentSignIn()
                 }
 
-                MainViewModel.Companion.CurrentState.SignUp ->{
+                MainViewModel.Companion.CurrentState.SignUp -> {
+
+
+                    goToFragmentSignUp()
+                }
+
+                MainViewModel.Companion.CurrentState.Author -> {
+
+
+                    goToFragmentAuthor()
+                }
+
+                MainViewModel.Companion.CurrentState.Subscription -> {
+                    goToFragmentSubscription()
+                }
+
+                MainViewModel.Companion.CurrentState.Favorite -> {
+
+
+                    goToFragmentFavorite()
+
                 }
 
             }
@@ -355,9 +388,38 @@ class MainActivity : AppCompatActivity() {
 
     private fun observeCurrentAccountSubscription() {
         mainViewModel.currentAccountSubscription.observe(this) { subscription ->
+
+            mainViewModel.findAccountSubscriptionHistory(subscription.id!!)
             AppInstance.currentSubscription = subscription
+
         }
     }
+
+    private fun observeCurrentAccountSubscriptionHistory() {
+        mainViewModel.currentAccountSubscriptionHistory.observe(this) { subscriptionHistory ->
+            val subscription=AppInstance.currentSubscription
+            //Check coi hết date chưa
+            if (subscription!!.book_type == Book.BookType.PREMIUM) {
+                if (subscriptionHistory!!.end.before(Calendar.getInstance().time)) {
+                    //Hết hạn premium
+
+                    subscription.book_type = Book.BookType.NORMAL
+                    subscription.limit_book_mark = 10
+                    subscription.price_per_month = 0f
+                    subscription.duration = 0
+                    subscription.type = "Normal"
+                    mainViewModel.updateSubscription(subscription)
+
+                    subscriptionHistory!!.name = "Normal"
+                    subscriptionHistory!!.price = 0f
+                    subscriptionHistory!!.end = Calendar.getInstance().time
+                    subscriptionHistory!!.start = Calendar.getInstance().time
+                    mainViewModel.updateSubscriptionHistory(subscriptionHistory)
+                }
+            }
+        }
+    }
+
 
     private fun observeAppBarVisibility() {
         mainViewModel.appBarVisibility.observe(this) {
@@ -368,6 +430,59 @@ class MainActivity : AppCompatActivity() {
 
                 false -> {
                     binding.appBar.visibility = View.GONE
+                }
+            }
+        }
+    }
+
+    private fun observeBottomBarVisibility() {
+        mainViewModel.bottomBarVisibility.observe(this) {
+            when (it) {
+                true -> {
+                    binding.bottomBar.visibility = View.VISIBLE
+                }
+
+                false -> {
+                    binding.bottomBar.visibility = View.GONE
+                }
+            }
+        }
+    }
+
+    private fun observeBottomBarTab() {
+        mainViewModel.bottomBarTab.observe(this) {
+            binding.bottomBar.selectTabAt(it)
+        }
+    }
+
+    private fun observeSongControlVisibility() {
+        mainViewModel.songControlVisibility.observe(this) {
+            when (it) {
+                true -> {
+                    if (musicService?.isNotificationCreated == true) {
+                        binding.songControl.visibility = View.VISIBLE
+
+                        //update songControl data
+                        Glide.with(this)
+                            .load(mainViewModel.selectedBook.value!!.image)
+                            .placeholder(R.drawable.song_circle)
+                            .error(R.drawable.song_circle)
+                            .into(binding.songImg)
+                        binding.bookName.text = mainViewModel.selectedBook.value?.name
+                        if (musicService?.mediaPlayer?.isPlaying == true) {
+                            binding.btnPlay.setImageResource(R.drawable.icon_pause)
+                        } else {
+                            binding.btnPlay.setImageResource(R.drawable.icon_play)
+                        }
+
+                        musicService!!.btnCloseClick!!.observe(this) {
+                            binding.btnPlay.setImageResource(R.drawable.icon_play)
+                        }
+                    }
+                }
+
+                false -> {
+                    binding.songControl.visibility = View.INVISIBLE
                 }
             }
         }
@@ -401,60 +516,89 @@ class MainActivity : AppCompatActivity() {
         }*/
     }
 
-    private fun showSongControl() {
-        if (musicService?.isNotificationCreated == true) {
-            binding.songControl.visibility = View.VISIBLE
-
-            //update songControl data
-            Glide.with(this)
-                .load(binding.songImg)
-                .placeholder(R.drawable.song_circle)
-                .error(R.drawable.song_circle)
-                .into(binding.songImg)
-            binding.bookName.text = mainViewModel.selectedBook.value?.name
-            if (musicService!!.mediaPlayer!!.isPlaying) {
-                binding.btnPlay.setImageResource(R.drawable.icon_pause)
-            } else {
-                binding.btnPlay.setImageResource(R.drawable.icon_play)
-            }
-
-        }
-    }
-
     private fun goToFragmentDetailBook() {
-        binding.viewPager.setCurrentItem(mainPageAdapter.toFragmentDetailBook(), false)
+
         mainViewModel.updateAppBarVisibility(false)
+        mainViewModel.updateBottomBarVisibility(true)
+        binding.viewPager.setCurrentItem(mainPageAdapter.toFragmentDetailBook(), false)
     }
 
     private fun goToFragmentHome() {
-        binding.viewPager.setCurrentItem(mainPageAdapter.toHomeFragment(), false)
         mainViewModel.updateAppBarVisibility(true)
-        showSongControl()
+        mainViewModel.updateBottomBarVisibility(true)
+
+        binding.viewPager.setCurrentItem(mainPageAdapter.toHomeFragment(), false)
     }
 
     private fun goToFragmentSearch() {
-        binding.viewPager.setCurrentItem(mainPageAdapter.toFragmentSearch(), false)
         mainViewModel.updateAppBarVisibility(false)
+        mainViewModel.updateBottomBarVisibility(true)
+
+        binding.viewPager.setCurrentItem(mainPageAdapter.toFragmentSearch(), false)
     }
 
     private fun goToFragmentUser() {
-        binding.viewPager.setCurrentItem(mainPageAdapter.toFragmentUser(), false)
         mainViewModel.updateAppBarVisibility(false)
+        mainViewModel.updateBottomBarVisibility(true)
+
+        binding.viewPager.setCurrentItem(mainPageAdapter.toFragmentUser(), false)
+    }
+
+    private fun goToFragmentUserLogin() {
+        mainViewModel.updateAppBarVisibility(false)
+        mainViewModel.updateBottomBarVisibility(true)
+
+        binding.viewPager.setCurrentItem(mainPageAdapter.toFragmentUserLogin(), false)
     }
 
     private fun goToFragmentReadBook() {
-        binding.viewPager.setCurrentItem(mainPageAdapter.toReadBookFragment(), false)
         mainViewModel.updateAppBarVisibility(false)
+        mainViewModel.updateBottomBarVisibility(false)
+        mainViewModel.updateSongControlVisibility(false)
+
+        binding.viewPager.setCurrentItem(mainPageAdapter.toReadBookFragment(), false)
+    }
+
+    private fun goToFragmentAuthor() {
+
+        mainViewModel.updateAppBarVisibility(false)
+        mainViewModel.updateBottomBarVisibility(true)
+
+        binding.viewPager.setCurrentItem(mainPageAdapter.toFragmentAuthor(), false)
+    }
+
+    private fun goToFragmentSignIn() {
+        mainViewModel.updateAppBarVisibility(false)
+        mainViewModel.updateBottomBarVisibility(true)
+
+        binding.viewPager.setCurrentItem(mainPageAdapter.toFragmentSignIn(), false)
+    }
+
+    private fun goToFragmentSignUp() {
+        mainViewModel.updateAppBarVisibility(false)
+        mainViewModel.updateBottomBarVisibility(true)
+
+        binding.viewPager.setCurrentItem(mainPageAdapter.toFragmentSignUp(), false)
     }
 
     private fun goToFragmentSubscription() {
         binding.viewPager.setCurrentItem(mainPageAdapter.toFragmentSubscription(), false)
-        /*mainViewModel.updateAppBarVisibility(false)*/
     }
 
-    private fun showBottomBar(it: Boolean) {
+    private fun goToFragmentFavorite() {
+        if (AppInstance.currentAccount == null) {
+            binding.bottomBar.selectTabAt(3)
+        } else {
+            mainViewModel.updateAppBarVisibility(false)
+            mainViewModel.updateBottomBarVisibility(true)
+
+            binding.viewPager.setCurrentItem(mainPageAdapter.toFragmentFavorite(), false)
+        }
+    }
+
+    /*private fun showBottomBar(it: Boolean) {
         if (!it) {
-            /*val animateHide = ObjectAnimator.ofFloat(
+            *//*val animateHide = ObjectAnimator.ofFloat(
                 binding.bottomBar, "translationY",
                 0f, binding.bottomBar.height.toFloat()
             ).apply {
@@ -467,7 +611,7 @@ class MainActivity : AppCompatActivity() {
                 }
             })
 
-            animateHide.start()*/
+            animateHide.start()*//*
             binding.bottomBar.visibility = View.GONE
         } else {
             binding.bottomBar.visibility = View.VISIBLE
@@ -485,7 +629,7 @@ class MainActivity : AppCompatActivity() {
 
             animateShow.start()
         }
-    }
+    }*/
 
     private fun showExitConfirmationDialog() {
         val builder = AlertDialog.Builder(this)
@@ -503,20 +647,107 @@ class MainActivity : AppCompatActivity() {
 
     private fun loadSignInAccount() {
         val currentAccountID = sharedPreferences.getInt(AppInstance.ACCOUNT_ID_KEY.toString(), -1)
-        val isGoogleAccount = sharedPreferences.getBoolean(AppInstance.IS_GOOGLE_ACCOUNT.toString(), false)
-
-        AppInstance.isGoogleAccount=isGoogleAccount
 
         if (currentAccountID != -1) {
             mainViewModel.findAccountByID(currentAccountID)
             mainViewModel.findAccountSubscription(currentAccountID)
+
         } else {
             Toast.makeText(this, "Bạn chưa đăng nhập", Toast.LENGTH_SHORT).show()
         }
     }
 
-    private fun goBack(){
+    private fun goBack() {
         this.supportFragmentManager.popBackStack()
     }
+
+    private fun createNotificationChannel() {
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val name = "Alarm Channel"
+            val description = "This is Alarm Description"
+            val importance = NotificationManager.IMPORTANCE_HIGH
+            val channel = NotificationChannel(AlarmReceiver.CHANNEL_ID, name, importance)
+            channel.description = description
+
+            val notificationManager = getSystemService(NotificationManager::class.java)
+            notificationManager.createNotificationChannel(channel)
+        }
+
+    }
+
+    private fun cancelAlarm() {
+        val alarmManager = getSystemService(ALARM_SERVICE) as AlarmManager
+        val intent = Intent(this, AlarmReceiver::class.java)
+        val pendingIntent =
+            PendingIntent.getBroadcast(
+                this,
+                0,
+                intent,
+                PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
+            )
+        alarmManager.cancel(pendingIntent)
+    }
+
+    private fun setUpAlarm() {
+
+        val calendar = Calendar.getInstance()
+        calendar.set(Calendar.HOUR_OF_DAY, 7)
+        calendar.set(Calendar.MINUTE, 0)
+        calendar.set(Calendar.SECOND, 0)
+
+        // Nếu thời gian đã qua, đặt cho ngày tiếp theo
+        if (System.currentTimeMillis() > calendar.timeInMillis) {
+            calendar.add(Calendar.DAY_OF_YEAR, 1)
+        }
+
+        val alarmManager = getSystemService(ALARM_SERVICE) as AlarmManager
+        val intent = Intent(this, AlarmReceiver::class.java)
+
+        val pendingIntent =
+            PendingIntent.getBroadcast(
+                this,
+                0,
+                intent,
+                PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
+            )
+
+        /*For Test Only*/
+        /*val calendarTest = Calendar.getInstance()
+        calendarTest.add(Calendar.SECOND, 5)
+        alarmManager.setInexactRepeating(
+            AlarmManager.RTC_WAKEUP, calendarTest.timeInMillis,
+            10000,
+            pendingIntent
+        )*/
+
+        /*val intervalMillis = 24 * 60 * 60 * 1000*/ // 24 giờ
+        try {
+            alarmManager.setInexactRepeating(
+                AlarmManager.RTC_WAKEUP,
+                calendar.timeInMillis,
+                AlarmManager.INTERVAL_DAY,
+                pendingIntent
+            )
+
+            /*alarmManager.setRepeating(
+                AlarmManager.RTC_WAKEUP,
+                calendar.timeInMillis,
+                AlarmManager.INTERVAL_DAY,
+                pendingIntent
+            )*/
+
+        } catch (er: SecurityException) {
+            Log.e("ERROR", "Error from setUpAlarm")
+        }
+
+
+        val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
+        val setTime = dateFormat.format(calendar.time)
+        Log.i("DEBUG", "Thời gian set: $setTime")
+
+
+    }
+
 }
 

@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <array name="filter_options">
-        <item>Mới nhất</item>
-        <item>Phổ biến nhất</item>
-
-    </array>
-</resources>

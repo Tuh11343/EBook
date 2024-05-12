@@ -13,6 +13,7 @@ import com.example.ebook.R
 import com.example.ebook.adapter.BookDetailGenreAdapter
 import com.example.ebook.adapter.HomeAuthorAdapter
 import com.example.ebook.databinding.FragmentDetailBookBinding
+import com.example.ebook.listener.IAuthorListener
 import com.example.ebook.model.Author
 import com.example.ebook.model.Book
 import com.example.ebook.utils.AppInstance

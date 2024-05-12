@@ -6,7 +6,6 @@ import com.example.ebook.model.User
 
 
 class AppInstance {
-
     companion object{
         var REWIND_REQUEST_CODE=0
         var FF_REQUEST_CODE=1
@@ -16,8 +15,16 @@ class AppInstance {
         var IS_GOOGLE_ACCOUNT=88
         var currentAccount: Account?=null
         var currentUser: User?=null
-        var currentSubscription: Subscription?=null
-        var isGoogleAccount:Boolean=false
+        var currentSubscription:Subscription?=null
+        var bookName:String?=null
+        var bookAuthorName:String?=null
+        var bookImg:String?=null
+
+        fun resetAccount(){
+            currentAccount=null
+            currentUser=null
+            currentSubscription=null
+        }
     }
 
 }

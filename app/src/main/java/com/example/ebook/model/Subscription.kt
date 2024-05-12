@@ -14,7 +14,7 @@ class Subscription(
     var book_type: Book.BookType,
     var type: String,
     var price_per_month: Float,
-    var limit_book_mark:Int
+    var limit_book_mark:Int,
 ) {
 
     constructor() : this(null, -1, -1, Book.BookType.NORMAL, "", -1F,-1)

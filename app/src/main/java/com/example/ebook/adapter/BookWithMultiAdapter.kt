@@ -1,5 +1,6 @@
 package com.example.ebook.adapter
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.view.animation.Animation
@@ -8,13 +9,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.ebook.R
 import com.example.ebook.databinding.BookViewBinding
-import com.example.ebook.listener.IBookListener
+import com.example.ebook.listener.IMultiBookListener
 import com.example.ebook.model.Book
 
 class BookWithMultiAdapter(
     var bookList: MutableList<Book>,
-    var title: String,
-    var mListener: IBookListener
+    var mListener: IMultiBookListener
 ) :
     RecyclerView.Adapter<BookWithMultiAdapter.BookViewHolder>() {
 
@@ -35,18 +35,19 @@ class BookWithMultiAdapter(
     }
 
     override fun onBindViewHolder(holder: BookViewHolder, position: Int) {
-        val book = bookList[holder.absoluteAdapterPosition]
-        var book2 = Book()
+
+        val bookPosition:Int
+        if(holder.absoluteAdapterPosition==0)
+            bookPosition=holder.absoluteAdapterPosition
+        else if(holder.absoluteAdapterPosition==1)
+            bookPosition=holder.absoluteAdapterPosition+1
+        else
+            bookPosition=holder.absoluteAdapterPosition+2
+
+        val book = bookList[bookPosition]
         var book3 = Book()
-        var book4 = Book()
-        if (holder.absoluteAdapterPosition + 1 < bookList.size) {
-            book2 = bookList[holder.absoluteAdapterPosition + 1]
-        }
-        if (holder.absoluteAdapterPosition + 1 < bookList.size) {
-            book3 = bookList[holder.absoluteAdapterPosition + 1]
-        }
-        if (holder.absoluteAdapterPosition + 3 < bookList.size) {
-            book4 = bookList[holder.absoluteAdapterPosition + 3]
+        if (bookPosition + 1 < bookList.size) {
+            book3 = bookList[bookPosition + 1]
         }
 
         if (book != null) {
@@ -54,9 +55,14 @@ class BookWithMultiAdapter(
                 .load(book.image)
                 .placeholder(R.drawable.song_circle)
                 .error(R.drawable.song_circle)
+                .centerCrop()
                 .into(holder.binding.bookImg)
 
-            holder.binding.bookName.text = title
+            if (book.book_type == Book.BookType.NORMAL) {
+                holder.binding.bookType.text = "Miễn phí"
+            } else if (book.book_type == Book.BookType.PREMIUM) {
+                holder.binding.bookType.text = "Giới hạn"
+            }
 
             holder.binding.bookImg.setOnClickListener {
                 val shrinkAnimation =
@@ -66,7 +72,8 @@ class BookWithMultiAdapter(
                     }
 
                     override fun onAnimationEnd(animation: Animation?) {
-                        mListener.onBookClick(book)
+                        Log.i("Nothing","Position:${bookPosition}")
+                        mListener.onFirstBookClick(book)
                     }
 
                     override fun onAnimationRepeat(animation: Animation?) {
@@ -78,22 +85,18 @@ class BookWithMultiAdapter(
 
         }
 
-
-        /*if(book2!=null){
-            Glide.with(holder.itemView.context)
-                .load(book2.image)
-                .placeholder(R.drawable.song_circle)
-                .error(R.drawable.song_circle)
-                .into(holder.binding.bookImg2)
-            holder.binding.bookName2.text=title
-        }*/
         if (book3 != null) {
             Glide.with(holder.itemView.context)
                 .load(book3.image)
                 .placeholder(R.drawable.song_circle)
                 .error(R.drawable.song_circle)
                 .into(holder.binding.bookImg3)
-            holder.binding.bookName3.text = title
+
+            if (book3.book_type == Book.BookType.NORMAL) {
+                holder.binding.bookType3.text = "Miễn phí"
+            } else if (book3.book_type == Book.BookType.PREMIUM) {
+                holder.binding.bookType3.text = "Giới hạn"
+            }
 
 
             holder.binding.bookImg3.setOnClickListener {
@@ -104,7 +107,8 @@ class BookWithMultiAdapter(
                     }
 
                     override fun onAnimationEnd(animation: Animation?) {
-                        mListener.onBookClick(book)
+                        Log.i("Nothing","Position:${bookPosition+1}")
+                        mListener.onSecondBookClick(book3)
                     }
 
                     override fun onAnimationRepeat(animation: Animation?) {
@@ -114,14 +118,6 @@ class BookWithMultiAdapter(
                 holder.binding.cardView3.startAnimation(shrinkAnimation)
             }
         }
-        /*if(book4!=null){
-            Glide.with(holder.itemView.context)
-                .load(book4.image)
-                .placeholder(R.drawable.song_circle)
-                .error(R.drawable.song_circle)
-                .into(holder.binding.bookImg4)
-            holder.binding.bookName4.text=title
-        }*/
 
 
     }
