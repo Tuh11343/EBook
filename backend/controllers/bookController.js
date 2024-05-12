@@ -372,6 +372,262 @@ exports.findByAuthorID = catchAsync(async (req, res) => {
     }
 })
 
+exports.findByFavorite = catchAsync(async (req, res) => {
+    const query = req.query
+
+    if (!query.id) {
+        return res.status(400).json({
+            status: 'No id provided'
+        })
+    }
+
+    var books
+    if (!query.limit || !query.offset) {
+        books = await prisma.book.findMany({
+            where: {
+                bookFavorite:{
+                    some:{
+                        user_id:parseInt(query.id)
+                    }
+                }
+            },
+            include: {
+                bookFavorite:true
+            }
+        })
+    } else {
+        books = await prisma.book.findMany({
+            where: {
+                bookFavorite:{
+                    some:{
+                        user_id:parseInt(query.id)
+                    }
+                }
+            },
+            take: parseInt(query.limit),
+            skip: parseInt(query.offset),
+            include: {
+                bookFavorite:true
+            }
+        })
+    }
+
+    if (!books) {
+        return res.status(400).json({
+            status: 'No book found'
+        })
+    } else {
+        return res.status(200).json({
+            status: 'Book search successful',
+            books,
+            length:books.length
+        })
+    }
+})
+
+exports.findByNameAndGenre = catchAsync(async (req, res) => {
+    const query = req.query
+
+    if (!query) {
+        return res.status(400).json({
+            status: 'No data provided'
+        })
+    }
+
+    const length = await bookUtil.countByNameAndGenre(query.name,parseInt(query.genre_id))
+    var books
+    if (!query.limit || !query.offset) {
+        books = await prisma.book.findMany({
+            where: {
+                bookGenres: {
+                    some: {
+                        genre_id: parseInt(query.genre_id)
+                    }
+                },
+                name:{
+                    contains:query.name
+                }
+            },
+            include: {
+                bookGenres: true
+            }
+        })
+    } else {
+        books = await prisma.book.findMany({
+            where: {
+                bookGenres: {
+                    some: {
+                        genre_id: parseInt(query.genre_id)
+                    }
+                },
+                name:{
+                    contains:query.name
+                }
+            },
+            take: parseInt(query.limit),
+            skip: parseInt(query.offset),
+            include: {
+                bookGenres: true
+            }
+        })
+    }
+
+    if (!books) {
+        return res.status(400).json({
+            status: 'No book found'
+        })
+    } else {
+        return res.status(200).json({
+            status: 'Book search successful',
+            books,
+            length
+        })
+    }
+})
+
+exports.findByName = catchAsync(async (req, res) => {
+    const query = req.query
+
+    if (!query) {
+        return res.status(400).json({
+            status: 'No data provided'
+        })
+    }
+
+    var length=await bookUtil.countByname(query.name)
+    var books
+    if (!query.limit || !query.offset) {
+        books = await prisma.book.findMany({
+            where: {
+                name:{
+                    contains:query.name
+                }
+            },
+        })
+    } else {
+        books = await prisma.book.findMany({
+            where: {
+                name:{
+                    contains:query.name
+                }
+            },
+            take: parseInt(query.limit),
+            skip: parseInt(query.offset),
+        })
+    }
+
+    if (!books) {
+        return res.status(400).json({
+            status: 'No book found'
+        })
+    } else {
+        return res.status(200).json({
+            status: 'Book search successful',
+            books,
+            length
+        })
+    }
+})
+
+exports.findNormalBook = catchAsync(async (req, res) => {
+    const query = req.query
+
+    var books
+    if (!query.limit || !query.offset) {
+        books = await prisma.book.findMany({
+            where: {
+                book_type:'NORMAL'
+            },
+        })
+    } else {
+        books = await prisma.book.findMany({
+            where: {
+                book_type:'NORMAL'
+            },
+            take: parseInt(query.limit),
+            skip: parseInt(query.offset),
+        })
+    }
+
+    if (!books) {
+        return res.status(400).json({
+            status: 'No book found'
+        })
+    } else {
+        return res.status(200).json({
+            status: 'Book search successful',
+            books,
+            length:books.length
+        })
+    }
+})
+
+exports.findPremiumBook = catchAsync(async (req, res) => {
+    const query = req.query
+
+    var books
+    if (!query.limit || !query.offset) {
+        books = await prisma.book.findMany({
+            where: {
+                book_type:'PREMIUM'
+            },
+        })
+    } else {
+        books = await prisma.book.findMany({
+            where: {
+                book_type:'PREMIUM'
+            },
+            take: parseInt(query.limit),
+            skip: parseInt(query.offset),
+        })
+    }
+
+    if (!books) {
+        return res.status(400).json({
+            status: 'No book found'
+        })
+    } else {
+        return res.status(200).json({
+            status: 'Book search successful',
+            books,
+            length:books.length
+        })
+    }
+})
+
+exports.findTopRating = catchAsync(async (req, res) => {
+    const query = req.query
+
+    var books
+    if (!query.limit || !query.offset) {
+        books = await prisma.book.findMany({
+            orderBy:{
+                rating:'desc'
+            }
+        })
+    } else {
+        books = await prisma.book.findMany({
+            orderBy:{
+                rating:'desc'
+            },
+            take: parseInt(query.limit),
+            skip: parseInt(query.offset),
+        })
+    }
+
+    if (!books) {
+        return res.status(400).json({
+            status: 'No book found'
+        })
+    } else {
+        return res.status(200).json({
+            status: 'Book search successful',
+            books,
+            length:books.length
+        })
+    }
+})
+
 exports.deleteByID = catchAsync(async (req, res) => {
     const query = req.query
     if (!query.id) {

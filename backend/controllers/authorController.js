@@ -190,7 +190,7 @@ exports.findByName=catchAsync(async (req,res)=>{
             skip:parseInt(query.offset),
         })
     }
-    
+
     if (!authors) {
         return res.status(400).json({
             status: 'No authors found'
@@ -202,4 +202,81 @@ exports.findByName=catchAsync(async (req,res)=>{
             length
         })
     }
+})
+
+exports.findByBookID = catchAsync(async (req, res) => {
+    const id = req.query.id
+    if (!id) {
+        return res.status(400).json({
+            status: 'No id provided'
+        })
+    }
+
+    const bookAuthors = await prisma.bookAuthor.findMany({
+        where: {
+            book_id:parseInt(id)
+        },
+        include:{
+            author:true,
+        }
+    })
+
+
+    if (!bookAuthors) {
+        return res.status(400).json({
+            status: 'No author found'
+        })
+    } else {
+
+        const authors = bookAuthors.map(bookAuthor=>bookAuthor.author);
+
+        return res.status(200).json({
+            status: 'Author search successful',
+            authors
+        })
+    }
+})
+
+exports.findBookAuthor = catchAsync(async (req, res) => {
+    const id = req.query.id
+    if (!id) {
+        return res.status(400).json({
+            status: 'No id provided'
+        })
+    }
+
+    const book = await prisma.book.findUnique({
+        where: {
+            id:parseInt(id),
+        },
+        include:{
+            bookAuthor:true,
+        }
+    })
+    if(book.bookAuthor.length==0){
+        return res.status(200).json({
+            status: 'Author search successful',
+            author: 'Không rõ'
+        })
+    }else{
+        const author=await prisma.author.findFirst({
+            where:{
+                id:parseInt(book.bookAuthor[0].author_id)
+            }
+        })
+
+        if (!author) {
+            return res.status(400).json({
+                status: 'No author found',
+                author: 'Không rõ'
+            })
+        } else {
+            return res.status(200).json({
+                status: 'Author search successful',
+                author:author
+            })
+        }
+    }
+
+
 })

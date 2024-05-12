@@ -1,5 +1,5 @@
 const prisma = require('../prisma/prisma')
-const catchAsync = require('../utils/bookAuthorUtils')
+const catchAsync = require('../utils/catchAsync')
 const BookAuthorUtil= require('../utils/bookAuthorUtils')
 
 const bookAuthorUtil=new BookAuthorUtil()
@@ -100,7 +100,7 @@ exports.findAll = catchAsync(async (req, res) => {
     const length=await bookAuthorUtil.count()
     var bookAuthors
     if(!query.limit||!query.offset){
-        bookAuthors = await prisma.bookAuthor.findMany()   
+        bookAuthors = await prisma.bookAuthor.findMany()
     }else{
         bookAuthors = await prisma.bookAuthor.findMany({
             take:parseInt(query.limit),

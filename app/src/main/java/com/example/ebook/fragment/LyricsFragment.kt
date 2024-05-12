@@ -1,29 +1,75 @@
 package com.example.ebook.fragment
 
+import android.graphics.Color
 import android.os.Bundle
+import android.text.SpannableString
+import android.text.Spanned
+import android.text.style.ForegroundColorSpan
+import android.util.Log
+import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import com.example.ebook.databinding.FragmentLyricsBinding
+import com.example.ebook.viewmodels.SongViewModel
 
 
 class LyricsFragment : Fragment() {
 
     private lateinit var binding: FragmentLyricsBinding
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-    }
+    private lateinit var songViewModel: SongViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding=FragmentLyricsBinding.inflate(inflater,container,false)
+        binding = FragmentLyricsBinding.inflate(inflater, container, false)
         return binding.root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        songViewModel = ViewModelProvider(requireActivity())[SongViewModel::class.java]
+        observeTotalLyrics()
+        observeCurrentLyrics()
+    }
+
+    private fun observeTotalLyrics() {
+        songViewModel.totalLyrics.observe(viewLifecycleOwner) { totalLyrics ->
+            Log.i("Test", "Cập nhật toàn bộ lời bài hát")
+            binding.lyricsTextView.text = totalLyrics.toString()
+        }
+    }
+
+    private fun observeCurrentLyrics() {
+        songViewModel.currentLyric.observe(viewLifecycleOwner) { currentLyric ->
+
+            try {
+                binding.lyricsTextView.text = songViewModel.totalLyrics.value
+
+                val start = songViewModel.start.value!!
+                val end = start + currentLyric.length
+                val spannableLyrics = SpannableString(songViewModel.totalLyrics.value)
+                spannableLyrics.setSpan(
+                    ForegroundColorSpan(Color.RED),
+                    start,
+                    end,
+                    Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+                )
+
+                binding.lyricsTextView.text = spannableLyrics
+
+                // Tính toán vị trí cuộn
+                val scrollY = binding.lyricsTextView.layout.getLineTop(
+                    binding.lyricsTextView.layout.getLineForOffset(end)
+                ) - (binding.scrollView.height - binding.lyricsTextView.lineHeight) / 2
+                // Cuộn đến vị trí
+                binding.scrollView.smoothScrollTo(0, scrollY)
+            } catch (e: Exception) {
+                Log.i("ERROR", "Loi:${e}")
+            }
+        }
+    }
 
 }

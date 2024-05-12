@@ -55,7 +55,7 @@ class AuthUtils {
       .publish(params)
       .promise()
       .then(() => {
-        console.log('OTP SEND SUCCESs')
+        console.log('OTP SEND SUCCESS')
       })
   }
 }
